@@ -13,8 +13,32 @@
         android:textColor="@color/teal_700"
         android:textStyle="bold"
         android:gravity="center"
-        android:layout_marginBottom="150dp"
-        android:padding="20sp"/>
+        android:padding="20dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/jumprope_penta"/>
+
+    <Button
+        android:id="@+id/dateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Today's Date ?"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@color/teal_700"
+        android:padding="15dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="20dp"/>
+
     <Button
         android:id="@+id/recipeButton"
         android:layout_width="match_parent"
@@ -35,6 +59,6 @@
         android:background="@color/teal_700"
         android:layout_marginTop="80dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        />
+        android:layout_marginRight="20dp" />
+
 </LinearLayout>
