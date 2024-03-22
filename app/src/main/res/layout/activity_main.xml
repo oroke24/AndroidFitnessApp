@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe and Exercise Tracker"
+        android:textSize="36sp"
+        android:textColor="@color/teal_700"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="150dp"
+        android:padding="20sp"/>
+    <Button
+        android:id="@+id/recipeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipes"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:background="@color/teal_700"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/exerciseButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exercises"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:background="@color/teal_700"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+</LinearLayout>

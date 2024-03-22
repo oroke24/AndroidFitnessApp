@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recipes"
+                android:textSize="30sp"/>
+
+            <!-- make sure dependency is added in build.gradle.kts (Module) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recipeRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Recipe"
+                android:textSize="30sp"/>
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="bottom"
+                android:hint="name"/>
+            <EditText
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="bottom"
+                android:hint="ingredients"/>
+            <EditText
+                android:id="@+id/instructions"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="bottom"
+                android:hint="instructions"/>
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:layout_margin="50dp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
