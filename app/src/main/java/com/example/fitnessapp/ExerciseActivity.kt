@@ -1,19 +1,28 @@
 package com.example.fitnessapp
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.collections.hashMapOf
 
 class ExerciseActivity : ComponentActivity() {
+    //A database to hold the exercises
+    private lateinit var db: FirebaseFirestore
+    //An adapter for ExerciseAdapter.kt
+    private lateinit var adapter: ExerciseAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-        //Define a list to hold the recipes
-        val exercises = mutableListOf<Exercise>()
+        db = FirebaseFirestore.getInstance()
+        adapter = ExerciseAdapter()
 
         //Define the values to be retrieved from EditText
         val nameEditText = findViewById<EditText>(R.id.name)
@@ -23,14 +32,19 @@ class ExerciseActivity : ComponentActivity() {
         //Define the list (recyclerView) to be displayed
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
         //Define the adapter from RecipeAdapter.kt
-        val adapter = ExerciseAdapter(exercises)
+        //val adapter = ExerciseAdapter(exercises)
 
+        loadExercises()
         /* if HORIZONTAL orientation is desired use the below commented
         out assignment and replace LinearLayoutManager with layoutManager */
         //val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        //if  VERTICAL orientation is desired use this one
+        //recipeRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        exerciseRecyclerView.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        exerciseRecyclerView.layoutManager = layoutManager
         exerciseRecyclerView.adapter = adapter
+
 
         //Set a click listener on a button to add recipe
         val addButton = findViewById<Button>(R.id.addButton)
@@ -39,15 +53,18 @@ class ExerciseActivity : ComponentActivity() {
             val muscleGroup = muscleGroupEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
 
-            val exercise = Exercise(name, muscleGroup, instructions)
-            exercises.add(exercise)
+            val exercise = Exercise("", name, muscleGroup, instructions)
 
-            //Notify the adapter that the data set has changed
-            adapter.notifyItemInserted(exercises.size - 1)
+            adapter.notifyItemInserted(adapter.itemCount)
+            addExerciseToDatabase(exercise)
+
             //clear editText fields
             nameEditText.text.clear()
             muscleGroupEditText.text.clear()
             instructionsEditText.text.clear()
+
+            // Reload exercise after adding a new one
+            loadExercises()
         }
 
         //Back button
@@ -55,6 +72,34 @@ class ExerciseActivity : ComponentActivity() {
         backButton.setOnClickListener {
             finish()
         }
-
+    }
+    private fun addExerciseToDatabase(exercise: Exercise){
+        db.collection("exercises")
+            .add(exercise)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "Exercise added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener{exception ->
+                Log.w(TAG, "Error adding exercise", exception)
+            }
+    }
+    private fun loadExercises(){
+        db.collection("exercises")
+            .get()
+            .addOnSuccessListener { result ->
+                //Define a list to hold the exercises
+                val exercises = mutableListOf<Exercise>()
+                for(document in result){
+                    val id = document.id
+                    val name = document.getString("name")?:""
+                    val muscleGroup = document.getString("muscleGroup")?:""
+                    val instructions = document.getString("instructions")?:""
+                    exercises.add(Exercise(id,name,muscleGroup,instructions))
+                }
+                adapter.setExercises(exercises)
+            }
+            .addOnFailureListener{exception ->
+                Toast.makeText(this, "Error Loading exercises",Toast.LENGTH_SHORT).show()
+            }
     }
 }
