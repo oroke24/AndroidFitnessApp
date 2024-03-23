@@ -23,7 +23,7 @@
         android:maxHeight="200dp"
         android:layout_gravity="center"
         android:layout_marginBottom="25dp"
-        android:src="@drawable/jumprope_penta"/>
+        android:src="@drawable/ic_jump_rope"/>
 
     <Button
         android:id="@+id/dateButton"
@@ -36,7 +36,7 @@
         android:textStyle="bold"
         android:background="@color/teal_700"
         android:padding="15dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginRight="20dp"/>
 
     <Button
@@ -47,7 +47,9 @@
         android:textSize="24sp"
         android:textColor="@color/white"
         android:background="@color/teal_700"
-        android:layout_margin="20dp"/>
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
     <Button
         android:id="@+id/exerciseButton"
@@ -57,8 +59,31 @@
         android:textSize="24sp"
         android:textColor="@color/white"
         android:background="@color/teal_700"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 
+    <Button
+        android:id="@+id/calendarButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calendar"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:background="@color/teal_700"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <Button
+        android:id="@+id/timerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Timer"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:background="@color/teal_700"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 </LinearLayout>

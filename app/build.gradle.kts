@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -76,5 +77,15 @@ dependencies {
     //Room - Local Database
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-ktx:2.6.1")
-
+    //Firebase Dependencies
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-analytics")
+    //Firebase Authentication Dependencies (using phone number method)
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    // Adding the dependency for the Firebase Authentication library
+    // When using the BoM, we specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-auth")
+    //Adding Firstore dependency
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }
