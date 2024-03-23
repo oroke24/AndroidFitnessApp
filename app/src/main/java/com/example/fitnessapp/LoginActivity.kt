@@ -13,7 +13,9 @@ class LoginActivity : ComponentActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var registerButton: Button
-    private lateinit var guestButton: Button
+    /*Redacting Guest Button for now
+    private lateinit var guestButton: Buttonw
+     */
 
     private lateinit var auth: FirebaseAuth
 
@@ -28,7 +30,9 @@ class LoginActivity : ComponentActivity() {
         passwordEditText = findViewById(R.id.password)
         loginButton = findViewById(R.id.loginButton)
         registerButton= findViewById(R.id.registerButton)
+        /*Redacting guest button for now
         guestButton = findViewById(R.id.guestButton)
+        */
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
@@ -47,27 +51,29 @@ class LoginActivity : ComponentActivity() {
             startActivity(Intent(this, RegistrationActivity::class.java))
         }
 
+        /*Redacting guest button for now
         // Set OnClickListener for continue as guest button
         guestButton.setOnClickListener {
-            // Start the MainActivity
-            startActivity(Intent(this, MainActivity::class.java))
+        // Start the MainActivity
+        startActivity(Intent(this, MainActivity::class.java))
         }
+        */
 
-    }
+}
 
-    private fun loginUser(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    // Proceed to your main activity or whatever comes next
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                }
-            }
+private fun loginUser(email: String, password: String) {
+auth.signInWithEmailAndPassword(email, password)
+    .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            val user = auth.currentUser
+            // Proceed to your main activity or whatever comes next
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        } else {
+            // If sign in fails, display a message to the user.
+            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+        }
     }
+}
 }

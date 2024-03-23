@@ -27,6 +27,11 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".RecipeActivity"/>
         <activity android:name=".ExerciseActivity"/>
+        <activity android:name=".TimersActivity"/>
+        <activity android:name=".TimerActivity"/>
+        <activity android:name=".StopWatchActivity"/>
+        <activity android:name=".TabataTimerActivity"/>
+        <activity android:name=".CalendarActivity"/>
     </application>
 
 </manifest>

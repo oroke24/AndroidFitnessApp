@@ -8,12 +8,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe and Exercise Tracker"
+        android:text="Timers"
         android:textSize="36sp"
         android:textColor="@color/teal_700"
         android:textStyle="bold"
         android:gravity="center"
         android:padding="20dp"/>
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -23,27 +29,13 @@
         android:maxHeight="200dp"
         android:layout_gravity="center"
         android:layout_marginBottom="25dp"
-        android:src="@drawable/ic_jump_rope"/>
+        android:src="@drawable/ic_timer"/>
 
     <Button
-        android:id="@+id/dateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Today's Date ?"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:background="@color/teal_700"
-        android:padding="15dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="20dp"/>
-
-    <Button
-        android:id="@+id/recipeButton"
+        android:id="@+id/stopWatchButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipes"
+        android:text="Stopwatch"
         android:textSize="24sp"
         android:textColor="@color/white"
         android:background="@color/teal_700"
@@ -52,10 +44,10 @@
         android:layout_marginRight="20dp" />
 
     <Button
-        android:id="@+id/exerciseButton"
+        android:id="@+id/timerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Exercises"
+        android:text="Timer"
         android:textSize="24sp"
         android:textColor="@color/white"
         android:background="@color/teal_700"
@@ -64,28 +56,15 @@
         android:layout_marginRight="20dp" />
 
     <Button
-        android:id="@+id/timersButton"
+        android:id="@+id/tabataTimerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Timers"
+        android:text="Tabata Timer"
         android:textSize="24sp"
         android:textColor="@color/white"
         android:background="@color/teal_700"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
-
-    <Button
-        android:id="@+id/calendarButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Calendar"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@color/teal_700"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
-
 
 </LinearLayout>

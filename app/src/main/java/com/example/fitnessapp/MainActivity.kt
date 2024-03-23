@@ -26,20 +26,26 @@ class MainActivity : ComponentActivity() {
         val dateButton = findViewById<Button>(R.id.dateButton)
         val recipeButton = findViewById<Button>(R.id.recipeButton)
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
+        val timersButton = findViewById<Button>(R.id.timersButton)
+        val calendarButton = findViewById<Button>(R.id.calendarButton)
 
-        recipeButton.setOnClickListener{
-            val intent = Intent(this, RecipeActivity::class.java)
-            startActivity(intent)
-        }
-        exerciseButton.setOnClickListener{
-            val intent = Intent(this, ExerciseActivity::class.java)
-            startActivity(intent)
-        }
         dateButton.setOnClickListener{
             val calendar = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
             val currentDateFormatted = dateFormat.format(calendar.time)
             Toast.makeText(this, "Today's date: $currentDateFormatted", Toast.LENGTH_SHORT).show()
+        }
+        recipeButton.setOnClickListener{
+            startActivity(Intent(this, RecipeActivity::class.java))
+        }
+        exerciseButton.setOnClickListener{
+            startActivity(Intent(this, ExerciseActivity::class.java))
+        }
+        timersButton.setOnClickListener {
+            startActivity(Intent(this, TimersActivity::class.java))
+        }
+        calendarButton.setOnClickListener {
+            startActivity(Intent(this, CalendarActivity::class.java))
         }
     }
 }
