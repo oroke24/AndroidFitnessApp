@@ -51,7 +51,7 @@ class StopWatchActivity : ComponentActivity() {
         finish()
     }
 
-    private fun onStartButtonClick(view: View) {
+    fun onStartButtonClick(view: View) {
         if (!isRunning) {
             isRunning = true
             startTime = System.currentTimeMillis() - elapsedTime
