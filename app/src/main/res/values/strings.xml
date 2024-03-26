@@ -16,4 +16,17 @@
     <string name="timer_default_text">00:00:00</string>
     <string name="timer_default_milliseconds">000</string>
     <string name="timer_title">Countdown Timer</string>
+
+    <string name="tabata_timer_title">Tabata (Interval) Timer</string>
+    <string name="default_tabata_timer">00:00</string>
+    <string name="get_ready">Get Ready..</string>
+    <string name="congrats">Good Job!..</string>
+    <string name="minutes">Minutes</string>
+    <string name="rest">Rest</string>
+    <string name="work">Work</string>
+    <string name="rest_default">Rest(sec)</string>
+    <string name="work_default">Work(sec)</string>
+    <string name="minutes_template">Minutes: %1$d</string>
+    <string name="work_template">Work: %1$d sec</string>
+    <string name="rest_template">Rest: %1$d sec</string>
 </resources>

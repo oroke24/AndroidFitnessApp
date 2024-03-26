@@ -1,19 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/timerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tabata Timer"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:background="@color/teal_700"/>
-    <Button
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#222222"
+    android:gravity="center_horizontal">
+
+    <ImageButton
         android:id="@+id/backButton"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"/>
+        android:src="@drawable/ic_arrow_back"
+        android:background="#222222"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="back_button"
+        android:padding="20dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#667"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_marginBottom="50dp"
+        android:text="@string/tabata_timer_title"/>
+    <TextView
+        android:id="@+id/typeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#667"
+        android:textAlignment="center"
+        android:textSize="50sp"
+        android:text="@string/get_ready"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/minutesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/minutes"
+            android:textSize="20sp"
+            android:textColor="#AAEEFF"/>
+        <TextView
+            android:id="@+id/workTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/work_default"
+            android:textSize="20sp"
+            android:textColor="#AAEEFF"/>
+        <TextView
+            android:id="@+id/restTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/rest_default"
+            android:textSize="20sp"
+            android:textColor="#AAEEFF"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#AAAAAA"
+        android:orientation="horizontal">
+        <!-- Hours Scroll -->
+        <NumberPicker
+            android:id="@+id/hoursPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:descendantFocusability="blocksDescendants"
+            android:max="60"
+            android:min="0"
+            android:layout_weight="1" />
+
+        <!-- Minutes Scroll -->
+        <NumberPicker
+            android:id="@+id/workIntervalPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:descendantFocusability="blocksDescendants"
+            android:textSize="50sp"
+            android:max="60"
+            android:min="0"
+            android:layout_weight="1" />
+
+        <!-- Seconds Scroll -->
+        <NumberPicker
+            android:id="@+id/restIntervalPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:descendantFocusability="blocksDescendants"
+            android:max="60"
+            android:min="0"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <!-- Timer Display -->
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="#AAEEFF"
+        android:textSize="75sp"
+        android:text="@string/default_tabata_timer" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+        <!-- Pause Button -->
+
+        <ImageButton
+            android:id="@+id/startStopButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_arrow_forward_green"
+            android:background="#222222"
+            android:onClick="onContinueButtonClick"
+            android:contentDescription="continue_button"
+            android:padding="20dp" />
+    </LinearLayout>
+
 </LinearLayout>
