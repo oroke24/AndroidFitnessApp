@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:keepScreyyenOn="true"
+    android:keepScreenOn="true"
     android:background="#222222"
     android:gravity="center_horizontal">
 

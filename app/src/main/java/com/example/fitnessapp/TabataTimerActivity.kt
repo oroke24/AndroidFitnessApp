@@ -157,9 +157,9 @@ class TabataTimerActivity : ComponentActivity() {
             override fun onFinish() {
                 resetTimer()
                 timerLayoutView.setBackgroundColor(Color.rgb(11, 99, 11))
-                showDialog()
-                playDefaultAlarmRingtone()
                 startVibration()
+                startRingtone()
+                showDialog()
             }
         }
 
@@ -206,7 +206,7 @@ class TabataTimerActivity : ComponentActivity() {
         dialog.show()
     }
 
-    private fun playDefaultAlarmRingtone() {
+    private fun startRingtone() {
         val defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         alarmRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri)
         alarmRingtone?.play()

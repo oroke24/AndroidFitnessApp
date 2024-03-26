@@ -2,18 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="#AAAAAA"
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recipe and Exercise Tracker"
-        android:textSize="36sp"
-        android:textColor="@color/teal_700"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="20dp"/>
+
 
     <ImageView
         android:layout_width="wrap_content"
@@ -22,7 +15,8 @@
         android:maxWidth="200dp"
         android:maxHeight="200dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"
         android:src="@drawable/ic_jump_rope"/>
 
     <Button
@@ -34,7 +28,7 @@
         android:textSize="18sp"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:background="@color/teal_700"
+        android:background="@drawable/cool_button3"
         android:padding="15dp"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="20dp"/>
@@ -46,7 +40,7 @@
         android:text="Recipes"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
+        android:background="@drawable/cool_button"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
@@ -58,7 +52,7 @@
         android:text="Exercises"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
+        android:background="@drawable/cool_button2"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
@@ -70,7 +64,7 @@
         android:text="Timers"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
+        android:background="@drawable/cool_button3"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
@@ -82,7 +76,7 @@
         android:text="Calendar"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
+        android:background="@drawable/cool_button4"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
