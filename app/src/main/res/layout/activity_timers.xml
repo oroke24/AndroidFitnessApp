@@ -12,15 +12,6 @@
         android:layout_height="wrap_content"
         android:text="Back"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Timers"
-        android:textSize="36sp"
-        android:textColor="@color/teal_700"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="20dp"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -39,8 +30,8 @@
         android:text="Stopwatch"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
-        android:layout_marginTop="25dp"
+        android:background="@drawable/cool_button5"
+        android:layout_marginTop="125dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 
@@ -51,8 +42,8 @@
         android:text="Timer"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
-        android:layout_marginTop="25dp"
+        android:background="@drawable/cool_button2"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 
@@ -63,8 +54,8 @@
         android:text="Tabata Timer"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:background="@color/teal_700"
-        android:layout_marginTop="25dp"
+        android:background="@drawable/cool_button3"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 
