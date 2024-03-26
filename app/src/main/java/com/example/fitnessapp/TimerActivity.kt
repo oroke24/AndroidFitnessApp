@@ -1,14 +1,21 @@
 package com.example.fitnessapp
-
+import android.app.AlertDialog
+import android.content.Context
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.widget.Button
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 
-class TimerActivity : ComponentActivity(){
+class TimerActivity : ComponentActivity() {
     private lateinit var hoursPicker: NumberPicker
     private lateinit var minutesPicker: NumberPicker
     private lateinit var secondsPicker: NumberPicker
@@ -19,6 +26,8 @@ class TimerActivity : ComponentActivity(){
     private var countDownTimer: CountDownTimer? = null
     private var timeRemaining: Long = 0
     private var timerRunning = false
+    private var alarmRingtone: Ringtone? = null
+    private var vibrator: Vibrator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +102,9 @@ class TimerActivity : ComponentActivity(){
                 timeRemaining = 0
                 timerRunning = false
                 updateTimerDisplay()
+                showDialog()
+                playDefaultAlarmRingtone()
+                startVibration()
             }
         }.start()
 
@@ -115,5 +127,46 @@ class TimerActivity : ComponentActivity(){
 
         val timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds)
         timerTextView.text = timeString
+    }
+
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Complete!")
+        builder.setPositiveButton("OK") { dialog, _ ->
+
+            dialog.dismiss()
+            stopRingtone()
+            stopVibration()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun playDefaultAlarmRingtone() {
+        val defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        alarmRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri)
+        alarmRingtone?.play()
+    }
+
+    private fun startVibration() {
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator?.let { vibratorService ->
+            if (vibratorService.hasVibrator()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibratorService.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 1000), 0))
+                } else {
+                    @Suppress("DEPRECATION")
+                    vibratorService.vibrate(longArrayOf(0, 1000), 0)
+                }
+            }
+        }
+    }
+
+    private fun stopRingtone() {
+        alarmRingtone?.stop()
+    }
+
+    private fun stopVibration() {
+        vibrator?.cancel()
     }
 }

@@ -1,10 +1,18 @@
 package com.example.fitnessapp
 
+import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.media.Image
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.NumberPicker
@@ -27,6 +35,8 @@ class TabataTimerActivity : ComponentActivity() {
     private lateinit var startStopButton: ImageButton
     private var timerRunning: Boolean = false
     private lateinit var timer: CountDownTimer
+    private var alarmRingtone: Ringtone? = null
+    private var vibrator: Vibrator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +64,7 @@ class TabataTimerActivity : ComponentActivity() {
             if (timerRunning) {
                 stopTimer()
             } else {
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 startBufferTimer()
             }
         }
@@ -105,6 +116,7 @@ class TabataTimerActivity : ComponentActivity() {
     }
 
     private fun startTimer(minutes: Int, workSeconds: Int, restSeconds: Int) {
+        timerLayoutView.setBackgroundColor(Color.rgb(22,22,22))
         startStopButton.visibility = View.VISIBLE
         val totalSeconds = minutes * 60L
 
@@ -144,6 +156,10 @@ class TabataTimerActivity : ComponentActivity() {
 
             override fun onFinish() {
                 resetTimer()
+                timerLayoutView.setBackgroundColor(Color.rgb(11, 99, 11))
+                showDialog()
+                playDefaultAlarmRingtone()
+                startVibration()
             }
         }
 
@@ -176,5 +192,45 @@ class TabataTimerActivity : ComponentActivity() {
 
         startStopButton.setImageResource(R.drawable.ic_arrow_forward_green) // Reset button icon
         timerRunning = false
+    }
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Complete!")
+        builder.setPositiveButton("OK") { dialog, _ ->
+
+            dialog.dismiss()
+            stopRingtone()
+            stopVibration()
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun playDefaultAlarmRingtone() {
+        val defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        alarmRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri)
+        alarmRingtone?.play()
+    }
+
+    private fun startVibration() {
+        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator?.let { vibratorService ->
+            if (vibratorService.hasVibrator()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibratorService.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 1000), 0))
+                } else {
+                    @Suppress("DEPRECATION")
+                    vibratorService.vibrate(longArrayOf(0, 1000), 0)
+                }
+            }
+        }
+    }
+
+    private fun stopRingtone() {
+        alarmRingtone?.stop()
+    }
+
+    private fun stopVibration() {
+        vibrator?.cancel()
     }
 }
