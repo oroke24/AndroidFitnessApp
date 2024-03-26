@@ -160,7 +160,7 @@ class TabataTimerActivity : ComponentActivity() {
 
     private fun resetTimer() {
         // Resetting UI elements and visibility
-        timerTextView.textSize = 75f
+        timerTextView.textSize = 100f
         timerTextView.text = getString(R.string.default_tabata_timer)
         timerLayoutView.setBackgroundColor(Color.rgb(22,22,22))
         typeTextView.setTextColor(Color.rgb(60,60,70))
