@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 
 class TimerActivity : ComponentActivity() {
+    private lateinit var backButton: ImageButton
     private lateinit var hoursPicker: NumberPicker
     private lateinit var minutesPicker: NumberPicker
     private lateinit var secondsPicker: NumberPicker
@@ -41,6 +42,7 @@ class TimerActivity : ComponentActivity() {
         pauseButton = findViewById(R.id.pauseButton)
         continueButton = findViewById(R.id.continueButton)
         timerTextView = findViewById(R.id.timerTextView)
+        backButton = findViewById(R.id.backButton)
 
         // Set initial values for NumberPickers
         hoursPicker.minValue = 0
@@ -60,6 +62,7 @@ class TimerActivity : ComponentActivity() {
         minutesPicker.setOnLongPressUpdateInterval(100)
         secondsPicker.setOnLongPressUpdateInterval(100)
 
+        backButton.setOnClickListener{finish()}
         // Set up start button click listener
         startButton.setOnClickListener {
             if (!timerRunning) {

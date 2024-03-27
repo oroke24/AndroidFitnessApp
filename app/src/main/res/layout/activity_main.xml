@@ -15,8 +15,8 @@
         android:maxWidth="200dp"
         android:maxHeight="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
         android:src="@drawable/ic_jump_rope"/>
 
     <Button
@@ -33,53 +33,67 @@
         android:layout_marginBottom="30dp"
         android:layout_marginRight="20dp"/>
 
-    <Button
-        android:id="@+id/recipeButton"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recipes"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/recipeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recipes"
+                android:textSize="24sp"
+                android:padding="100dp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
-    <Button
-        android:id="@+id/exerciseButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exercises"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button2"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+            <Button
+                android:id="@+id/exerciseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Exercises"
+                android:textSize="24sp"
+                android:padding="100dp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button2"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
-    <Button
-        android:id="@+id/timersButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Timers"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button3"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+            <Button
+                android:id="@+id/timersButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Timers"
+                android:textSize="24sp"
+                android:padding="100dp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button3"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
-    <Button
-        android:id="@+id/calendarButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Calendar"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button4"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+            <Button
+                android:id="@+id/calendarButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calendar"
+                android:textSize="24sp"
+                android:padding="100dp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button4"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+        </LinearLayout>
+    </ScrollView>
+
 
 
 </LinearLayout>

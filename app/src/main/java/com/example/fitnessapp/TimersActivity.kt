@@ -3,6 +3,7 @@ package com.example.fitnessapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 
 class TimersActivity : ComponentActivity() {
@@ -11,7 +12,7 @@ class TimersActivity : ComponentActivity() {
         setContentView(R.layout.activity_timers)
 
         //Binding vals to buttons
-        val backButton = findViewById<Button>(R.id.backButton)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
         val stopWatch = findViewById<Button>(R.id.stopWatchButton)
         val timer = findViewById<Button>(R.id.timerButton)
         val tabataTimer = findViewById<Button>(R.id.tabataTimerButton)

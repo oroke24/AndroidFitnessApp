@@ -6,11 +6,15 @@
     android:background="#AAAAAA"
     android:layout_gravity="center">
 
-    <Button
+    <ImageButton
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"/>
+        android:src="@drawable/ic_arrow_back"
+        android:background="#AAAAAA"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="@string/back_button_description"
+        android:padding="20dp" />
 
 
     <ImageView
@@ -23,40 +27,53 @@
         android:layout_marginBottom="25dp"
         android:src="@drawable/ic_timer"/>
 
-    <Button
-        android:id="@+id/stopWatchButton"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stopwatch"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button5"
-        android:layout_marginTop="125dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/stopWatchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stopwatch"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:padding="100dp"
+                android:background="@drawable/cool_button5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
-    <Button
-        android:id="@+id/timerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Timer"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button2"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+            <Button
+                android:id="@+id/timerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Timer"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:padding="100dp"
+                android:background="@drawable/cool_button2"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
-    <Button
-        android:id="@+id/tabataTimerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tabata Timer"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@drawable/cool_button3"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+            <Button
+                android:id="@+id/tabataTimerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tabata Timer"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:padding="100dp"
+                android:background="@drawable/cool_button3"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
