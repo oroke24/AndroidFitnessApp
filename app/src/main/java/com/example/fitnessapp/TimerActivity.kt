@@ -114,6 +114,11 @@ class TimerActivity : ComponentActivity() {
         timerRunning = true
     }
 
+    private fun resetTimer(){
+        countDownTimer?.cancel()
+        timerRunning = false
+
+    }
     private fun pauseTimer() {
         countDownTimer?.cancel()
         timerRunning = false

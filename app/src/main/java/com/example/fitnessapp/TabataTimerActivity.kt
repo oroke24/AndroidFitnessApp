@@ -128,7 +128,6 @@ class TabataTimerActivity : ComponentActivity() {
         println("Minutes: ${minutesPicker.value}, Work Interval: $workSeconds seconds, Rest Interval: $restSeconds seconds")
 
         timer = object : CountDownTimer(totalSeconds * 1000, 1000) {
-            private var startTimeMillis = System.currentTimeMillis()
 
             override fun onTick(millisUntilFinished: Long) {
                 val minutesDisplay = (millisUntilFinished / 1000) / 60
@@ -144,12 +143,12 @@ class TabataTimerActivity : ComponentActivity() {
                 val isWorkInterval = elapsedIntervalSeconds < workSeconds
 
                 if (isWorkInterval) {
-                    timerLayoutView.setBackgroundColor(Color.rgb(66, 22, 22)) // Work interval color
-                    typeTextView.setTextColor(Color.rgb(99,44,11))
+                    timerLayoutView.setBackgroundColor(Color.rgb(255, 150, 69)) // Work interval color
+                    typeTextView.setTextColor(Color.WHITE)
                     typeTextView.text = getString(R.string.work)
                 } else {
-                    timerLayoutView.setBackgroundColor(Color.rgb(22, 22, 99)) // Rest interval color
-                    typeTextView.setTextColor(Color.CYAN)
+                    timerLayoutView.setBackgroundColor(Color.rgb(22, 150, 255)) // Rest interval color
+                    typeTextView.setTextColor(Color.WHITE)
                     typeTextView.text = getString(R.string.rest)
                 }
             }
