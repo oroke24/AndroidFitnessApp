@@ -6,11 +6,16 @@
     android:background="#AAAAAA"
     android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
         android:id="@+id/backButton"
+        android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"/>
+        android:src="@drawable/ic_arrow_back"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="back_button"
+        android:padding="20dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -30,7 +35,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recipeRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="match_parent"

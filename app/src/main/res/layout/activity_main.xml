@@ -5,33 +5,42 @@
     android:background="#AAAAAA"
     android:layout_height="match_parent"
     android:layout_gravity="center">
-
-
-
-    <ImageView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:maxWidth="200dp"
-        android:maxHeight="200dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp"
-        android:src="@drawable/ic_jump_rope"/>
+        android:orientation="horizontal"
+        android:gravity="end">
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="todays date"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:layout_weight="6"
+            android:text="username"
+            android:textSize="14sp"/>
 
-    <Button
-        android:id="@+id/dateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <ImageButton
+        android:id="@+id/logoutButton"
         android:layout_gravity="end"
-        android:text="Today's Date ?"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:background="@drawable/cool_button3"
-        android:padding="15dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:layout_weight="1"
+        android:src="@drawable/ic_logout"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="log out"
+        android:padding="20dp" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,15 +49,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:outlineSpotShadowColor="@color/black"
             android:orientation="vertical"
             android:paddingBottom="15dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="200dp"
+                android:maxHeight="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_jump_rope"/>
+
             <Button
                 android:id="@+id/recipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Recipes"
                 android:textSize="24sp"
-                android:padding="100dp"
+                android:padding="45dp"
                 android:textColor="@color/white"
                 android:background="@drawable/cool_button"
                 android:layout_marginTop="25dp"
@@ -61,10 +83,10 @@
                 android:layout_height="wrap_content"
                 android:text="Exercises"
                 android:textSize="24sp"
-                android:padding="100dp"
+                android:padding="45dp"
                 android:textColor="@color/white"
                 android:background="@drawable/cool_button2"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
 
@@ -74,10 +96,10 @@
                 android:layout_height="wrap_content"
                 android:text="Timers"
                 android:textSize="24sp"
-                android:padding="100dp"
+                android:padding="45dp"
                 android:textColor="@color/white"
                 android:background="@drawable/cool_button3"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
 
@@ -87,10 +109,10 @@
                 android:layout_height="wrap_content"
                 android:text="Calendar"
                 android:textSize="24sp"
-                android:padding="100dp"
+                android:padding="45dp"
                 android:textColor="@color/white"
                 android:background="@drawable/cool_button4"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
         </LinearLayout>

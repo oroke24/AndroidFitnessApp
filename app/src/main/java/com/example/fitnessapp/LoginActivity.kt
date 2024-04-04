@@ -25,14 +25,19 @@ class LoginActivity : ComponentActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        val username = currentUser?.email.toString()
+        if(currentUser != null){
+            navigateToMain(username)
+        }
 
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
         loginButton = findViewById(R.id.loginButton)
-        registerButton= findViewById(R.id.registerButton)
+        registerButton = findViewById(R.id.registerButton)
         /*Redacting guest button for now
-        guestButton = findViewById(R.id.guestButton)
-        */
+    guestButton = findViewById(R.id.guestButton)
+    */
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
@@ -41,7 +46,8 @@ class LoginActivity : ComponentActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 loginUser(email, password)
             } else {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -52,28 +58,35 @@ class LoginActivity : ComponentActivity() {
         }
 
         /*Redacting guest button for now
-        // Set OnClickListener for continue as guest button
-        guestButton.setOnClickListener {
-        // Start the MainActivity
-        startActivity(Intent(this, MainActivity::class.java))
-        }
-        */
-
-}
-
-private fun loginUser(email: String, password: String) {
-auth.signInWithEmailAndPassword(email, password)
-    .addOnCompleteListener(this) { task ->
-        if (task.isSuccessful) {
-            // Sign in success, update UI with the signed-in user's information
-            val user = auth.currentUser
-            // Proceed to your main activity or whatever comes next
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
-            // If sign in fails, display a message to the user.
-            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-        }
+    // Set OnClickListener for continue as guest button
+    guestButton.setOnClickListener {
+    // Start the MainActivity
+    startActivity(Intent(this, MainActivity::class.java))
     }
+    */
+
 }
+
+    private fun loginUser(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    // Proceed to your main activity or whatever comes next
+                    navigateToMain(email)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun navigateToMain(email: String){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
+        startActivity(intent)
+        finish()
+    }
+
 }

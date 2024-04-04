@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +22,10 @@ class RegistrationActivity : ComponentActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        //Back button
+        val backButton = findViewById<ImageButton>(R.id.backButton)
+        backButton.setOnClickListener { finish() }
+        
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
         registerButton = findViewById(R.id.registerButton)

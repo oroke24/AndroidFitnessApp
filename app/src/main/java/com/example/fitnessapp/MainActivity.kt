@@ -3,6 +3,8 @@ package com.example.fitnessapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,23 +19,33 @@ import com.example.fitnessapp.ui.theme.FitnessAppTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val dateButton = findViewById<Button>(R.id.dateButton)
         val recipeButton = findViewById<Button>(R.id.recipeButton)
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
         val timersButton = findViewById<Button>(R.id.timersButton)
         val calendarButton = findViewById<Button>(R.id.calendarButton)
+        val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val username = intent.getStringExtra("USER_EMAIL")
+        val usernameTextView = findViewById<TextView>(R.id.usernameTextView)
+        val dateTextView = findViewById<TextView>(R.id.dateTextView)
 
-        dateButton.setOnClickListener{
-            val calendar = Calendar.getInstance()
-            val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
-            val currentDateFormatted = dateFormat.format(calendar.time)
-            Toast.makeText(this, "Today's date: $currentDateFormatted", Toast.LENGTH_SHORT).show()
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+        val currentDateFormatted = dateFormat.format(calendar.time)
+
+        usernameTextView.text = username
+        dateTextView.text = currentDateFormatted
+
+        logoutButton.setOnClickListener{
+            firebaseAuth.signOut()
+            finish()
         }
         recipeButton.setOnClickListener{
             startActivity(Intent(this, RecipeActivity::class.java))

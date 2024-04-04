@@ -3,26 +3,37 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border">
+    android:layout_margin="5dp"
+    android:background="@drawable/cool_background2">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_weight="4"
             android:textSize="18sp"
-            android:textStyle="bold"/>
-        <Button
+            android:textStyle="bold"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:layout_weight="4"
+            android:textColor="@android:color/white"/>
+        <ImageButton
             android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Delete"/>
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_delete_button_white"
+            android:contentDescription="delete button"/>
     </LinearLayout>
 
     <!-- Name Label and content -->
@@ -31,18 +42,15 @@
         android:layout_height="wrap_content"
         android:text="Name: "
         android:textSize="24sp"
-        android:textStyle="bold"/>
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"/>
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
 
     <!-- Ingredients Label and content -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="Muscle Group: "
         android:textSize="24sp"
         android:textStyle="bold"/>
@@ -50,13 +58,15 @@
         android:id="@+id/muscleGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"/>
+        android:layout_margin="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"/>
 
     <!-- Instructions Label and content -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="Instructions: "
         android:textSize="24sp"
         android:textStyle="bold"/>
@@ -64,6 +74,7 @@
         android:id="@+id/instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"/>
+        android:layout_margin="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"/>
 </LinearLayout>

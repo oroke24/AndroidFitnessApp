@@ -4,7 +4,16 @@
     android:layout_height="match_parent"
     android:background="#AAAAAA"
     android:padding="16dp">
-
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="back_button"
+        android:padding="20dp" />
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -40,6 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register"
+        android:textColor="@color/white"
+        android:background="@drawable/cool_button"
         android:layout_below="@id/password"
         android:layout_marginTop="24dp"/>
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,10 @@ class ExerciseActivity : ComponentActivity() {
 
         db = FirebaseFirestore.getInstance()
         adapter = ExerciseAdapter()
+
+        //Back button
+        val backButton = findViewById<ImageButton>(R.id.backButton)
+        backButton.setOnClickListener { finish() }
 
         //Define the values to be retrieved from EditText
         val nameEditText = findViewById<EditText>(R.id.name)
@@ -67,11 +72,7 @@ class ExerciseActivity : ComponentActivity() {
             loadExercises()
         }
 
-        //Back button
-        val backButton = findViewById<Button>(R.id.backButton)
-        backButton.setOnClickListener {
-            finish()
-        }
+
     }
     private fun addExerciseToDatabase(exercise: Exercise){
         db.collection("exercises")

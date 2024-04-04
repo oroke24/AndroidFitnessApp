@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -80,7 +82,7 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val muscleGroup: TextView = itemView.findViewById(R.id.muscleGroup)
     private val instructions: TextView = itemView.findViewById(R.id.instructions)
     private val position: TextView = itemView.findViewById(R.id.position)
-    private val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
+    private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
     //Reference to the adapter to call deleteExercise method
     private var adapter: ExerciseAdapter? = null
 

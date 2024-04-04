@@ -2,6 +2,7 @@ package com.example.fitnessapp
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 
 class CalendarActivity : ComponentActivity(){
@@ -10,7 +11,7 @@ class CalendarActivity : ComponentActivity(){
         setContentView(R.layout.activity_calendar)
 
         //binding buttons
-        val backButton = findViewById<Button>(R.id.backButton)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener {finish()}
     }
 }
