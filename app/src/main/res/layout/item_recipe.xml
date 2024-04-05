@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="300dp"
     android:layout_margin="5dp"
     android:background="@drawable/cool_background">
     <!-- Position number -->
@@ -35,7 +35,7 @@
             android:background="@android:color/transparent"
             android:contentDescription="delete button"
             android:layout_weight="1"/>
-</LinearLayout>
+    </LinearLayout>
 
     <!-- Name Label -->
     <TextView

@@ -33,6 +33,7 @@
         <activity android:name=".StopWatchActivity"/>
         <activity android:name=".TabataTimerActivity"/>
         <activity android:name=".CalendarActivity"/>
+        <activity android:name=".ItemDetailsActivity"/>
     </application>
 
 </manifest>

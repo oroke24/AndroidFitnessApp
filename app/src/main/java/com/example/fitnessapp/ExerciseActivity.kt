@@ -14,9 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.collections.hashMapOf
 
 class ExerciseActivity : ComponentActivity() {
-    //A database to hold the exercises
     private lateinit var db: FirebaseFirestore
-    //An adapter for ExerciseAdapter.kt
     private lateinit var adapter: ExerciseAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,22 +27,13 @@ class ExerciseActivity : ComponentActivity() {
         val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener { finish() }
 
-        //Define the values to be retrieved from EditText
         val nameEditText = findViewById<EditText>(R.id.name)
         val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
 
-        //Define the list (recyclerView) to be displayed
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
-        //Define the adapter from RecipeAdapter.kt
-        //val adapter = ExerciseAdapter(exercises)
 
         loadExercises()
-        /* if HORIZONTAL orientation is desired use the below commented
-        out assignment and replace LinearLayoutManager with layoutManager */
-        //val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //if  VERTICAL orientation is desired use this one
-        //recipeRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         exerciseRecyclerView.layoutManager = layoutManager

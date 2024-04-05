@@ -7,92 +7,102 @@
     android:keepScreenOn="true"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back"
-        android:background="@color/black"
-        android:onClick="onBackButtonClick"
-        android:contentDescription="@string/back_button_description"
-        android:padding="20dp" />
-
-    <TextView
-        android:id="@+id/title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="50dp"
-        android:text="@string/stopwatch_title"
-        android:textSize="45sp"
-        android:textStyle="bold"
-        android:textColor="#334455"
-        android:textAlignment="center"/>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@color/black"
+                android:onClick="onBackButtonClick"
+                android:contentDescription="@string/back_button_description"
+                android:padding="20dp" />
 
-    <TextView
-        android:id="@+id/stopwatchTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:gravity="center"
-        android:text="@string/stopwatch_default_text"
-        android:textSize="70sp"
-        android:textColor="#BBEEFF"
-        android:background="@color/black"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="50dp"
+                android:text="@string/stopwatch_title"
+                android:textSize="45sp"
+                android:textStyle="bold"
+                android:textColor="#334455"
+                android:textAlignment="center"/>
 
-    <TextView
-        android:id="@+id/millisecondTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:layout_marginEnd="25dp"
-        android:text="@string/stopwatch_default_milliseconds"
-        android:textSize="45sp"
-        android:textColor="#77AAFF"
-        android:background="@color/black"/>
+            <TextView
+                android:id="@+id/stopwatchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:gravity="center"
+                android:text="@string/stopwatch_default_text"
+                android:textSize="70sp"
+                android:textColor="#BBEEFF"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/millisecondTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginEnd="25dp"
+                android:text="@string/stopwatch_default_milliseconds"
+                android:textSize="45sp"
+                android:textColor="#77AAFF"
+                android:background="@color/black"/>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="125dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="125dp">
 
-        <ImageButton
-            android:id="@+id/startButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_forward_green"
-            android:background="@color/black"
-            android:onClick="onStartButtonClick"
-            android:contentDescription="@string/back_button_description"
-            android:padding="20dp" />
+                <ImageButton
+                    android:id="@+id/startButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_arrow_forward_green"
+                    android:background="@color/black"
+                    android:onClick="onStartButtonClick"
+                    android:contentDescription="@string/back_button_description"
+                    android:padding="20dp" />
 
-        <ImageButton
-            android:id="@+id/pauseButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_pause"
-            android:background="@color/black"
-            android:onClick="onPauseButtonClick"
-            android:contentDescription="@string/pause_button_description"
-            android:padding="20dp" />
+                <ImageButton
+                    android:id="@+id/pauseButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_pause"
+                    android:background="@color/black"
+                    android:onClick="onPauseButtonClick"
+                    android:contentDescription="@string/pause_button_description"
+                    android:padding="20dp" />
 
-        <ImageButton
-            android:id="@+id/resetButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_refresh"
-            android:background="@color/black"
-            android:onClick="onResetButtonClick"
-            android:contentDescription="@string/reset_button_description"
-            android:padding="20dp" />
+                <ImageButton
+                    android:id="@+id/resetButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_refresh"
+                    android:background="@color/black"
+                    android:onClick="onResetButtonClick"
+                    android:contentDescription="@string/reset_button_description"
+                    android:padding="20dp" />
 
-    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ExerciseAdapter : RecyclerView.Adapter<ExerciseViewHolder>(){
     private var exercises = listOf<Exercise>()
 
-    //Variables for resizing item holderView because xml is largely static
-    private var largestItemWidth = 0
-    private var largestItemHeight = 0
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false)
         return ExerciseViewHolder(view)
@@ -27,26 +24,22 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseViewHolder>(){
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val exercise = exercises[position]
         holder.bind(this, exercise, position)
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val backgroundID = context.resources.getIdentifier("cool_background2", "drawable", context.packageName)
+            val intent = Intent(context, ItemDetailsActivity::class.java).apply {
+                putExtra("backgroundID", backgroundID)
+                putExtra("title", exercise.name)
 
-        //Now using the resizing variables
-        holder.itemView.post{
-            val width = holder.itemView.width
-            val height = holder.itemView.height
+                putExtra("subOneTitle", "Muscle Group:")
+                putExtra("subOneDetails", exercise.muscleGroup)
 
-            //check and update width
-            if(width > largestItemWidth){
-                largestItemWidth = width
+                putExtra("subTwoTitle", "Instructions:")
+                putExtra("subTwoDetails", exercise.instructions)
             }
-            //check and update height
-            if(height > largestItemHeight){
-                largestItemHeight = height
-            }
-            //Reset layout parameters for all items to match largest
-            val layoutParams = holder.itemView.layoutParams
-            layoutParams.width = largestItemWidth
-            layoutParams.height = largestItemHeight
-            holder.itemView.layoutParams = layoutParams
+            context.startActivity(intent)
         }
+
     }
 
     override fun getItemCount(): Int {

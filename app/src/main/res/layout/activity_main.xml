@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="#AAAAAA"
+    android:background="@drawable/background_yellow"
     android:layout_height="match_parent"
     android:layout_gravity="center">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +54,7 @@
             android:outlineSpotShadowColor="@color/black"
             android:orientation="vertical"
             android:paddingBottom="15dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +64,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_jump_rope"/>
+                android:src="@drawable/app_icon"/>
 
             <Button
                 android:id="@+id/recipeButton"
@@ -72,6 +74,7 @@
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
+                android:drawableEnd="@drawable/ic_food"
                 android:background="@drawable/cool_button"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="20dp"
@@ -85,6 +88,7 @@
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
+                android:drawableEnd="@drawable/ic_exercise"
                 android:background="@drawable/cool_button2"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"
@@ -98,6 +102,7 @@
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
+                android:drawableEnd="@drawable/ic_clock"
                 android:background="@drawable/cool_button3"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"
@@ -111,6 +116,7 @@
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
+                android:drawableEnd="@drawable/ic_calendar"
                 android:background="@drawable/cool_button4"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="20dp"

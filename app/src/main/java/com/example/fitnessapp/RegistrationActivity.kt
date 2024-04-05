@@ -46,11 +46,11 @@ class RegistrationActivity : ComponentActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Registration successful, proceed to login or main activity
+                    // Registration successful, proceeding to login or main activity
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 } else {
-                    // Registration failed, display a message to the user
+                    // Registration failed, displaying a message to the user
                     Toast.makeText(baseContext, "Registration failed.",
                         Toast.LENGTH_SHORT).show()
                 }

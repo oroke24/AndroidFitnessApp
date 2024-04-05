@@ -1,6 +1,7 @@
 package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,24 +28,20 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
         val recipe = recipes[position]
         holder.bind(this, recipe, position)
 
-        // Resize the item after it's measured
-        holder.itemView.post {
-            val width = holder.itemView.width
-            val height = holder.itemView.height
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val backgroundID = context.resources.getIdentifier("cool_background", "drawable", context.packageName)
+            val intent = Intent(context, ItemDetailsActivity::class.java).apply {
+                putExtra("backgroundID", backgroundID)
+                putExtra("title", recipe.name)
 
-            // Update the largest dimensions
-            if (width > largestItemWidth) {
-                largestItemWidth = width
-            }
-            if (height > largestItemHeight) {
-                largestItemHeight = height
-            }
+                putExtra("subOneTitle", "Ingredients:")
+                putExtra("subOneDetails", recipe.ingredients)
 
-            // Update layout parameters for all items to match largest
-            val layoutParams = holder.itemView.layoutParams
-            layoutParams.width = largestItemWidth
-            layoutParams.height = largestItemHeight
-            holder.itemView.layoutParams = layoutParams
+                putExtra("subTwoTitle", "Instructions:")
+                putExtra("subTwoDetails", recipe.instructions)
+            }
+            context.startActivity(intent)
         }
     }
 

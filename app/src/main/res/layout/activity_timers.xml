@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#AAAAAA"
+    android:background="@drawable/background_blue"
     android:layout_gravity="center">
 
     <ImageButton
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_back"
-        android:background="#AAAAAA"
+        android:background="@android:color/transparent"
         android:onClick="onBackButtonClick"
         android:contentDescription="@string/back_button_description"
         android:padding="20dp" />
@@ -50,7 +50,7 @@
                 android:id="@+id/timerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Timer"
+                android:text="Countdown Timer"
                 android:textSize="24sp"
                 android:textColor="@color/white"
                 android:padding="50dp"
