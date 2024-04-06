@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="todays date"
+            android:text="@string/todays_date"
             android:textSize="14sp"/>
         <TextView
             android:id="@+id/usernameTextView"
@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:gravity="end"
             android:layout_weight="6"
-            android:text="username"
+            android:text="@string/username"
             android:textSize="14sp"/>
 
         <ImageButton
@@ -38,7 +38,7 @@
         android:src="@drawable/ic_logout"
         android:background="@android:color/transparent"
         android:onClick="onBackButtonClick"
-        android:contentDescription="log out"
+        android:contentDescription="@string/log_out"
         android:padding="20dp" />
 
     </LinearLayout>
@@ -64,13 +64,14 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/app_icon"/>
 
             <Button
                 android:id="@+id/recipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Recipes"
+                android:text="@string/recipes"
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
@@ -84,7 +85,7 @@
                 android:id="@+id/exerciseButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Exercises"
+                android:text="@string/exercises"
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
@@ -98,7 +99,7 @@
                 android:id="@+id/timersButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Timers"
+                android:text="@string/timers"
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"
@@ -112,7 +113,7 @@
                 android:id="@+id/calendarButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Calendar"
+                android:text="@string/calendar"
                 android:textSize="24sp"
                 android:padding="45dp"
                 android:textColor="@color/white"

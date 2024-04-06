@@ -8,13 +8,13 @@
 
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_back"
         android:background="@android:color/transparent"
         android:onClick="onBackButtonClick"
-        android:contentDescription="back_button"
+        android:contentDescription="@string/back_button"
         android:padding="20dp" />
 
     <ScrollView
@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Exercises"
+                android:text="@string/exercises"
                 android:textSize="30sp"/>
 
             <!-- make sure dependency is added in build.gradle.kts (Module) -->
@@ -41,31 +41,31 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Exercise"
+                android:text="@string/new_exercise"
                 android:textSize="30sp"/>
             <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="bottom"
-                android:hint="name"/>
+                android:hint="@string/name"/>
             <EditText
                 android:id="@+id/muscleGroup"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="bottom"
-                android:hint="muscleGroup"/>
+                android:hint="@string/musclegroup"/>
             <EditText
                 android:id="@+id/instructions"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="bottom"
-                android:hint="instructions"/>
+                android:hint="@string/instructions"/>
             <Button
                 android:id="@+id/addButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add"
+                android:text="@string/add"
                 android:layout_margin="50dp"/>
 
         </LinearLayout>
