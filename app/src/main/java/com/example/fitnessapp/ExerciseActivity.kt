@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.collections.hashMapOf
 
@@ -30,6 +31,7 @@ class ExerciseActivity : ComponentActivity() {
         val nameEditText = findViewById<EditText>(R.id.name)
         val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
+        val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
 
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
 
@@ -40,14 +42,14 @@ class ExerciseActivity : ComponentActivity() {
         exerciseRecyclerView.adapter = adapter
 
 
-        //Set a click listener on a button to add recipe
+        //Set a click listener on a button to add exercise
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
             val name = nameEditText.text.toString()
             val muscleGroup = muscleGroupEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
 
-            val exercise = Exercise("", name, muscleGroup, instructions)
+            val exercise = Exercise(email, "", name, muscleGroup, instructions)
 
             adapter.notifyItemInserted(adapter.itemCount)
             addExerciseToDatabase(exercise)
@@ -74,17 +76,21 @@ class ExerciseActivity : ComponentActivity() {
             }
     }
     private fun loadExercises(){
+        val myEmail = intent.getStringExtra("USER_EMAIL")?:"no user named"
         db.collection("exercises")
             .get()
             .addOnSuccessListener { result ->
                 //Define a list to hold the exercises
                 val exercises = mutableListOf<Exercise>()
                 for(document in result){
-                    val id = document.id
-                    val name = document.getString("name")?:""
-                    val muscleGroup = document.getString("muscleGroup")?:""
-                    val instructions = document.getString("instructions")?:""
-                    exercises.add(Exercise(id,name,muscleGroup,instructions))
+                    val email = document.getString("email")?:""
+                    if(email == myEmail) {
+                        val id = document.id
+                        val name = document.getString("name") ?: ""
+                        val muscleGroup = document.getString("muscleGroup") ?: ""
+                        val instructions = document.getString("instructions") ?: ""
+                        exercises.add(Exercise(email, id, name, muscleGroup, instructions))
+                    }
                 }
                 adapter.setExercises(exercises)
             }

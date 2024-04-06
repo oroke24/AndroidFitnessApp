@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         val calendarButton = findViewById<Button>(R.id.calendarButton)
         val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
         val firebaseAuth = FirebaseAuth.getInstance()
-        val username = intent.getStringExtra("USER_EMAIL")
+        val email = intent.getStringExtra("USER_EMAIL")
         val usernameTextView = findViewById<TextView>(R.id.usernameTextView)
         val dateTextView = findViewById<TextView>(R.id.dateTextView)
 
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
         val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
         val currentDateFormatted = dateFormat.format(calendar.time)
 
-        usernameTextView.text = username
+        usernameTextView.text = email
         dateTextView.text = currentDateFormatted
 
         logoutButton.setOnClickListener{
@@ -48,10 +48,14 @@ class MainActivity : ComponentActivity() {
             finish()
         }
         recipeButton.setOnClickListener{
-            startActivity(Intent(this, RecipeActivity::class.java))
+            val intent = Intent(this, RecipeActivity::class.java)
+            intent.putExtra("USER_EMAIL", email)
+            startActivity(intent)
         }
         exerciseButton.setOnClickListener{
-            startActivity(Intent(this, ExerciseActivity::class.java))
+            val intent = Intent(this, ExerciseActivity::class.java)
+            intent.putExtra("USER_EMAIL", email)
+            startActivity(intent)
         }
         timersButton.setOnClickListener {
             startActivity(Intent(this, TimersActivity::class.java))

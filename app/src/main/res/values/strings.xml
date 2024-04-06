@@ -46,7 +46,7 @@
     <string name="username">username</string>
     <string name="todays_date">todays date</string>
     <string name="new_recipe">New Recipe</string>
-    <string name="ingredients" />
+    <string name="ingredients">ingredients</string>
     <string name="create_password">Create Password</string>
     <string name="continue_button">continue_button</string>
     <string name="stopwatch">Stopwatch</string>

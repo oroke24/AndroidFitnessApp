@@ -33,6 +33,7 @@ class RecipeActivity : ComponentActivity() {
         val nameEditText = findViewById<EditText>(R.id.name)
         val ingredientsEditText = findViewById<EditText>(R.id.ingredients)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
+        val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
 
         //Define the list (recyclerView) to be displayed
         val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
@@ -58,7 +59,7 @@ class RecipeActivity : ComponentActivity() {
             val ingredients = ingredientsEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
 
-            val recipe = Recipe("", name, ingredients, instructions)
+            val recipe = Recipe(email,"", name, ingredients, instructions)
 
             adapter.notifyItemInserted(adapter.itemCount)
             addRecipeToDatabase(recipe)
@@ -85,17 +86,21 @@ class RecipeActivity : ComponentActivity() {
             }
     }
     private fun loadRecipes(){
+        val myEmail = intent.getStringExtra("USER_EMAIL")?:"no user named"
         db.collection("recipes")
             .get()
             .addOnSuccessListener { result ->
                 //Define a list to hold the recipes
                 val recipes = mutableListOf<Recipe>()
                 for(document in result){
-                    val id = document.id
-                    val name = document.getString("name")?:""
-                    val ingredients = document.getString("ingredients")?:""
-                    val instructions = document.getString("instructions")?:""
-                    recipes.add(Recipe(id, name, ingredients, instructions))
+                    val email = document.getString("email")?:""
+                    if(email == myEmail){
+                        val id = document.id
+                        val name = document.getString("name")?:""
+                        val ingredients = document.getString("ingredients")?:""
+                        val instructions = document.getString("instructions")?:""
+                        recipes.add(Recipe(email, id, name, ingredients, instructions))
+                    }
                 }
                 adapter.setRecipes(recipes)
             }
