@@ -21,9 +21,6 @@ class ExerciseActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-        db = FirebaseFirestore.getInstance()
-        adapter = ExerciseAdapter()
-
         //Back button
         val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener { finish() }
@@ -35,21 +32,22 @@ class ExerciseActivity : ComponentActivity() {
 
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
 
-        loadExercises()
+        db = FirebaseFirestore.getInstance()
+        adapter = ExerciseAdapter(email)
+
+        loadExercises(email)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         exerciseRecyclerView.layoutManager = layoutManager
         exerciseRecyclerView.adapter = adapter
 
-
-        //Set a click listener on a button to add exercise
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
             val name = nameEditText.text.toString()
             val muscleGroup = muscleGroupEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
 
-            val exercise = Exercise(email, "", name, muscleGroup, instructions)
+            val exercise = Exercise("", name, muscleGroup, instructions)
 
             adapter.notifyItemInserted(adapter.itemCount)
             addExerciseToDatabase(exercise)
@@ -59,8 +57,7 @@ class ExerciseActivity : ComponentActivity() {
             muscleGroupEditText.text.clear()
             instructionsEditText.text.clear()
 
-            // Reload exercise after adding a new one
-            loadExercises()
+            loadExercises(email)
         }
 
 
@@ -75,27 +72,27 @@ class ExerciseActivity : ComponentActivity() {
                 Log.w(TAG, "Error adding exercise", exception)
             }
     }
-    private fun loadExercises(){
-        val myEmail = intent.getStringExtra("USER_EMAIL")?:"no user named"
-        db.collection("exercises")
+    private fun loadExercises(myEmail: String){
+        val usersCollection = db.collection("users")
+        val thisUser = usersCollection.document(myEmail)
+        val thisUsersRecipes = thisUser.collection("exercises")
+        thisUsersRecipes
             .get()
             .addOnSuccessListener { result ->
-                //Define a list to hold the exercises
+                //Define a list to hold the recipes
                 val exercises = mutableListOf<Exercise>()
                 for(document in result){
-                    val email = document.getString("email")?:""
-                    if(email == myEmail) {
-                        val id = document.id
-                        val name = document.getString("name") ?: ""
-                        val muscleGroup = document.getString("muscleGroup") ?: ""
-                        val instructions = document.getString("instructions") ?: ""
-                        exercises.add(Exercise(email, id, name, muscleGroup, instructions))
-                    }
+                    val id = document.id
+                    val name = document.getString("name")?:""
+                    val muscleGroup = document.getString("muscle group")?:""
+                    val instructions = document.getString("instructions")?:""
+                    exercises.add(Exercise(id, name, muscleGroup, instructions))
                 }
-                adapter.setExercises(exercises)
+                val sortedExercises = exercises.sortedBy{it.name}
+                adapter.setExercises(sortedExercises)
             }
             .addOnFailureListener{exception ->
-                Toast.makeText(this, "Error Loading exercises",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error Loading recipes", Toast.LENGTH_SHORT).show()
             }
     }
 }

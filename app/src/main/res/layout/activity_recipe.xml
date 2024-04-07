@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@drawable/background_orange"
+    android:background="@drawable/background_dark_circle"
     android:layout_height="match_parent">
 
     <ImageButton
@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/recipes"
+                android:textColor="@color/white"
                 android:textSize="30sp"/>
 
             <!-- make sure dependency is added in build.gradle.kts (Module) -->
@@ -42,24 +43,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/new_recipe"
+                android:textColor="@color/white"
                 android:textSize="30sp"/>
             <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="bottom"
+                android:textColorHint="@color/white"
                 android:hint="@string/name"/>
             <EditText
                 android:id="@+id/ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="bottom"
+                android:textColorHint="@color/white"
                 android:hint="@string/ingredients"/>
             <EditText
                 android:id="@+id/instructions"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="bottom"
+                android:textColorHint="@color/white"
                 android:hint="@string/instructions"/>
             <Button
                 android:id="@+id/addButton"

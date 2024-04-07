@@ -43,10 +43,13 @@ class RegistrationActivity : ComponentActivity() {
     }
 
     private fun registerUser(email: String, password: String) {
+        val initializeData = InitializeData()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Registration successful, proceeding to login or main activity
+                    initializeData.addEmailToUsersIfNotExists(email)
+                    initializeData.addInitialRecipesForUser(email)
+                    initializeData.addInitialExercisesForUser(email)
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                 } else {

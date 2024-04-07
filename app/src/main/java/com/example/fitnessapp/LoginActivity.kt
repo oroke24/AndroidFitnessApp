@@ -1,10 +1,12 @@
 package com.example.fitnessapp
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
@@ -40,6 +42,7 @@ class LoginActivity : ComponentActivity() {
     */
 
         loginButton.setOnClickListener {
+            loginButton.alpha = 0.5f
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -49,6 +52,10 @@ class LoginActivity : ComponentActivity() {
                 Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT)
                     .show()
             }
+            // Revert to the original alpha value after a short delay
+            Handler().postDelayed({
+                loginButton.alpha = 1.0f
+            }, 2000)
         }
 
         // Set OnClickListener for the registration button
@@ -68,12 +75,12 @@ class LoginActivity : ComponentActivity() {
 }
 
     private fun loginUser(email: String, password: String) {
+        val initializeData = InitializeData()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    // Proceed to your main activity or whatever comes next
+                    // Sign in success!
+                    initializeData.addEmailToUsersIfNotExists(email)
                     navigateToMain(email)
                 } else {
                     // If sign in fails, display a message to the user.

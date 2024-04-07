@@ -22,8 +22,6 @@ class RecipeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-        db = FirebaseFirestore.getInstance()
-        adapter = RecipeAdapter()
 
         //Back button
         val backButton = findViewById<ImageButton>(R.id.backButton)
@@ -35,12 +33,15 @@ class RecipeActivity : ComponentActivity() {
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
 
+        db = FirebaseFirestore.getInstance()
+        adapter = RecipeAdapter(email)
+
         //Define the list (recyclerView) to be displayed
         val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
         //Define the adapter from RecipeAdapter.kt
         //val adapter = RecipeAdapter(recipes)
 
-        loadRecipes()
+        loadRecipes(email)
         /* if HORIZONTAL orientation is desired use the below commented
         out assignment and replace LinearLayoutManager with layoutManager */
         //val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -59,10 +60,10 @@ class RecipeActivity : ComponentActivity() {
             val ingredients = ingredientsEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
 
-            val recipe = Recipe(email,"", name, ingredients, instructions)
+            val recipe = Recipe("", name, ingredients, instructions)
 
             adapter.notifyItemInserted(adapter.itemCount)
-            addRecipeToDatabase(recipe)
+            addRecipeToDatabase(recipe, email)
 
             //clear editText fields
             nameEditText.text.clear()
@@ -70,13 +71,16 @@ class RecipeActivity : ComponentActivity() {
             instructionsEditText.text.clear()
 
             // Reload recipes after adding a new one
-            loadRecipes()
+            loadRecipes(email)
         }
 
 
     }
-    private fun addRecipeToDatabase(recipe: Recipe){
-        db.collection("recipes")
+    private fun addRecipeToDatabase(recipe: Recipe, myEmail: String){
+        val usersCollection = db.collection("users")
+        val thisUser = usersCollection.document(myEmail)
+        val thisUsersRecipes = thisUser.collection("recipes")
+        thisUsersRecipes
             .add(recipe)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "Recipe added with ID: ${documentReference.id}")
@@ -85,24 +89,24 @@ class RecipeActivity : ComponentActivity() {
                 Log.w(TAG, "Error adding recipe", exception)
             }
     }
-    private fun loadRecipes(){
-        val myEmail = intent.getStringExtra("USER_EMAIL")?:"no user named"
-        db.collection("recipes")
+    private fun loadRecipes(myEmail: String){
+        val usersCollection = db.collection("users")
+        val thisUser = usersCollection.document(myEmail)
+        val thisUsersRecipes = thisUser.collection("recipes")
+        thisUsersRecipes
             .get()
             .addOnSuccessListener { result ->
                 //Define a list to hold the recipes
                 val recipes = mutableListOf<Recipe>()
                 for(document in result){
-                    val email = document.getString("email")?:""
-                    if(email == myEmail){
                         val id = document.id
                         val name = document.getString("name")?:""
                         val ingredients = document.getString("ingredients")?:""
                         val instructions = document.getString("instructions")?:""
-                        recipes.add(Recipe(email, id, name, ingredients, instructions))
-                    }
+                        recipes.add(Recipe(id, name, ingredients, instructions))
                 }
-                adapter.setRecipes(recipes)
+                val sortedRecipes = recipes.sortedBy{it.name}
+                adapter.setRecipes(sortedRecipes)
             }
             .addOnFailureListener{exception ->
                 Toast.makeText(this, "Error Loading recipes", Toast.LENGTH_SHORT).show()

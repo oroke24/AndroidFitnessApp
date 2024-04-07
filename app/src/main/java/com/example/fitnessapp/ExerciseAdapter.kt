@@ -13,8 +13,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ExerciseAdapter : RecyclerView.Adapter<ExerciseViewHolder>(){
+class ExerciseAdapter(email: String) : RecyclerView.Adapter<ExerciseViewHolder>(){
     private var exercises = listOf<Exercise>()
+    private var email = email
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false)
@@ -23,7 +24,7 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseViewHolder>(){
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val exercise = exercises[position]
-        holder.bind(this, exercise, position)
+        holder.bind(this, exercise, position, email)
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val backgroundID = context.resources.getIdentifier("cool_background2", "drawable", context.packageName)
@@ -50,14 +51,14 @@ class ExerciseAdapter : RecyclerView.Adapter<ExerciseViewHolder>(){
         this.exercises = exercises
         notifyDataSetChanged()
     }
-    fun deleteExercise(position: Int){
+    fun deleteExercise(position: Int, email: String){
         val exerciseToDelete = exercises[position] //Retrieve the exercise to delete
         exercises = exercises.toMutableList().also{it.removeAt(position)}//Remove from list
         notifyItemRemoved(position)//Notify the adapter of the removal
 
         //Delete the exercise from the database
         val db =  FirebaseFirestore.getInstance()
-        db.collection("exercises")
+        db.collection("users").document(email).collection("exercises")
             .document(exerciseToDelete.id)//Assuming each exercise has an ID
             .delete()
             .addOnSuccessListener {
@@ -79,7 +80,7 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     //Reference to the adapter to call deleteExercise method
     private var adapter: ExerciseAdapter? = null
 
-    fun bind(adapter: ExerciseAdapter, exercise: Exercise, position: Int) {
+    fun bind(adapter: ExerciseAdapter, exercise: Exercise, position: Int, email: String) {
         //Bind recipe.name, recipe.ingredients, and recipe.instructions
         //to views in the item_recipe layout
         val positionText = String.format("%d",position + 1)
@@ -92,7 +93,7 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         this.adapter = adapter
         //Setting listener for deleteButton
         deleteButton.setOnLongClickListener {
-            adapter.deleteExercise(absoluteAdapterPosition)
+            adapter.deleteExercise(absoluteAdapterPosition, email)
             true
         }
     }

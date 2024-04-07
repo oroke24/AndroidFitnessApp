@@ -12,13 +12,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipeAdapter(email: String) : RecyclerView.Adapter<RecipeViewHolder>() {
     private var recipes = listOf<Recipe>()
-
-    // Variable to store the dimensions of the largest item
-    private var largestItemWidth = 0
-    private var largestItemHeight = 0
-
+    private var email = email
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
         return RecipeViewHolder(view)
@@ -26,7 +22,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
-        holder.bind(this, recipe, position)
+        holder.bind(this, recipe, position, email)
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
@@ -54,7 +50,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun deleteRecipe(position: Int) {
+    fun deleteRecipe(position: Int, email: String) {
         if (position < 0 || position >= recipes.size) {
             return // Invalid position
         }
@@ -65,7 +61,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
 
         // Delete the recipe from the database
         val db = FirebaseFirestore.getInstance()
-        db.collection("recipes")
+        db.collection("users").document(email).collection("recipes")
             .document(recipeToDelete.id)
             .delete()
             .addOnSuccessListener {
@@ -84,7 +80,7 @@ class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val position: TextView = itemView.findViewById(R.id.position)
     private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
     private var adapter: RecipeAdapter? = null
-    fun bind(adapter: RecipeAdapter, recipe: Recipe, position: Int) {
+    fun bind(adapter: RecipeAdapter, recipe: Recipe, position: Int, email: String) {
         val positionText = String.format("%d", position + 1)
         this.position.text = positionText
         name.text = recipe.name
@@ -94,7 +90,7 @@ class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         this.adapter = adapter
 
         deleteButton.setOnLongClickListener {
-            adapter.deleteRecipe(absoluteAdapterPosition)
+            adapter.deleteRecipe(absoluteAdapterPosition, email)
             true
         }
     }

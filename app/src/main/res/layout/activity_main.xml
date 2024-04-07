@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@drawable/background_grey"
+    android:background="@drawable/background_dark_circle"
     android:layout_height="match_parent"
     android:layout_gravity="center">
 
@@ -18,16 +18,20 @@
             android:layout_weight="3"
             android:gravity="center"
             android:text="@string/todays_date"
-            android:textSize="14sp"/>
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="end"
+            android:paddingRight="10dp"
             android:layout_weight="6"
+            android:textAlignment="center"
             android:text="@string/username"
-            android:textSize="14sp"/>
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
         <ImageButton
         android:id="@+id/logoutButton"
@@ -36,10 +40,10 @@
         android:layout_height="wrap_content"
             android:layout_weight="1"
         android:src="@drawable/ic_logout"
-        android:background="@android:color/transparent"
+        android:background="@drawable/cool_background_grey"
         android:onClick="onBackButtonClick"
         android:contentDescription="@string/log_out"
-        android:padding="20dp" />
+        android:padding="15dp" />
 
     </LinearLayout>
 
@@ -64,6 +68,7 @@
                 android:maxWidth="150dp"
                 android:maxHeight="150dp"
                 android:layout_gravity="center"
+                android:background="@drawable/background_grey"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/app_icon"/>
 
