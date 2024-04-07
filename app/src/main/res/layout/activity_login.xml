@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/background_grey"
+            android:background="@drawable/background_grey_rounded_corners"
             android:contentDescription="@string/app_name"
             android:src="@drawable/app_icon"/>
 
@@ -49,7 +49,6 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="28sp"
             android:hint="@string/password"
             android:textColorHint="@color/white"

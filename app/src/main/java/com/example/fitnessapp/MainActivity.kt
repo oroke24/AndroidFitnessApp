@@ -2,6 +2,8 @@ package com.example.fitnessapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -37,30 +39,52 @@ class MainActivity : ComponentActivity() {
         val dateTextView = findViewById<TextView>(R.id.dateTextView)
 
         val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
         val currentDateFormatted = dateFormat.format(calendar.time)
 
         usernameTextView.text = email
         dateTextView.text = currentDateFormatted
 
         logoutButton.setOnClickListener{
+            logoutButton.alpha = 0.5f
             firebaseAuth.signOut()
             finish()
+            Handler(Looper.getMainLooper()).postDelayed({
+                logoutButton.alpha = 1.0f
+            }, 1000)
         }
         recipeButton.setOnClickListener{
+            recipeButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                recipeButton.alpha = 1.0f
+            }, 1000)
             val intent = Intent(this, RecipeActivity::class.java)
             intent.putExtra("USER_EMAIL", email)
             startActivity(intent)
+
         }
         exerciseButton.setOnClickListener{
+            exerciseButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                exerciseButton.alpha = 1.0f
+            }, 1000)
             val intent = Intent(this, ExerciseActivity::class.java)
             intent.putExtra("USER_EMAIL", email)
             startActivity(intent)
         }
         timersButton.setOnClickListener {
+            timersButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                timersButton.alpha = 1.0f
+            }, 1000)
             startActivity(Intent(this, TimersActivity::class.java))
+
         }
         calendarButton.setOnClickListener {
+            calendarButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                calendarButton.alpha = 1.0f
+            }, 1000)
             startActivity(Intent(this, CalendarActivity::class.java))
         }
     }

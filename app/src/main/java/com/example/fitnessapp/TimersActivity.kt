@@ -2,6 +2,8 @@ package com.example.fitnessapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.activity.ComponentActivity
@@ -20,12 +22,24 @@ class TimersActivity : ComponentActivity() {
         backButton.setOnClickListener {finish()}
 
         stopWatch.setOnClickListener {
+            stopWatch.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                stopWatch.alpha = 1.0f
+            }, 1000)
             startActivity(Intent(this, StopWatchActivity::class.java))
         }
         timer.setOnClickListener {
+            timer.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                timer.alpha = 1.0f
+            }, 1000)
             startActivity(Intent(this, TimerActivity::class.java))
         }
         tabataTimer.setOnClickListener {
+            tabataTimer.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                tabataTimer.alpha = 1.0f
+            }, 1000)
             startActivity(Intent(this, TabataTimerActivity::class.java))
         }
 

@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/recipes"
+                android:text="@string/recipes_a_z"
                 android:textColor="@color/white"
                 android:textSize="30sp"/>
 
@@ -38,7 +38,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding = "15dp"
+            android:background="@drawable/background_white_outline"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,27 +56,37 @@
                 android:layout_height="80dp"
                 android:gravity="bottom"
                 android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:hint="@string/name"/>
             <EditText
                 android:id="@+id/ingredients"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:gravity="bottom"
                 android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:hint="@string/ingredients"/>
             <EditText
                 android:id="@+id/instructions"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:gravity="bottom"
                 android:textColorHint="@color/white"
+                android:textColor="@color/white"
                 android:hint="@string/instructions"/>
             <Button
                 android:id="@+id/addButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/cool_background"
+                android:padding="25dp"
                 android:text="@string/add"
-                android:layout_margin="50dp"/>
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_margin="15dp"/>
+        </LinearLayout>
+
 
 
         </LinearLayout>

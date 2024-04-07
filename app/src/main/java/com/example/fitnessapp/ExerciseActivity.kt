@@ -2,6 +2,8 @@ package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -43,6 +45,10 @@ class ExerciseActivity : ComponentActivity() {
 
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
+            addButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                addButton.alpha = 1.0f
+            }, 1000)
             val name = nameEditText.text.toString()
             val muscleGroup = muscleGroupEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
@@ -50,7 +56,7 @@ class ExerciseActivity : ComponentActivity() {
             val exercise = Exercise("", name, muscleGroup, instructions)
 
             adapter.notifyItemInserted(adapter.itemCount)
-            addExerciseToDatabase(exercise)
+            addExerciseToDatabase(exercise, email)
 
             //clear editText fields
             nameEditText.text.clear()
@@ -62,8 +68,11 @@ class ExerciseActivity : ComponentActivity() {
 
 
     }
-    private fun addExerciseToDatabase(exercise: Exercise){
-        db.collection("exercises")
+    private fun addExerciseToDatabase(exercise: Exercise, myEmail: String){
+        val usersCollection = db.collection("users")
+        val thisUser = usersCollection.document(myEmail)
+        val thisUsersExercises = thisUser.collection("exercises")
+        thisUsersExercises
             .add(exercise)
             .addOnSuccessListener { documentReference ->
                 Log.d(TAG, "Exercise added with ID: ${documentReference.id}")
@@ -84,11 +93,11 @@ class ExerciseActivity : ComponentActivity() {
                 for(document in result){
                     val id = document.id
                     val name = document.getString("name")?:""
-                    val muscleGroup = document.getString("muscle group")?:""
+                    val muscleGroup = document.getString("muscleGroup")?:""
                     val instructions = document.getString("instructions")?:""
                     exercises.add(Exercise(id, name, muscleGroup, instructions))
                 }
-                val sortedExercises = exercises.sortedBy{it.name}
+                val sortedExercises = exercises.sortedBy{it.name.lowercase()}
                 adapter.setExercises(sortedExercises)
             }
             .addOnFailureListener{exception ->

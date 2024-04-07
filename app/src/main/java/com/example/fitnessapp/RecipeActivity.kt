@@ -2,12 +2,15 @@ package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.text.toLowerCase
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -56,6 +59,10 @@ class RecipeActivity : ComponentActivity() {
         //Set a click listener on a button to add recipe
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
+            addButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                addButton.alpha = 1.0f
+            }, 1000)
             val name = nameEditText.text.toString()
             val ingredients = ingredientsEditText.text.toString()
             val instructions = instructionsEditText.text.toString()
@@ -105,7 +112,7 @@ class RecipeActivity : ComponentActivity() {
                         val instructions = document.getString("instructions")?:""
                         recipes.add(Recipe(id, name, ingredients, instructions))
                 }
-                val sortedRecipes = recipes.sortedBy{it.name}
+                val sortedRecipes = recipes.sortedBy{it.name.lowercase()}
                 adapter.setRecipes(sortedRecipes)
             }
             .addOnFailureListener{exception ->

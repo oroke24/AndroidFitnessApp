@@ -2,6 +2,7 @@ package com.example.fitnessapp
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -43,6 +44,9 @@ class LoginActivity : ComponentActivity() {
 
         loginButton.setOnClickListener {
             loginButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                loginButton.alpha = 1.0f
+            }, 2000)
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -52,14 +56,14 @@ class LoginActivity : ComponentActivity() {
                 Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT)
                     .show()
             }
-            // Revert to the original alpha value after a short delay
-            Handler().postDelayed({
-                loginButton.alpha = 1.0f
-            }, 2000)
         }
 
         // Set OnClickListener for the registration button
         registerButton.setOnClickListener {
+            registerButton.alpha = 0.5f
+            Handler(Looper.getMainLooper()).postDelayed({
+                registerButton.alpha = 1.0f
+            }, 2000)
             // Start the RegistrationActivity
             startActivity(Intent(this, RegistrationActivity::class.java))
         }
@@ -81,6 +85,8 @@ class LoginActivity : ComponentActivity() {
                 if (task.isSuccessful) {
                     // Sign in success!
                     initializeData.addEmailToUsersIfNotExists(email)
+                    initializeData.addInitialRecipesForUser(email)
+                    initializeData.addInitialExercisesForUser(email)
                     navigateToMain(email)
                 } else {
                     // If sign in fails, display a message to the user.

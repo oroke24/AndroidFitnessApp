@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_height="350dp"
+    android:padding="3dp"
     android:layout_margin="5dp"
     android:background="@drawable/cool_background2">
 
@@ -68,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginBottom="3dp"
         android:text="@string/instructions_colon"
         android:textSize="24sp"
         android:textStyle="bold"/>

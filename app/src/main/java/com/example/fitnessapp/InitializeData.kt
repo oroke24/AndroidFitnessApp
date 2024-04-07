@@ -32,23 +32,23 @@ class InitializeData {
             hashMapOf(
                 "id" to "",
                 "name" to "Potato Bake",
-                "ingredients" to "5 Potatoes\n12 Eggs\n3 Bell Peppers\n1-2lbs Meat\n" +
-                        "2 Tbsp Oil\n2 Tbsp seasoning\n1 Tbsp salt\nTortillas (optional)",
+                "ingredients" to "-5 Potatoes\n-12 Eggs\n-3 Bell Peppers\n-1-2lbs Meat\n" +
+                        "-2 Tbsp Oil\n-2 Tbsp seasoning\n-1 Tbsp salt\n-Tortillas (optional)",
                 "instructions" to "Chop potatoes and veggies.\n" +
-                        "Add to 1 gallon bag.\n" +
-                        "Add salt, seasonings, and oil to bag.\n" +
-                        "Shake until well seasoned, drain bag if needed.\n" +
-                        "Empty mix into baking pan and bake @ 450 for 45min.\n" +
-                        "Scramble then and cook eggs and meat.\n" +
-                        "pour scrambled eggs and meat evenly over potatos and veggies.\n" +
-                        "Wrap in tortillas and freeze if desired."
+                        "-Add to 1 gallon bag.\n" +
+                        "-Add salt, seasonings, and oil to bag.\n" +
+                        "-Shake until well seasoned, drain bag if needed.\n" +
+                        "-Empty mix into baking pan and bake @ 450 for 45min.\n" +
+                        "-Scramble then and cook eggs and meat.\n" +
+                        "-pour scrambled eggs and meat evenly over potatos and veggies.\n" +
+                        "-Wrap in tortillas and freeze if desired."
             ),
             hashMapOf(
                 "id" to "",
                 "name" to "Penne Pasta",
-                "ingredients" to "Penne Pasta noodles\nSauce(of choice)\n1-2lbs Ground Beef",
-                "instructions" to "Boil Pasta.\nCook Meat.\nOnce meat is cooked, add sauce\n" +
-                        "Mix meat sauce with pasta if desired"
+                "ingredients" to "-Penne Pasta noodles\n-Sauce(of choice)\n-1-2lbs Ground Beef",
+                "instructions" to "-Boil Pasta.\n-Cook Meat.\n-Once meat is cooked, add sauce\n" +
+                        "-Mix meat sauce with pasta if desired"
             )
         )
 
@@ -71,24 +71,24 @@ class InitializeData {
             hashMapOf(
                 "id" to "",
                 "name" to "Hypertrophy",
-                "muscle group" to "Chest, Arms, Back",
-                "instructions" to "BB bench: 4 x 8-10 Slow eccentric.\n" +
-                        "Incline DB bench: 4 x 12-15 slow eccentric.\n" +
-                        "3 x superset of: Bar dips (6-8) and Incline seated DB Curls (8-10).\n" +
-                        "3 x superset of: Cable ext (8-10) and close grip (curl bar) curls (12-15).\n" +
-                        "Flat bar tricep pull downs 3 x 12-15.\n" +
-                        "(core): rope pull downs "
+                "muscleGroup" to "Chest, Arms, Back",
+                "instructions" to "-BB bench: 4 x 8-10 Slow eccentric.\n" +
+                        "-Incline DB bench: 4 x 12-15 slow eccentric.\n" +
+                        "-3 x superset of: Bar dips (6-8) and Incline seated DB Curls (8-10).\n" +
+                        "-3 x superset of: Cable ext (8-10) and close grip (curl bar) curls (12-15).\n" +
+                        "-Flat bar tricep pull downs 3 x 12-15.\n" +
+                        "-(core): rope pull downs "
             ),
             hashMapOf(
                 "id" to "",
                 "name" to "High Intensity (HIIT)",
-                "muscle group" to "Whole Body",
-                "instructions" to "4 x 50 KB swings.\n" +
-                        "4 x 20 KB bob and weaves.\n" +
-                        "4 minute tabata burpees (20work/10rest).\n" +
-                        "3 x 8-10 pullups.\n" +
-                        "3 x 8-10 chinups.\n" +
-                        "(core) 4 x 12-15 alternating: V-ups and heel touches."
+                "muscleGroup" to "Whole Body",
+                "instructions" to "-4 x 50 KB swings.\n" +
+                        "-4 x 20 KB bob and weaves.\n" +
+                        "-4 minute tabata burpees (20work/10rest).\n" +
+                        "-3 x 8-10 pullups.\n" +
+                        "-3 x 8-10 chinups.\n" +
+                        "-(core) 4 x 12-15 alternating: V-ups and heel touches."
             )
         )
 

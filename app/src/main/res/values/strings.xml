@@ -57,4 +57,6 @@
     <string name="muscle_group_colon">Muscle Group:</string>
     <string name="instructions_colon">Instructions:</string>
     <string name="ingredients_colon">Ingredients:</string>
+    <string name="exercises_a_z">Exercises (A-Z)</string>
+    <string name="recipes_a_z">Recipes (A-Z)</string>
 </resources>
