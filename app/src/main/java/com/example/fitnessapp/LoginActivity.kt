@@ -79,14 +79,12 @@ class LoginActivity : ComponentActivity() {
 }
 
     private fun loginUser(email: String, password: String) {
-        val initializeData = InitializeData()
+        val initializeData = InitializeData(email)
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success!
-                    initializeData.addEmailToUsersIfNotExists(email)
-                    initializeData.addInitialRecipesForUser(email)
-                    initializeData.addInitialExercisesForUser(email)
+                    initializeData.begin() //Should really only happen during registration
                     navigateToMain(email)
                 } else {
                     // If sign in fails, display a message to the user.

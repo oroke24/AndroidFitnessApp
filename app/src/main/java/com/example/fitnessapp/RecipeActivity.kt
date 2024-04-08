@@ -25,7 +25,6 @@ class RecipeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-
         //Back button
         val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener { finish() }

@@ -85,7 +85,9 @@ class MainActivity : ComponentActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 calendarButton.alpha = 1.0f
             }, 1000)
-            startActivity(Intent(this, CalendarActivity::class.java))
+            val intent = Intent(this, CalendarActivity::class.java)
+            intent.putExtra("USER_EMAIL", email)
+            startActivity(intent)
         }
     }
 }

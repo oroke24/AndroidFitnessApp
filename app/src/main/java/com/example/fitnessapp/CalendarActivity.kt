@@ -8,6 +8,9 @@ import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
@@ -16,15 +19,18 @@ class CalendarActivity : ComponentActivity(){
     private lateinit var monthlyCalendar: CalendarView
     private lateinit var weeklyCalendar: RecyclerView
     private lateinit var weeklyAdapter: WeeklyCalendarAdapter
+    //private val email = intent.getStringExtra("email")?:""
+    //private val dayDataManager = DayDataManager(email)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
+        val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
 
         //binding
-        backButton = findViewById<ImageButton>(R.id.backButton)
-        monthlyCalendar = findViewById<CalendarView>(R.id.monthlyCalendarView)
-        weeklyCalendar = findViewById<RecyclerView>(R.id.weeklyCalendarView)
-        weeklyAdapter = WeeklyCalendarAdapter()
+        backButton = findViewById(R.id.backButton)
+        monthlyCalendar = findViewById(R.id.monthlyCalendarView)
+        weeklyCalendar = findViewById(R.id.weeklyCalendarView)
+        weeklyAdapter = WeeklyCalendarAdapter(email)
 
        //setting up weekly recycler view
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -34,20 +40,20 @@ class CalendarActivity : ComponentActivity(){
         updateWeeklyView(Calendar.getInstance())
         backButton.setOnClickListener {finish()}
 
-        monthlyCalendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val calendar = Calendar.getInstance()
-            calendar.set(year, month, dayOfMonth)
-            updateWeeklyView(calendar)
+        monthlyCalendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(year, month, dayOfMonth)
+            updateWeeklyView(selectedDate)
         }
 
     }
 
-    private fun updateWeeklyView(calendar: Calendar) {
+    private fun updateWeeklyView(selectedDate: Calendar) {
         val daysOfWeek = arrayListOf<Date>()
 
         //setting first day of weekly view to selected day
         val cal = Calendar.getInstance()
-        cal.time = calendar.time
+        cal.time = selectedDate.time
 
         //filling in the rest of the days
         for(i in 0 until 7){

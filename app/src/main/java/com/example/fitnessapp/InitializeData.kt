@@ -6,17 +6,22 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
-class InitializeData {
+class InitializeData(private val myEmail: String) {
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("users")
+    val thisUser = usersCollection.document(myEmail)
 
-    fun addEmailToUsersIfNotExists(myEmail: String){
-        val emailDocument = usersCollection.document(myEmail)
-
+    fun begin(){
+        addEmailToUsersIfNotExists()
+        addInitialRecipesForUser()
+        addInitialExercisesForUser()
+        addInitialDaysForUser()
+    }
+    private fun addEmailToUsersIfNotExists(){
         val email = hashMapOf(
             "email" to myEmail
         )
-        emailDocument.set(email, SetOptions.merge())
+        thisUser.set(email, SetOptions.merge())
             .addOnSuccessListener {
                 Log.d(TAG, "Email document added or updated successfully")
             }
@@ -24,10 +29,7 @@ class InitializeData {
                 Log.w(TAG, "Error adding or updating email document", exception)
             }
     }
-    fun addInitialRecipesForUser(myEmail: String){
-        val thisUser = usersCollection.document(myEmail)
-        val thisUsersRecipes = thisUser.collection("recipes")
-
+    private fun addInitialRecipesForUser(){
         val initialRecipes = listOf(
             hashMapOf(
                 "id" to "",
@@ -53,20 +55,19 @@ class InitializeData {
         )
 
         //now adding initialRecipes to db
-                    initialRecipes.forEach { recipe ->
-                        thisUsersRecipes.add(recipe)
-                            .addOnSuccessListener { documentReference ->
-                                println("Recipe added with ID: ${documentReference.id}")
-                            }
-                            .addOnFailureListener { exception ->
-                                println("Error adding recipe: $exception")
-                            }
-                    }
+        val thisUsersRecipes = thisUser.collection("recipes")
+        initialRecipes.forEach { recipe ->
+            thisUsersRecipes.add(recipe)
+                .addOnSuccessListener { documentReference ->
+                    documentReference.update("id", documentReference.id)
+                    println("Recipe added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { exception ->
+                    println("Error adding recipe: $exception")
+                }
+        }
     }
-    fun addInitialExercisesForUser(myEmail: String){
-        val thisUser = usersCollection.document(myEmail)
-        val thisUsersExercises = thisUser.collection("exercises")
-
+    private fun addInitialExercisesForUser(){
         val initialRecipes = listOf(
             hashMapOf(
                 "id" to "",
@@ -93,13 +94,34 @@ class InitializeData {
         )
 
         //now adding initialRecipes to db
+        val thisUsersExercises = thisUser.collection("exercises")
         initialRecipes.forEach { exercise ->
             thisUsersExercises.add(exercise)
                 .addOnSuccessListener { documentReference ->
-                    println("Exercise added with ID: ${documentReference.id}")
+                    documentReference.update("id", documentReference.id)
+                    Log.d("Init Recipe Added","Exercise added with ID: ${documentReference.id}")
                 }
                 .addOnFailureListener { exception ->
-                    println("Error adding Exercise: $exception")
+                    Log.w("Init Recipe Error","Error adding Exercise: $exception")
+                }
+        }
+    }
+    private fun addInitialDaysForUser(){
+        val initialDays = listOf( hashMapOf(
+                "id" to "",
+                "date" to "yyyyMMdd",
+                "recipeId" to "(exampleId1) eSKareilseifH..."
+            ))
+        //now adding initialDays to db
+        val thisUsersDays = thisUser.collection("days")
+        initialDays.forEach{ day ->
+            thisUsersDays.add(day)
+                .addOnSuccessListener { documentReference ->
+                    documentReference.update("id", documentReference.id)
+                    Log.d("Init Day Added", "Day added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener{exception ->
+                    Log.w("Init Day Error", "Error adding Day: $exception")
                 }
         }
     }
