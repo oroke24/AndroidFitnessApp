@@ -1,30 +1,29 @@
 package com.example.fitnessapp
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 
-class RecipeAdapter(email: String) : RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipeAdapter(email: String, recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
     private var recipes = listOf<Recipe>()
     private var email = email
+    private var recipeManager = recipeDataManager
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
         return RecipeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        val fx = InteractionEffects()
         val recipe = recipes[position]
         holder.bind(this, recipe, position, email)
 
         holder.itemView.setOnClickListener {
+            fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
             val backgroundID = context.resources.getIdentifier("cool_background", "drawable", context.packageName)
             val intent = Intent(context, ItemDetailsActivity::class.java).apply {
@@ -54,22 +53,12 @@ class RecipeAdapter(email: String) : RecyclerView.Adapter<RecipeViewHolder>() {
         if (position < 0 || position >= recipes.size) {
             return // Invalid position
         }
-
         val recipeToDelete = recipes[position]
         recipes = recipes.toMutableList().also { it.removeAt(position) }
         notifyItemRemoved(position)
 
         // Delete the recipe from the database
-        val db = FirebaseFirestore.getInstance()
-        db.collection("users").document(email).collection("recipes")
-            .document(recipeToDelete.id)
-            .delete()
-            .addOnSuccessListener {
-                Log.d(TAG, "Recipe deleted successfully")
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error deleting recipe", exception)
-            }
+        recipeManager.deleteRecipe(recipeToDelete.id)
     }
 }
 

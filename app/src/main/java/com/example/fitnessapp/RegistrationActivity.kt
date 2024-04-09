@@ -12,32 +12,33 @@ class RegistrationActivity : ComponentActivity() {
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
-    private lateinit var registerButton: Button
 
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-
+        val fx = InteractionEffects()
         auth = FirebaseAuth.getInstance()
 
-        //Back button
-        val backButton = findViewById<ImageButton>(R.id.backButton)
-        backButton.setOnClickListener { finish() }
-        
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
-        registerButton = findViewById(R.id.registerButton)
+        val registerButton = findViewById<Button>(R.id.registerButton)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
 
+        backButton.setOnClickListener {
+            fx.imageButtonClickEffect(backButton)
+            finish()
+        }
         registerButton.setOnClickListener {
+            fx.buttonClickEffect(registerButton)
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 registerUser(email, password)
             } else {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -52,8 +53,8 @@ class RegistrationActivity : ComponentActivity() {
                     finish()
                 } else {
                     // Registration failed, displaying a message to the user
-                    Toast.makeText(baseContext, "Registration failed.",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Registration failed or user already exists.",
+                        Toast.LENGTH_LONG).show()
                 }
             }
     }

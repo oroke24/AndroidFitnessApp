@@ -16,15 +16,13 @@ class LoginActivity : ComponentActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var registerButton: Button
-    /*Redacting Guest Button for now
-    private lateinit var guestButton: Buttonw
-     */
 
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        val fx = InteractionEffects()
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -38,56 +36,34 @@ class LoginActivity : ComponentActivity() {
         passwordEditText = findViewById(R.id.password)
         loginButton = findViewById(R.id.loginButton)
         registerButton = findViewById(R.id.registerButton)
-        /*Redacting guest button for now
-    guestButton = findViewById(R.id.guestButton)
-    */
 
         loginButton.setOnClickListener {
-            loginButton.alpha = 0.5f
-            Handler(Looper.getMainLooper()).postDelayed({
-                loginButton.alpha = 1.0f
-            }, 2000)
+            fx.buttonClickEffect(loginButton)
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
-
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 loginUser(email, password)
             } else {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_LONG)
                     .show()
             }
         }
 
         // Set OnClickListener for the registration button
         registerButton.setOnClickListener {
-            registerButton.alpha = 0.5f
-            Handler(Looper.getMainLooper()).postDelayed({
-                registerButton.alpha = 1.0f
-            }, 2000)
-            // Start the RegistrationActivity
+            fx.buttonClickEffect(registerButton)
             startActivity(Intent(this, RegistrationActivity::class.java))
         }
-
-        /*Redacting guest button for now
-    // Set OnClickListener for continue as guest button
-    guestButton.setOnClickListener {
-    // Start the MainActivity
-    startActivity(Intent(this, MainActivity::class.java))
-    }
-    */
-
 }
 
     private fun loginUser(email: String, password: String) {
-        val initializeData = InitializeData(email)
+        //val initializeData = InitializeData(email) //Only use here for database testing
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success!
-                    initializeData.begin() //Should really only happen during registration
+                    //initializeData.begin() //Only use here for database testing
                     navigateToMain(email)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }

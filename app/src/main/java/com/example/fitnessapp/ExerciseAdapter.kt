@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -24,8 +22,10 @@ class ExerciseAdapter(email: String) : RecyclerView.Adapter<ExerciseViewHolder>(
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val exercise = exercises[position]
+        val fx = InteractionEffects()
         holder.bind(this, exercise, position, email)
         holder.itemView.setOnClickListener {
+            fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
             val backgroundID = context.resources.getIdentifier("cool_background2", "drawable", context.packageName)
             val intent = Intent(context, ItemDetailsActivity::class.java).apply {
@@ -52,11 +52,10 @@ class ExerciseAdapter(email: String) : RecyclerView.Adapter<ExerciseViewHolder>(
         notifyDataSetChanged()
     }
     fun deleteExercise(position: Int, email: String){
-        val exerciseToDelete = exercises[position] //Retrieve the exercise to delete
-        exercises = exercises.toMutableList().also{it.removeAt(position)}//Remove from list
-        notifyItemRemoved(position)//Notify the adapter of the removal
+        val exerciseToDelete = exercises[position]
+        exercises = exercises.toMutableList().also{it.removeAt(position)}
+        notifyItemRemoved(position)
 
-        //Delete the exercise from the database
         val db =  FirebaseFirestore.getInstance()
         db.collection("users").document(email).collection("exercises")
             .document(exerciseToDelete.id)//Assuming each exercise has an ID
@@ -77,21 +76,16 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val instructions: TextView = itemView.findViewById(R.id.instructions)
     private val position: TextView = itemView.findViewById(R.id.position)
     private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
-    //Reference to the adapter to call deleteExercise method
     private var adapter: ExerciseAdapter? = null
 
     fun bind(adapter: ExerciseAdapter, exercise: Exercise, position: Int, email: String) {
-        //Bind recipe.name, recipe.ingredients, and recipe.instructions
-        //to views in the item_recipe layout
         val positionText = String.format("%d",position + 1)
         this.position.text = positionText
         name.text = exercise.name
         muscleGroup.text = exercise.muscleGroup
         instructions.text = exercise.instructions
 
-        //Setting adapter reference
         this.adapter = adapter
-        //Setting listener for deleteButton
         deleteButton.setOnLongClickListener {
             adapter.deleteExercise(absoluteAdapterPosition, email)
             true

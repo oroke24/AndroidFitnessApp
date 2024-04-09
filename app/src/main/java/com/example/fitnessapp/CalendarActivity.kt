@@ -19,8 +19,6 @@ class CalendarActivity : ComponentActivity(){
     private lateinit var monthlyCalendar: CalendarView
     private lateinit var weeklyCalendar: RecyclerView
     private lateinit var weeklyAdapter: WeeklyCalendarAdapter
-    //private val email = intent.getStringExtra("email")?:""
-    //private val dayDataManager = DayDataManager(email)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
@@ -50,17 +48,14 @@ class CalendarActivity : ComponentActivity(){
 
     private fun updateWeeklyView(selectedDate: Calendar) {
         val daysOfWeek = arrayListOf<Date>()
-
-        //setting first day of weekly view to selected day
         val cal = Calendar.getInstance()
-        cal.time = selectedDate.time
 
-        //filling in the rest of the days
+        cal.time = selectedDate.time
         for(i in 0 until 7){
             daysOfWeek.add(cal.time)
             cal.add(Calendar.DAY_OF_MONTH, 1)
         }
-        //updating adapter
+
         weeklyAdapter.updateData(daysOfWeek)
     }
 

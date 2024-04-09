@@ -19,17 +19,13 @@ class DayDataManager(private val email: String) {
         val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val date = dateFormat.format(providedDate)
 
-        Log.w("addRecipetoDay timestamp value", "$date")
-        // Query the days collection for documents with the provided timestamp
+        Log.w("addRecipetoDay date value", "$date")
         val existingDayQuery = daysCollection.whereEqualTo("date", date).get().await()
 
-        // Check if there's already a document with the provided date
         if (!existingDayQuery.isEmpty) {
-            // If a document with the provided date exists, update its recipeId
             val existingDayDoc = existingDayQuery.documents.first()
             existingDayDoc.reference.update("recipeId", providedRecipeId).await()
         } else {
-            // If no document with the provided date exists, add a new document
             val newDayData = hashMapOf(
                 "date" to date,
                 "recipeId" to providedRecipeId
@@ -42,8 +38,6 @@ class DayDataManager(private val email: String) {
         recipesCollection
             .get()
             .addOnSuccessListener { result ->
-                //Define a list to hold the recipes
-                val recipes = mutableListOf<Recipe>()
                 for(document in result){
                     val idString = document.id
                     if(idString == recipeId){
@@ -59,9 +53,9 @@ class DayDataManager(private val email: String) {
             }
        return recipe
     }
-    suspend fun getRecipeIDForDay(dayId: String): String? {
+    suspend fun getRecipeIDForDay(date: String): String? {
         return try {
-            val thisDaySnapshot = daysCollection.document(dayId).get().await()
+            val thisDaySnapshot = daysCollection.document(date).get().await()
             thisDaySnapshot.getString("recipeId")
 
         } catch (e: Exception) {

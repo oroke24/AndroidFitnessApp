@@ -23,10 +23,9 @@ class ExerciseActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-        //Back button
-        val backButton = findViewById<ImageButton>(R.id.backButton)
-        backButton.setOnClickListener { finish() }
 
+
+        val fx = InteractionEffects()
         val nameEditText = findViewById<EditText>(R.id.name)
         val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
@@ -42,13 +41,14 @@ class ExerciseActivity : ComponentActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         exerciseRecyclerView.layoutManager = layoutManager
         exerciseRecyclerView.adapter = adapter
-
+        //Back button
+        val backButton = findViewById<ImageButton>(R.id.backButton)
+        backButton.setOnClickListener {
+            fx.imageButtonClickEffect(backButton)
+            finish() }
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
-            addButton.alpha = 0.5f
-            Handler(Looper.getMainLooper()).postDelayed({
-                addButton.alpha = 1.0f
-            }, 1000)
+            fx.buttonClickEffect(addButton)
             val name = nameEditText.text.toString()
             val muscleGroup = muscleGroupEditText.text.toString()
             val instructions = instructionsEditText.text.toString()

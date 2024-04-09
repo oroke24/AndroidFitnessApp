@@ -34,7 +34,6 @@ class TimerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
 
-        // Initialize views
         hoursPicker = findViewById(R.id.hoursPicker)
         minutesPicker = findViewById(R.id.minutesPicker)
         secondsPicker = findViewById(R.id.secondsPicker)
@@ -44,7 +43,6 @@ class TimerActivity : ComponentActivity() {
         timerTextView = findViewById(R.id.timerTextView)
         backButton = findViewById(R.id.backButton)
 
-        // Set initial values for NumberPickers
         hoursPicker.minValue = 0
         hoursPicker.maxValue = 23
         hoursPicker.value = 0
@@ -57,13 +55,11 @@ class TimerActivity : ComponentActivity() {
         secondsPicker.maxValue = 59
         secondsPicker.value = 0
 
-        // Set long press interval for quick display
         hoursPicker.setOnLongPressUpdateInterval(100)
         minutesPicker.setOnLongPressUpdateInterval(100)
         secondsPicker.setOnLongPressUpdateInterval(100)
 
         backButton.setOnClickListener{finish()}
-        // Set up start button click listener
         startButton.setOnClickListener {
             if (!timerRunning) {
                 val hours = hoursPicker.value
@@ -77,14 +73,12 @@ class TimerActivity : ComponentActivity() {
             }
         }
 
-        // Set up pause button click listener
         pauseButton.setOnClickListener {
             if (timerRunning) {
                 pauseTimer()
             }
         }
 
-        // Set up continue button click listener
         continueButton.setOnClickListener {
             if (!timerRunning) {
                 resumeTimer()
@@ -103,7 +97,7 @@ class TimerActivity : ComponentActivity() {
 
             override fun onFinish() {
                 timeRemaining = 0
-                timerRunning = false
+                resetTimer()
                 updateTimerDisplay()
                 showDialog()
                 playDefaultAlarmRingtone()

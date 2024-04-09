@@ -1,6 +1,5 @@
 package com.example.fitnessapp
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore

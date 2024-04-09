@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,10 +41,9 @@ class WeeklyCalendarAdapter(private val email: String) : RecyclerView.Adapter<Vi
 }
 class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     private val dateViewFormat = SimpleDateFormat("EEE, dd MMM", Locale.getDefault())
-    private val dateStoreFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
     private val dateTextView : TextView = itemView.findViewById(R.id.dayOfWeek)
-    private val recipeIdTextView : TextView = itemView.findViewById(R.id.recipeId)
-    private val recipeButton : Button = itemView.findViewById(R.id.addRecipeButton)
+    private val recipeNameTextView : TextView = itemView.findViewById(R.id.recipeName)
+    private val recipeButton : ImageButton = itemView.findViewById(R.id.addRecipeButton)
 
     fun bind(adapter: WeeklyCalendarAdapter, position: Int, email: String) {
         val recipeManager = RecipeDataManager(email)
@@ -51,12 +51,15 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val date = adapter.daysOfWeek[position]
         dateTextView.text = dateViewFormat.format(date)
 
+        if(recipeNameTextView.text != "None") {
+            recipeButton.setImageResource(R.drawable.ic_replace)
+        }
         recipeButton.setOnClickListener {
             recipeManager.fetchUserRecipeIds() { recipes ->
                 recipeManager.showRecipeSelectionDialog(itemView.context, recipes) { selectedRecipeId ->
                     CoroutineScope(Dispatchers.Main).launch {
                         // Calling the suspending functions within the coroutine scope
-                        recipeIdTextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        recipeNameTextView.text = recipeManager.getNameFromId(selectedRecipeId)
                         dayManager.addRecipetoDay(date, selectedRecipeId)
                     }
                 }
