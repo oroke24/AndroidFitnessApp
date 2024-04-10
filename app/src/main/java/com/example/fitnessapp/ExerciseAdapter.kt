@@ -11,9 +11,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ExerciseAdapter(email: String) : RecyclerView.Adapter<ExerciseViewHolder>(){
+class ExerciseAdapter(private val email: String) : RecyclerView.Adapter<ExerciseViewHolder>(){
     private var exercises = listOf<Exercise>()
-    private var email = email
+    private val exerciseDataManager = ExerciseDataManager(email)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false)
@@ -51,21 +51,11 @@ class ExerciseAdapter(email: String) : RecyclerView.Adapter<ExerciseViewHolder>(
         this.exercises = exercises
         notifyDataSetChanged()
     }
-    fun deleteExercise(position: Int, email: String){
+    fun deleteExercise(position: Int){
         val exerciseToDelete = exercises[position]
         exercises = exercises.toMutableList().also{it.removeAt(position)}
         notifyItemRemoved(position)
-
-        val db =  FirebaseFirestore.getInstance()
-        db.collection("users").document(email).collection("exercises")
-            .document(exerciseToDelete.id)//Assuming each exercise has an ID
-            .delete()
-            .addOnSuccessListener {
-                Log.d(TAG, "Exercise deleted successfully")
-            }
-            .addOnFailureListener{ exception ->
-                Log.w(TAG, "Error deleting exercise", exception)
-            }
+        exerciseDataManager.deleteExercise(exerciseToDelete.id)
     }
 
 }
@@ -87,7 +77,7 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         this.adapter = adapter
         deleteButton.setOnLongClickListener {
-            adapter.deleteExercise(absoluteAdapterPosition, email)
+            adapter.deleteExercise(absoluteAdapterPosition)
             true
         }
     }

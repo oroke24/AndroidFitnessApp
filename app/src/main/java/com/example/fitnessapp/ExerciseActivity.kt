@@ -20,71 +20,57 @@ import kotlinx.coroutines.launch
 import kotlin.collections.hashMapOf
 
 class ExerciseActivity : ComponentActivity() {
-    private lateinit var db: FirebaseFirestore
     private lateinit var adapter: ExerciseAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-
-
         val fx = InteractionEffects()
-        val nameEditText = findViewById<EditText>(R.id.name)
-        val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
-        val instructionsEditText = findViewById<EditText>(R.id.instructions)
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         val exerciseDataManager = ExerciseDataManager(email)
-
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
 
-        db = FirebaseFirestore.getInstance()
         adapter = ExerciseAdapter(email)
-
         loadExercises(exerciseDataManager)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         exerciseRecyclerView.layoutManager = layoutManager
         exerciseRecyclerView.adapter = adapter
-        //Back button
+
         val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener {
             fx.imageButtonClickEffect(backButton)
-            finish() }
+            finish()
+        }
+
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
             fx.buttonClickEffect(addButton)
-            val name = nameEditText.text.toString()
-            val muscleGroup = muscleGroupEditText.text.toString()
-            val instructions = instructionsEditText.text.toString()
-
-            val exercise = Exercise("", name, muscleGroup, instructions)
-
-            adapter.notifyItemInserted(adapter.itemCount)
-            addExerciseToDatabase(exercise, email)
-
-            //clear editText fields
-            nameEditText.text.clear()
-            muscleGroupEditText.text.clear()
-            instructionsEditText.text.clear()
-
+            addExercise(exerciseDataManager)
             loadExercises(exerciseDataManager)
         }
+    }
+    private fun addExercise(exerciseDataManager: ExerciseDataManager){
+        val nameEditText = findViewById<EditText>(R.id.name)
+        val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
+        val instructionsEditText = findViewById<EditText>(R.id.instructions)
 
+        val name = nameEditText.text.toString()
+        val muscleGroup = muscleGroupEditText.text.toString()
+        val instructions = instructionsEditText.text.toString()
+
+        val exercise = Exercise("", name, muscleGroup, instructions)
+
+        adapter.notifyItemInserted(adapter.itemCount)
+        exerciseDataManager.addExercise(exercise)
+
+        //clear editText fields
+        nameEditText.text.clear()
+        muscleGroupEditText.text.clear()
+        instructionsEditText.text.clear()
 
     }
-    private fun addExerciseToDatabase(exercise: Exercise, myEmail: String){
-        val usersCollection = db.collection("users")
-        val thisUser = usersCollection.document(myEmail)
-        val thisUsersExercises = thisUser.collection("exercises")
-        thisUsersExercises
-            .add(exercise)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "Exercise added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener{exception ->
-                Log.w(TAG, "Error adding exercise", exception)
-            }
-    }
+
     private fun loadExercises(exerciseDataManager: ExerciseDataManager){
         CoroutineScope(Dispatchers.Main).launch {
             val exercises = exerciseDataManager.getAllExercises()

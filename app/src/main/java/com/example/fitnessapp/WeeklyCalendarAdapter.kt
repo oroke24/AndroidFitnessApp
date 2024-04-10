@@ -43,26 +43,37 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     private val dateViewFormat = SimpleDateFormat("EEE, dd MMM", Locale.getDefault())
     private val dateTextView : TextView = itemView.findViewById(R.id.dayOfWeek)
     private val recipeNameTextView : TextView = itemView.findViewById(R.id.recipeName)
+    private val exerciseNameTextView : TextView = itemView.findViewById(R.id.exerciseName)
     private val recipeButton : ImageButton = itemView.findViewById(R.id.addRecipeButton)
+    private val exerciseButton: ImageButton = itemView.findViewById(R.id.addExerciseButton)
 
     fun bind(adapter: WeeklyCalendarAdapter, position: Int, email: String) {
         val recipeManager = RecipeDataManager(email)
+        val exerciseManager = ExerciseDataManager(email)
         val dayManager = DayDataManager(email)
         val date = adapter.daysOfWeek[position]
         dateTextView.text = dateViewFormat.format(date)
 
-        if(recipeNameTextView.text != "None") {
-            recipeButton.setImageResource(R.drawable.ic_replace)
-        }
         recipeButton.setOnClickListener {
-            recipeManager.fetchUserRecipeIds() { recipes ->
+            recipeManager.fetchUserRecipeIds { recipes ->
                 recipeManager.showRecipeSelectionDialog(itemView.context, recipes) { selectedRecipeId ->
                     CoroutineScope(Dispatchers.Main).launch {
-                        // Calling the suspending functions within the coroutine scope
                         recipeNameTextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        dayManager.addRecipetoDay(date, selectedRecipeId)
+                        dayManager.addRecipeToDay(date, selectedRecipeId)
                     }
                 }
+            }
+        }
+
+        exerciseButton.setOnClickListener{
+            exerciseManager.fetchUserExerciseIds { exercises ->
+                exerciseManager.showExerciseSelectionDialog(itemView.context, exercises){selectedExerciseId ->
+                    CoroutineScope(Dispatchers.Main).launch{
+                        exerciseNameTextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                        dayManager.addExerciseToDay(date, selectedExerciseId)
+                    }
+                }
+
             }
         }
     }

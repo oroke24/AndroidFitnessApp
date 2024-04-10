@@ -15,7 +15,7 @@ class DayDataManager(private val email: String) {
     private val daysCollection = user.collection("days")
     private val recipesCollection = user.collection("recipes")
 
-    suspend fun addRecipetoDay(providedDate: Date, providedRecipeId: String) {
+    suspend fun addRecipeToDay(providedDate: Date, providedRecipeId: String) {
         val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val date = dateFormat.format(providedDate)
 
@@ -28,7 +28,27 @@ class DayDataManager(private val email: String) {
         } else {
             val newDayData = hashMapOf(
                 "date" to date,
-                "recipeId" to providedRecipeId
+                "recipeId" to providedRecipeId,
+                "exerciseId" to ""
+            )
+            daysCollection.add(newDayData).await()
+        }
+    }
+    suspend fun addExerciseToDay(providedDate: Date, providedExerciseId: String) {
+        val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        val date = dateFormat.format(providedDate)
+
+        Log.w("addExerciseToDay date value", date)
+        val existingDayQuery = daysCollection.whereEqualTo("date", date).get().await()
+
+        if (!existingDayQuery.isEmpty) {
+            val existingDayDoc = existingDayQuery.documents.first()
+            existingDayDoc.reference.update("exerciseId", providedExerciseId).await()
+        } else {
+            val newDayData = hashMapOf(
+                "date" to date,
+                "recipeId" to "",
+                "exerciseId" to providedExerciseId
             )
             daysCollection.add(newDayData).await()
         }

@@ -64,4 +64,5 @@
     <string name="none">None</string>
     <string name="run">Run</string>
     <string name="ai_gym_chat">AI Gym Chat</string>
+    <string name="current_exercise_colon">Current Exercise:</string>
 </resources>

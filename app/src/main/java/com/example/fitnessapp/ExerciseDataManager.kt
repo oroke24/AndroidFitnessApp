@@ -32,67 +32,62 @@ class ExerciseDataManager(private val email: String) {
         }
     }
 
-    /* ToDo: finish converting from recipe to exercise
-    fun addRecipe(recipe: Recipe){
-        thisUsersRecipes
-            .add(recipe)
+    fun addExercise(exercise: Exercise){
+        thisUsersExercises
+            .add(exercise)
             .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "Recipe added with ID: ${documentReference.id}")
+                Log.d(ContentValues.TAG, "Exercise added with ID: ${documentReference.id}")
             }
             .addOnFailureListener{exception ->
-                Log.w(ContentValues.TAG, "Error adding recipe", exception)
+                Log.w(ContentValues.TAG, "Error adding Exercise", exception)
             }
     }
-    fun fetchUserRecipeIds(callback: (List<Pair<String, String>>) -> Unit) {
-        thisUsersRecipes
-            .get()
-            .addOnSuccessListener { documents ->
-                val recipes = mutableListOf<Pair<String, String>>()
-                for (document in documents) {
-                    val recipeId = document.id
-                    val recipeName = document.getString("name") ?: ""
-                    recipes.add(Pair(recipeId, recipeName))
-                }
-                callback(recipes)
+    fun deleteExercise(exerciseToDeleteId: String){
+        thisUsersExercises
+            .document(exerciseToDeleteId)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "Recipe with ID: $exerciseToDeleteId deleted successfully")
             }
             .addOnFailureListener { exception ->
-                Log.w("fetchUserRecipes", "Failure fetching recipes")
+                Log.w(ContentValues.TAG, "Error deleting exercise, id recieved: $exerciseToDeleteId", exception)
+            }
+    }
+    fun fetchUserExerciseIds(callback: (List<Pair<String, String>>) -> Unit) {
+        thisUsersExercises
+            .get()
+            .addOnSuccessListener { documents ->
+                val exercises = mutableListOf<Pair<String, String>>()
+                for (document in documents) {
+                    val exerciseId = document.id
+                    val exerciseName = document.getString("name") ?: ""
+                    exercises.add(Pair(exerciseId, exerciseName))
+                }
+                callback(exercises)
+            }
+            .addOnFailureListener { exception ->
+                Log.w("fetchUserExercises", "Failure fetching Exercises")
                 // Handle error
             }
     }
-    fun showRecipeSelectionDialog(context: Context, recipes: List<Pair<String, String>>, callback: (String) -> Unit) {
+    fun showExerciseSelectionDialog(context: Context, exercises: List<Pair<String, String>>, callback: (String) -> Unit) {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Select a Recipe")
-        val recipeNames = recipes.map { it.second }.toTypedArray()
-        builder.setItems(recipeNames) { dialog, which ->
-            val selectedRecipeId = recipes[which].first
-            callback(selectedRecipeId)
+        builder.setTitle("Select an Exercise")
+        val exerciseNames = exercises.map { it.second }.toTypedArray()
+        builder.setItems(exerciseNames) { dialog, which ->
+            val selectedExerciseId = exercises[which].first
+            callback(selectedExerciseId)
         }
-        val dialog = builder.create()
-        dialog.listView?.setBackground(Drawable.createFromPath("@drawable/cool_background"))
-        dialog.show()
+        builder.show()
     }
-    suspend fun getNameFromId(recipeId: String): String {
+    suspend fun getNameFromId(exerciseId: String): String {
         return try {
-            val documentSnapshot = db.collection("users").document(email)
-                .collection("recipes").document(recipeId).get().await()
+            val documentSnapshot = thisUsersExercises.document(exerciseId).get().await()
             documentSnapshot.getString("name") ?: ""
         } catch (e: Exception) {
-            Log.e("getNameFromId", "Error getting recipe name: $e")
+            Log.e("getNameFromId", "Error getting exercise name: $e")
             ""
         }
     }
-    fun deleteRecipe(recipeToDeleteId: String){
-        thisUsersRecipes
-            .document(recipeToDeleteId)
-            .delete()
-            .addOnSuccessListener {
-                Log.d(ContentValues.TAG, "Recipe with ID: $recipeToDeleteId deleted successfully")
-            }
-            .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error deleting recipe, id recieved: $recipeToDeleteId", exception)
-            }
-    }
-     */
 
 }

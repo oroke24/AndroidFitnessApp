@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RecipeAdapter(private val email: String, recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
     private var recipes = listOf<Recipe>()
-    private var recipeManager = recipeDataManager
+    private var recipeDataManager = recipeDataManager
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
         return RecipeViewHolder(view)
@@ -55,9 +55,7 @@ class RecipeAdapter(private val email: String, recipeDataManager: RecipeDataMana
         val recipeToDelete = recipes[position]
         recipes = recipes.toMutableList().also { it.removeAt(position) }
         notifyItemRemoved(position)
-
-        // Delete the recipe from the database
-        recipeManager.deleteRecipe(recipeToDelete.id)
+        recipeDataManager.deleteRecipe(recipeToDelete.id)
     }
 }
 
