@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.collections.hashMapOf
 
 class ExerciseActivity : ComponentActivity() {
@@ -30,13 +33,14 @@ class ExerciseActivity : ComponentActivity() {
         val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
+        val exerciseDataManager = ExerciseDataManager(email)
 
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
 
         db = FirebaseFirestore.getInstance()
         adapter = ExerciseAdapter(email)
 
-        loadExercises(email)
+        loadExercises(exerciseDataManager)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         exerciseRecyclerView.layoutManager = layoutManager
@@ -63,7 +67,7 @@ class ExerciseActivity : ComponentActivity() {
             muscleGroupEditText.text.clear()
             instructionsEditText.text.clear()
 
-            loadExercises(email)
+            loadExercises(exerciseDataManager)
         }
 
 
@@ -81,27 +85,11 @@ class ExerciseActivity : ComponentActivity() {
                 Log.w(TAG, "Error adding exercise", exception)
             }
     }
-    private fun loadExercises(myEmail: String){
-        val usersCollection = db.collection("users")
-        val thisUser = usersCollection.document(myEmail)
-        val thisUsersRecipes = thisUser.collection("exercises")
-        thisUsersRecipes
-            .get()
-            .addOnSuccessListener { result ->
-                //Define a list to hold the recipes
-                val exercises = mutableListOf<Exercise>()
-                for(document in result){
-                    val id = document.id
-                    val name = document.getString("name")?:""
-                    val muscleGroup = document.getString("muscleGroup")?:""
-                    val instructions = document.getString("instructions")?:""
-                    exercises.add(Exercise(id, name, muscleGroup, instructions))
-                }
-                val sortedExercises = exercises.sortedBy{it.name.lowercase()}
-                adapter.setExercises(sortedExercises)
-            }
-            .addOnFailureListener{exception ->
-                Toast.makeText(this, "Error Loading recipes", Toast.LENGTH_SHORT).show()
-            }
+    private fun loadExercises(exerciseDataManager: ExerciseDataManager){
+        CoroutineScope(Dispatchers.Main).launch {
+            val exercises = exerciseDataManager.getAllExercises()
+            val sortedExercises = exercises.sortedBy { it.name.lowercase() }
+            adapter.setExercises(sortedExercises)
+        }
     }
 }

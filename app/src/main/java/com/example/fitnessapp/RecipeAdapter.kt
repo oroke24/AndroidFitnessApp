@@ -8,9 +8,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecipeAdapter(email: String, recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipeAdapter(private val email: String, recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
     private var recipes = listOf<Recipe>()
-    private var email = email
     private var recipeManager = recipeDataManager
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)

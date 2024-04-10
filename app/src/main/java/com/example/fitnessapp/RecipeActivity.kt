@@ -18,13 +18,13 @@ class RecipeActivity : ComponentActivity() {
         setContentView(R.layout.activity_recipe)
 
         val backButton = findViewById<ImageButton>(R.id.backButton)
-        val fx = InteractionEffects()
         val nameEditText = findViewById<EditText>(R.id.name)
         val ingredientsEditText = findViewById<EditText>(R.id.ingredients)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
         val addButton = findViewById<Button>(R.id.addButton)
         val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val fx = InteractionEffects()
 
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         val recipeDataManager = RecipeDataManager(email)

@@ -62,4 +62,6 @@
     <string name="recipeid_colon">RecipeId:</string>
     <string name="current_recipe_colon">Current Recipe:</string>
     <string name="none">None</string>
+    <string name="run">Run</string>
+    <string name="ai_gym_chat">AI Gym Chat</string>
 </resources>

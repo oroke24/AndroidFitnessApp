@@ -27,10 +27,13 @@ class ItemDetailsActivity : ComponentActivity() {
         subGroupOneTextView = findViewById(R.id.subGroupOne)
         subGroupTwoTitleTextView = findViewById(R.id.subGroupTwoTitle)
         subGroupTwoTextView = findViewById(R.id.subGroupTwo)
+        val fx = InteractionEffects()
 
-        backButton.setOnClickListener{finish()}
-        // Retrieve data passed from ExerciseAdapter and display it and
-        // Use the data to populate the views in activity_item_details.xml
+        backButton.setOnClickListener{
+            fx.imageButtonClickEffect(backButton)
+            finish()
+        }
+
         val mainBackground = intent.getIntExtra("backgroundID", -1)
         titleTextView.text = intent.getStringExtra("title")
         subGroupOneTitleTextView.text = intent.getStringExtra("subOneTitle")
