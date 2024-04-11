@@ -91,7 +91,7 @@ class InitializeData(private val myEmail: String) {
                         "-(core) 4 x 12-15 alternating: V-ups and heel touches."
             )
         )
-        //now adding initialRecipes to db
+        //now adding initialExercises to db
         val thisUsersExercises = thisUser.collection("exercises")
         initialRecipes.forEach { exercise ->
             thisUsersExercises.add(exercise)

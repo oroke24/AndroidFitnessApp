@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -13,6 +14,7 @@ class ExerciseDataManager(private val email: String) {
     private val usersCollection = db.collection("users")
     private val thisUser = usersCollection.document(email)
     private val thisUsersExercises = thisUser.collection("exercises")
+    private val fx = InteractionEffects()
 
     suspend fun getAllExercises(): List<Exercise> {
         return try {
@@ -42,12 +44,42 @@ class ExerciseDataManager(private val email: String) {
                 Log.w(ContentValues.TAG, "Error adding Exercise", exception)
             }
     }
+    suspend fun addExerciseWithPermission(context: Context, exercise: Exercise): Boolean {
+        var isAdded = false
+        val exerciseName = exercise.name.lowercase().trim()
+        Log.d(ContentValues.TAG,"addExercise: exerciseID: ${exercise.name}")
+        return try {
+            val existingExerciseDoc = thisUsersExercises.document(exerciseName).get().await()
+            if (existingExerciseDoc.exists()) {
+                val overwriteApproved = fx.userApprovesOverwrite(context, exerciseName)
+                if(overwriteApproved){
+                    existingExerciseDoc.reference.update("muscleGroup", exercise.muscleGroup, "instructions", exercise.instructions).await()
+                    isAdded = true
+                    Toast.makeText(context,  "$exerciseName updated!", Toast.LENGTH_LONG).show()
+                }else{
+                    Toast.makeText(context, "Exercise NOT overwritten", Toast.LENGTH_LONG).show()}
+            }else{
+                val newExerciseData = hashMapOf(
+                    "name" to exercise.name,
+                    "muscleGroup" to exercise.muscleGroup,
+                    "instructions" to exercise.instructions
+                )
+                thisUsersExercises.document(exerciseName).set(newExerciseData).await()
+                isAdded = true
+                Toast.makeText(context, "$exerciseName added!", Toast.LENGTH_LONG).show()
+            }
+            isAdded
+        }catch(e: Exception){
+            Log.e("addExerciseToDay: Error", "Error: ${e.message}")
+            isAdded
+        }
+    }
     fun deleteExercise(exerciseToDeleteId: String){
         thisUsersExercises
             .document(exerciseToDeleteId)
             .delete()
             .addOnSuccessListener {
-                Log.d(ContentValues.TAG, "Recipe with ID: $exerciseToDeleteId deleted successfully")
+                Log.d(ContentValues.TAG, "Exercise with ID: $exerciseToDeleteId deleted successfully")
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error deleting exercise, id recieved: $exerciseToDeleteId", exception)

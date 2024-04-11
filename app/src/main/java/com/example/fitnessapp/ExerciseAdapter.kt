@@ -24,7 +24,7 @@ class ExerciseAdapter(private val email: String) : RecyclerView.Adapter<Exercise
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val exercise = exercises[position]
         val fx = InteractionEffects()
-        holder.bind(this, exercise, position, email)
+        holder.bind(this, exercise, position)
         holder.itemView.setOnClickListener {
             fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
@@ -69,7 +69,7 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
     private var adapter: ExerciseAdapter? = null
 
-    fun bind(adapter: ExerciseAdapter, exercise: Exercise, position: Int, email: String) {
+    fun bind(adapter: ExerciseAdapter, exercise: Exercise, position: Int) {
         val positionText = String.format("%d",position + 1)
         this.position.text = positionText
         name.text = exercise.name

@@ -51,18 +51,17 @@ class RecipeActivity : ComponentActivity() {
                 val instructions = instructionsEditText.text.toString()
                 val recipe = Recipe(name, name, ingredients, instructions)
                 val context: Context = this
-                var wasAdded = false
+                var wasAdded: Boolean
 
-                adapter.notifyItemInserted(adapter.itemCount)
                 CoroutineScope(Dispatchers.Main).launch {
                     wasAdded = recipeDataManager.addRecipeWithPermission(context, recipe)
-                }
-
-                if(wasAdded){
-                    nameEditText.text.clear()
-                    ingredientsEditText.text.clear()
-                    instructionsEditText.text.clear()
-                    loadRecipes(recipeDataManager)
+                    if(wasAdded){
+                        loadRecipes(recipeDataManager)
+                        adapter.notifyDataSetChanged()
+                        nameEditText.text.clear()
+                        ingredientsEditText.text.clear()
+                        instructionsEditText.text.clear()
+                    }
                 }
             }
         }

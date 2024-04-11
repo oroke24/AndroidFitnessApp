@@ -1,6 +1,7 @@
 package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,6 +26,9 @@ class ExerciseActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
+        val nameEditText = findViewById<EditText>(R.id.name)
+        val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
+        val instructionsEditText = findViewById<EditText>(R.id.instructions)
         val fx = InteractionEffects()
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         val exerciseDataManager = ExerciseDataManager(email)
@@ -46,30 +50,30 @@ class ExerciseActivity : ComponentActivity() {
         val addButton = findViewById<Button>(R.id.addButton)
         addButton.setOnClickListener{
             fx.buttonClickEffect(addButton)
-            addExercise(exerciseDataManager)
-            loadExercises(exerciseDataManager)
+            if(nameEditText.text.isBlank()){
+                Toast.makeText(this,"Recipe must have a name", Toast.LENGTH_LONG).show()
+            }else {
+                val name = nameEditText.text.toString()
+                val muscleGroup = muscleGroupEditText.text.toString()
+                val instructions = instructionsEditText.text.toString()
+                val exercise = Exercise(name, name, muscleGroup, instructions)
+                val context: Context = this
+                var wasAdded: Boolean
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    wasAdded = exerciseDataManager.addExerciseWithPermission(context, exercise)
+                    if(wasAdded){
+                        loadExercises(exerciseDataManager)
+                        adapter.notifyDataSetChanged()
+                        nameEditText.text.clear()
+                        muscleGroupEditText.text.clear()
+                        instructionsEditText.text.clear()
+                    }
+                }
+            }
         }
     }
-    private fun addExercise(exerciseDataManager: ExerciseDataManager){
-        val nameEditText = findViewById<EditText>(R.id.name)
-        val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
-        val instructionsEditText = findViewById<EditText>(R.id.instructions)
 
-        val name = nameEditText.text.toString()
-        val muscleGroup = muscleGroupEditText.text.toString()
-        val instructions = instructionsEditText.text.toString()
-
-        val exercise = Exercise("", name, muscleGroup, instructions)
-
-        adapter.notifyItemInserted(adapter.itemCount)
-        exerciseDataManager.addExercise(exercise)
-
-        //clear editText fields
-        nameEditText.text.clear()
-        muscleGroupEditText.text.clear()
-        instructionsEditText.text.clear()
-
-    }
 
     private fun loadExercises(exerciseDataManager: ExerciseDataManager){
         CoroutineScope(Dispatchers.Main).launch {

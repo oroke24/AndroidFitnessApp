@@ -48,7 +48,7 @@ class RecipeDataManager(private val email: String) {
     }
     suspend fun addRecipeWithPermission(context: Context, recipe: Recipe): Boolean {
         var isAdded = false
-        val recipeName = recipe.name.lowercase()
+        val recipeName = recipe.name.lowercase().trim()
         Log.d(ContentValues.TAG,"addRecipe: recipeID: ${recipe.name}")
         return try {
             val existingRecipeDoc = thisUsersRecipes.document(recipeName).get().await()
