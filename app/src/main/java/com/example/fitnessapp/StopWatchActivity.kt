@@ -17,6 +17,10 @@ class StopWatchActivity : ComponentActivity() {
     private lateinit var millisecondTextView: TextView
     private lateinit var handler: Handler
     private lateinit var secondRunnable: Runnable
+    private lateinit var startButton: ImageButton
+    private lateinit var pauseButton: ImageButton
+    private lateinit var resetButton: ImageButton
+    val fx = InteractionEffects()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +35,17 @@ class StopWatchActivity : ComponentActivity() {
             onBackButtonClick(it)
         }
 
-        val startButton: ImageButton = findViewById(R.id.startButton)
+        startButton = findViewById(R.id.startButton)
         startButton.setOnClickListener {
             onStartButtonClick(it)
         }
 
-        val pauseButton: ImageButton = findViewById(R.id.pauseButton)
+        pauseButton = findViewById(R.id.pauseButton)
         pauseButton.setOnClickListener {
             onPauseButtonClick(it)
         }
 
-        val resetButton: ImageButton = findViewById(R.id.resetButton)
+        resetButton = findViewById(R.id.resetButton)
         resetButton.setOnClickListener {
             onResetButtonClick(it)
         }
@@ -60,6 +64,8 @@ class StopWatchActivity : ComponentActivity() {
     }
 
     private fun startStopwatch() {
+        startButton.visibility=View.GONE
+        pauseButton.visibility=View.VISIBLE
         secondRunnable = object : Runnable {
             override fun run() {
                 // Calculate elapsed time
@@ -88,12 +94,17 @@ class StopWatchActivity : ComponentActivity() {
 
     fun onPauseButtonClick(view: View) {
         if (isRunning) {
+            pauseButton.visibility=View.GONE
+            startButton.visibility=View.VISIBLE
             isRunning = false
             handler.removeCallbacks(secondRunnable)
         }
     }
 
     fun onResetButtonClick(view: View) {
+        fx.imageButtonClickEffectQuick(resetButton)
+        pauseButton.visibility=View.GONE
+        startButton.visibility=View.VISIBLE
         isRunning = false
         startTime = 0
         elapsedTime = 0

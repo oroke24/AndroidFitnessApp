@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +75,10 @@ class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         name.text = exercise.name
         muscleGroup.text = exercise.muscleGroup
         instructions.text = exercise.instructions
+
+        val animation = AlphaAnimation(0.1f, 1.0f)
+        animation.duration = 1000 // Set the duration of the animation (in milliseconds)
+        itemView.startAnimation(animation) // Start the animation
 
         this.adapter = adapter
         deleteButton.setOnLongClickListener {

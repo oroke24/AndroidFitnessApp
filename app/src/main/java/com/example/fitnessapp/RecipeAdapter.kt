@@ -4,22 +4,25 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecipeAdapter(private val email: String, recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipeAdapter(recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
     private var recipes = listOf<Recipe>()
     private var recipeDataManager = recipeDataManager
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
+        // Creating a translate animation from right to left
         return RecipeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val fx = InteractionEffects()
         val recipe = recipes[position]
-        holder.bind(this, recipe, position, email)
+        holder.bind(this, recipe, position)
 
         holder.itemView.setOnClickListener {
             fx.itemViewClickEffect(holder.itemView)
@@ -48,7 +51,7 @@ class RecipeAdapter(private val email: String, recipeDataManager: RecipeDataMana
         notifyDataSetChanged()
     }
 
-    fun deleteRecipe(position: Int, email: String) {
+    fun deleteRecipe(position: Int) {
         if (position < 0 || position >= recipes.size) {
             return // Invalid position
         }
@@ -66,7 +69,8 @@ class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val position: TextView = itemView.findViewById(R.id.position)
     private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
     private var adapter: RecipeAdapter? = null
-    fun bind(adapter: RecipeAdapter, recipe: Recipe, position: Int, email: String) {
+    fun bind(adapter: RecipeAdapter, recipe: Recipe, position: Int) {
+
         val positionText = String.format("%d", position + 1)
         this.position.text = positionText
         name.text = recipe.name
@@ -75,8 +79,13 @@ class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         this.adapter = adapter
 
+        val animation = AlphaAnimation(0.1f, 1.0f)
+        animation.duration = 1000 // Set the duration of the animation (in milliseconds)
+        itemView.startAnimation(animation) // Start the animation
+
+
         deleteButton.setOnLongClickListener {
-            adapter.deleteRecipe(absoluteAdapterPosition, email)
+            adapter.deleteRecipe(absoluteAdapterPosition)
             true
         }
     }

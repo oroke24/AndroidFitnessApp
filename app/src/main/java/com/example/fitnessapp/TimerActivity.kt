@@ -1,4 +1,5 @@
 package com.example.fitnessapp
+import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.media.Ringtone
@@ -8,12 +9,15 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.View
 import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import org.checkerframework.checker.index.qual.GTENegativeOne
 
 class TimerActivity : ComponentActivity() {
     private lateinit var backButton: ImageButton
@@ -33,6 +37,7 @@ class TimerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+        val fx = InteractionEffects()
 
         hoursPicker = findViewById(R.id.hoursPicker)
         minutesPicker = findViewById(R.id.minutesPicker)
@@ -43,14 +48,20 @@ class TimerActivity : ComponentActivity() {
         timerTextView = findViewById(R.id.timerTextView)
         backButton = findViewById(R.id.backButton)
 
+        hoursPicker.textColor = getColor(R.color.white)
+        hoursPicker.textSize = 60f
         hoursPicker.minValue = 0
         hoursPicker.maxValue = 23
         hoursPicker.value = 0
 
+        minutesPicker.textColor = getColor(R.color.white)
+        minutesPicker.textSize = 60f
         minutesPicker.minValue = 0
         minutesPicker.maxValue = 59
         minutesPicker.value = 0
 
+        secondsPicker.textColor = getColor(R.color.white)
+        secondsPicker.textSize = 60f
         secondsPicker.minValue = 0
         secondsPicker.maxValue = 59
         secondsPicker.value = 0
@@ -61,25 +72,31 @@ class TimerActivity : ComponentActivity() {
 
         backButton.setOnClickListener{finish()}
         startButton.setOnClickListener {
-            if (!timerRunning) {
-                val hours = hoursPicker.value
-                val minutes = minutesPicker.value
-                val seconds = secondsPicker.value
+            fx.imageButtonClickEffect(startButton)
+            val hours = hoursPicker.value
+            val minutes = minutesPicker.value
+            val seconds = secondsPicker.value
 
-                val totalMilliseconds = ((hours * 3600) + (minutes * 60) + seconds) * 1000L
-                timeRemaining = totalMilliseconds
+            val totalMilliseconds = ((hours * 3600) + (minutes * 60) + seconds) * 1000L
+            timeRemaining = totalMilliseconds
 
-                startTimer(totalMilliseconds)
-            }
+            startTimer(totalMilliseconds)
         }
 
         pauseButton.setOnClickListener {
+            fx.imageButtonClickEffectQuick(pauseButton)
             if (timerRunning) {
                 pauseTimer()
             }
         }
+        pauseButton.setOnLongClickListener{
+            resetTimer()
+            true
+
+        }
 
         continueButton.setOnClickListener {
+            fx.imageButtonClickEffectQuick(continueButton)
             if (!timerRunning) {
                 resumeTimer()
             }
@@ -88,6 +105,13 @@ class TimerActivity : ComponentActivity() {
 
     private fun startTimer(totalMilliseconds: Long) {
         countDownTimer?.cancel() // Cancel previous timer if running
+        startButton.visibility= View.GONE
+        hoursPicker.visibility= View.GONE
+        minutesPicker.visibility=View.GONE
+        secondsPicker.visibility=View.GONE
+        timerTextView.visibility=View.VISIBLE
+        pauseButton.visibility= View.VISIBLE
+        continueButton.visibility=View.VISIBLE
 
         countDownTimer = object : CountDownTimer(totalMilliseconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -99,7 +123,6 @@ class TimerActivity : ComponentActivity() {
                 timeRemaining = 0
                 resetTimer()
                 updateTimerDisplay()
-                showDialog()
                 playDefaultAlarmRingtone()
                 startVibration()
             }
@@ -110,6 +133,13 @@ class TimerActivity : ComponentActivity() {
 
     private fun resetTimer(){
         countDownTimer?.cancel()
+        pauseButton.visibility= View.GONE
+        continueButton.visibility=View.GONE
+        timerTextView.visibility=View.GONE
+        startButton.visibility= View.VISIBLE
+        hoursPicker.visibility= View.VISIBLE
+        minutesPicker.visibility=View.VISIBLE
+        secondsPicker.visibility=View.VISIBLE
         timerRunning = false
 
     }
@@ -131,6 +161,7 @@ class TimerActivity : ComponentActivity() {
         timerTextView.text = timeString
     }
 
+    /*
     private fun showDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Complete!")
@@ -144,6 +175,8 @@ class TimerActivity : ComponentActivity() {
         dialog.show()
     }
 
+     */
+
     private fun playDefaultAlarmRingtone() {
         val defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         alarmRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri)
@@ -154,12 +187,7 @@ class TimerActivity : ComponentActivity() {
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator?.let { vibratorService ->
             if (vibratorService.hasVibrator()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibratorService.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 1000), 0))
-                } else {
-                    @Suppress("DEPRECATION")
-                    vibratorService.vibrate(longArrayOf(0, 1000), 0)
-                }
+                    vibratorService.vibrate(VibrationEffect.createWaveform(longArrayOf(100, 0, 500, 0, 100), 1))
             }
         }
     }

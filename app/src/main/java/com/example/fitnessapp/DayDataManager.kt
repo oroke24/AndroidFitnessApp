@@ -12,45 +12,48 @@ import java.util.Locale
 class DayDataManager(private val email: String) {
     private val db = FirebaseFirestore.getInstance()
     private val user = db.collection("users").document(email)
+
     private val daysCollection = user.collection("days")
     private val recipesCollection = user.collection("recipes")
+    private val exercisesCollection = user.collection("exercises")
 
     suspend fun addRecipeToDay(providedDate: Date, providedRecipeId: String) {
         val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val date = dateFormat.format(providedDate)
+        Log.d("addRecipeToDay: date value", date)
+        try{
+            val existingDayDoc = daysCollection.document(date).get().await()
+            if(existingDayDoc.exists()){
+                existingDayDoc.reference.update("recipeId", providedRecipeId).await()
+            }else{
+                val newDayData = hashMapOf(
+                    "recipeId" to providedRecipeId,
+                    "exerciseId" to ""
+                )
+                daysCollection.document(date).set(newDayData).await()
+            }
 
-        Log.w("addRecipetoDay date value", "$date")
-        val existingDayQuery = daysCollection.whereEqualTo("date", date).get().await()
-
-        if (!existingDayQuery.isEmpty) {
-            val existingDayDoc = existingDayQuery.documents.first()
-            existingDayDoc.reference.update("recipeId", providedRecipeId).await()
-        } else {
-            val newDayData = hashMapOf(
-                "date" to date,
-                "recipeId" to providedRecipeId,
-                "exerciseId" to ""
-            )
-            daysCollection.add(newDayData).await()
+        }catch(e: Exception){
+           Log.e("addRecipeToDay: Error", "Error: ${e.message}")
         }
     }
     suspend fun addExerciseToDay(providedDate: Date, providedExerciseId: String) {
         val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val date = dateFormat.format(providedDate)
-
-        Log.w("addExerciseToDay date value", date)
-        val existingDayQuery = daysCollection.whereEqualTo("date", date).get().await()
-
-        if (!existingDayQuery.isEmpty) {
-            val existingDayDoc = existingDayQuery.documents.first()
-            existingDayDoc.reference.update("exerciseId", providedExerciseId).await()
-        } else {
-            val newDayData = hashMapOf(
-                "date" to date,
-                "recipeId" to "",
-                "exerciseId" to providedExerciseId
-            )
-            daysCollection.add(newDayData).await()
+        Log.d("addExerciseToDay: date value", date)
+        try {
+            val existingDayDoc = daysCollection.document(date).get().await()
+            if (existingDayDoc.exists()) {
+                existingDayDoc.reference.update("exerciseId", providedExerciseId).await()
+            }else{
+                val newDayData = hashMapOf(
+                    "recipeId" to "",
+                    "exerciseId" to providedExerciseId
+                )
+                daysCollection.document(date).set(newDayData).await()
+            }
+        }catch(e: Exception){
+            Log.e("addExerciseToDay: Error", "Error: ${e.message}")
         }
     }
     suspend fun fetchRecipe(recipeId: String): Recipe{

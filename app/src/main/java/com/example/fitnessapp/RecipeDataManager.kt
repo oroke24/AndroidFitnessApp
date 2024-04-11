@@ -5,7 +5,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
 class RecipeDataManager(private val email: String) {
@@ -32,14 +34,13 @@ class RecipeDataManager(private val email: String) {
             emptyList()
             }
     }
-    fun addRecipe(recipe: Recipe){
-        thisUsersRecipes
-            .add(recipe)
-            .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "Recipe added with ID: ${documentReference.id}")
+    fun addRecipe(recipe: Recipe) {
+        thisUsersRecipes.add(recipe)
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, it.id)
             }
-            .addOnFailureListener{exception ->
-                Log.w(ContentValues.TAG, "Error adding recipe", exception)
+            .addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error adding recipe: ${recipe.name}, $exception")
             }
     }
     fun fetchUserRecipeIds(callback: (List<Pair<String, String>>) -> Unit) {
@@ -59,22 +60,9 @@ class RecipeDataManager(private val email: String) {
                 // Handle error
             }
     }
-    fun showRecipeSelectionDialog(context: Context, recipes: List<Pair<String, String>>, callback: (String) -> Unit) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Select a Recipe")
-        val recipeNames = recipes.map { it.second }.toTypedArray()
-        builder.setItems(recipeNames) { dialog, which ->
-            val selectedRecipeId = recipes[which].first
-            callback(selectedRecipeId)
-        }
-        val dialog = builder.create()
-        dialog.listView?.setBackground(Drawable.createFromPath("@drawable/cool_background"))
-        dialog.show()
-    }
     suspend fun getNameFromId(recipeId: String): String {
         return try {
-            val documentSnapshot = db.collection("users").document(email)
-                .collection("recipes").document(recipeId).get().await()
+            val documentSnapshot = thisUsersRecipes.document(recipeId).get().await()
             documentSnapshot.getString("name") ?: ""
         } catch (e: Exception) {
             Log.e("getNameFromId", "Error getting recipe name: $e")

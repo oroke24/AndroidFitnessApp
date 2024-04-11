@@ -10,7 +10,7 @@
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back"
+        android:src="@drawable/ic_arrow_back_white"
         android:background="@android:color/transparent"
         android:onClick="onBackButtonClick"
         android:contentDescription="@string/back_button_description"

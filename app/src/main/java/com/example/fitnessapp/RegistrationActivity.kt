@@ -44,10 +44,10 @@ class RegistrationActivity : ComponentActivity() {
     }
 
     private fun registerUser(email: String, password: String) {
-        val initializeData = InitializeData(email)
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val initializeData = InitializeData(email)
                     initializeData.begin()
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()

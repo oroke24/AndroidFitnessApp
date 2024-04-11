@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,7 @@ class RecipeActivity : ComponentActivity() {
 
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         val recipeDataManager = RecipeDataManager(email)
-        adapter = RecipeAdapter(email,recipeDataManager)
+        adapter = RecipeAdapter(recipeDataManager)
         loadRecipes(recipeDataManager)
 
         recipeRecyclerView.layoutManager = layoutManager
@@ -41,19 +42,23 @@ class RecipeActivity : ComponentActivity() {
 
         addButton.setOnClickListener{
             fx.buttonClickEffect(addButton)
-            val name = nameEditText.text.toString()
-            val ingredients = ingredientsEditText.text.toString()
-            val instructions = instructionsEditText.text.toString()
-            val recipe = Recipe("", name, ingredients, instructions)
+            if(nameEditText.toString().isEmpty()){
+                Toast.makeText(this,"Recipe must have a name", Toast.LENGTH_LONG).show()
+            }else {
+                val name = nameEditText.text.toString()
+                val ingredients = ingredientsEditText.text.toString()
+                val instructions = instructionsEditText.text.toString()
+                val recipe = Recipe("", name, ingredients, instructions)
 
-            adapter.notifyItemInserted(adapter.itemCount)
-            recipeDataManager.addRecipe(recipe)
+                adapter.notifyItemInserted(adapter.itemCount)
+                recipeDataManager.addRecipe(recipe)
 
-            nameEditText.text.clear()
-            ingredientsEditText.text.clear()
-            instructionsEditText.text.clear()
+                nameEditText.text.clear()
+                ingredientsEditText.text.clear()
+                instructionsEditText.text.clear()
 
-            loadRecipes(recipeDataManager)
+                loadRecipes(recipeDataManager)
+            }
         }
     }
     private fun loadRecipes(recipeDataManager: RecipeDataManager){

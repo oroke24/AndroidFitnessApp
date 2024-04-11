@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -40,6 +42,7 @@ class WeeklyCalendarAdapter(private val email: String) : RecyclerView.Adapter<Vi
     }
 }
 class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    private val fx = InteractionEffects()
     private val dateViewFormat = SimpleDateFormat("EEE, dd MMM", Locale.getDefault())
     private val dateTextView : TextView = itemView.findViewById(R.id.dayOfWeek)
     private val recipeNameTextView : TextView = itemView.findViewById(R.id.recipeName)
@@ -54,9 +57,14 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val date = adapter.daysOfWeek[position]
         dateTextView.text = dateViewFormat.format(date)
 
+        val animation = AlphaAnimation(0.1f, 1.0f)
+        animation.duration = 1000 // Set the duration of the animation (in milliseconds)
+        itemView.startAnimation(animation) // Start the animation
+
         recipeButton.setOnClickListener {
+            fx.imageButtonClickEffect(recipeButton)
             recipeManager.fetchUserRecipeIds { recipes ->
-                recipeManager.showRecipeSelectionDialog(itemView.context, recipes) { selectedRecipeId ->
+                fx.selectionDialogReturnItemId(itemView.context, recipes) { selectedRecipeId ->
                     CoroutineScope(Dispatchers.Main).launch {
                         recipeNameTextView.text = recipeManager.getNameFromId(selectedRecipeId)
                         dayManager.addRecipeToDay(date, selectedRecipeId)
@@ -66,6 +74,7 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         }
 
         exerciseButton.setOnClickListener{
+            fx.imageButtonClickEffect(exerciseButton)
             exerciseManager.fetchUserExerciseIds { exercises ->
                 exerciseManager.showExerciseSelectionDialog(itemView.context, exercises){selectedExerciseId ->
                     CoroutineScope(Dispatchers.Main).launch{

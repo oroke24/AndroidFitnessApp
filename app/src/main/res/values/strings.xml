@@ -65,4 +65,7 @@
     <string name="run">Run</string>
     <string name="ai_gym_chat">AI Gym Chat</string>
     <string name="current_exercise_colon">Current Exercise:</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="seconds">Seconds</string>
+    <string name="hours">Hours</string>
 </resources>
