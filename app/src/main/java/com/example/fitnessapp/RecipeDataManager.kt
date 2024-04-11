@@ -9,13 +9,16 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RecipeDataManager(private val email: String) {
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("users")
     private val thisUser = usersCollection.document(email)
-    val thisUsersRecipes = thisUser.collection("recipes")
-
+    private val thisUsersRecipes = thisUser.collection("recipes")
+    private val fx = InteractionEffects()
 
     suspend fun getAllRecipes(): List<Recipe> {
         return try {
@@ -42,6 +45,35 @@ class RecipeDataManager(private val email: String) {
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error adding recipe: ${recipe.name}, $exception")
             }
+    }
+    suspend fun addRecipeWithPermission(context: Context, recipe: Recipe): Boolean {
+        var isAdded = false
+        val recipeName = recipe.name.lowercase()
+        Log.d(ContentValues.TAG,"addRecipe: recipeID: ${recipe.name}")
+        return try {
+            val existingRecipeDoc = thisUsersRecipes.document(recipeName).get().await()
+            if (existingRecipeDoc.exists()) {
+                val overwriteApproved = fx.userApprovesOverwrite(context, recipeName)
+                if(overwriteApproved){
+                    existingRecipeDoc.reference.update("ingredients", recipe.ingredients, "instructions", recipe.instructions).await()
+                    isAdded = true
+                    Toast.makeText(context,  "$recipeName updated!", Toast.LENGTH_LONG).show()
+                }else{Toast.makeText(context, "Recipe NOT overwritten",Toast.LENGTH_LONG).show()}
+            }else{
+                val newRecipeData = hashMapOf(
+                    "name" to recipe.name,
+                    "ingredients" to recipe.ingredients,
+                    "instructions" to recipe.instructions
+                )
+                thisUsersRecipes.document(recipeName).set(newRecipeData).await()
+                isAdded = true
+                Toast.makeText(context, "$recipeName added!", Toast.LENGTH_LONG).show()
+            }
+            isAdded
+        }catch(e: Exception){
+            Log.e("addExerciseToDay: Error", "Error: ${e.message}")
+            isAdded
+        }
     }
     fun fetchUserRecipeIds(callback: (List<Pair<String, String>>) -> Unit) {
         thisUsersRecipes

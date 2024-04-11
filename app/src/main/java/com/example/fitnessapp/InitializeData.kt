@@ -12,9 +12,6 @@ class InitializeData(private val myEmail: String) {
 
     fun begin(){
         addEmailToUsersIfNotExists()
-        addInitialRecipesForUser()
-        addInitialExercisesForUser()
-        addInitialDaysForUser()
     }
     private fun addEmailToUsersIfNotExists(){
         val email = hashMapOf(
@@ -22,7 +19,10 @@ class InitializeData(private val myEmail: String) {
         )
         thisUser.set(email, SetOptions.merge())
             .addOnSuccessListener {
-                Log.d(TAG, "Email document added or updated successfully")
+                Log.d(TAG, "Email document added or updated successfully, now loading initial data")
+                addInitialRecipesForUser()
+                addInitialExercisesForUser()
+                addInitialDaysForUser()
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error adding or updating email document", exception)
@@ -91,7 +91,6 @@ class InitializeData(private val myEmail: String) {
                         "-(core) 4 x 12-15 alternating: V-ups and heel touches."
             )
         )
-
         //now adding initialRecipes to db
         val thisUsersExercises = thisUser.collection("exercises")
         initialRecipes.forEach { exercise ->

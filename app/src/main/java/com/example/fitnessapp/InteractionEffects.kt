@@ -15,6 +15,8 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class InteractionEffects {
     fun buttonClickEffect(button: Button){
@@ -44,8 +46,7 @@ class InteractionEffects {
         }
         .show()
     }
-    fun userApprovesOverwrite(context: Context, name: String): Boolean{
-        var overwriteApproved = false
+    suspend fun userApprovesOverwrite(context: Context, name: String): Boolean = suspendCoroutine { continuation ->
         val inflater = LayoutInflater.from(context)
         val itemView = inflater.inflate(R.layout.item_user_approval, null)
         val messageString = "$name already exists, overwrite?"
@@ -54,18 +55,19 @@ class InteractionEffects {
         val overwriteButton = itemView.findViewById<Button>(R.id.overwriteButton)
         val cancelButton = itemView.findViewById<Button>(R.id.cancelButton)
 
-
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.TransparentDialogTheme)
             .setView(itemView)
             .create()
+
         overwriteButton.setOnClickListener {
-            overwriteApproved = true
             dialog.dismiss()
+            continuation.resume(true)
         }
-        cancelButton.setOnClickListener { dialog.dismiss() }
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+            continuation.resume(false)
+        }
         dialog.show()
-        while(dialog.isShowing){}
-        return overwriteApproved
     }
 
 }

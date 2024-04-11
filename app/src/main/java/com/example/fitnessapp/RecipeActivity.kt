@@ -1,5 +1,6 @@
 package com.example.fitnessapp
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -42,22 +43,27 @@ class RecipeActivity : ComponentActivity() {
 
         addButton.setOnClickListener{
             fx.buttonClickEffect(addButton)
-            if(nameEditText.toString().isEmpty()){
+            if(nameEditText.text.isBlank()){
                 Toast.makeText(this,"Recipe must have a name", Toast.LENGTH_LONG).show()
             }else {
                 val name = nameEditText.text.toString()
                 val ingredients = ingredientsEditText.text.toString()
                 val instructions = instructionsEditText.text.toString()
-                val recipe = Recipe("", name, ingredients, instructions)
+                val recipe = Recipe(name, name, ingredients, instructions)
+                val context: Context = this
+                var wasAdded = false
 
                 adapter.notifyItemInserted(adapter.itemCount)
-                recipeDataManager.addRecipe(recipe)
+                CoroutineScope(Dispatchers.Main).launch {
+                    wasAdded = recipeDataManager.addRecipeWithPermission(context, recipe)
+                }
 
-                nameEditText.text.clear()
-                ingredientsEditText.text.clear()
-                instructionsEditText.text.clear()
-
-                loadRecipes(recipeDataManager)
+                if(wasAdded){
+                    nameEditText.text.clear()
+                    ingredientsEditText.text.clear()
+                    instructionsEditText.text.clear()
+                    loadRecipes(recipeDataManager)
+                }
             }
         }
     }

@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:layout_gravity="center"
+        android:padding="20dp"
         android:text="default message"
         android:textSize="18sp"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:background="@drawable/background_white_outline"/>
     <LinearLayout
@@ -26,8 +28,9 @@
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="start"
-            android:background="@drawable/background_white_outline"
+            android:background="@drawable/background_red_with_white_outlined"
             android:layout_margin="10dp"
             android:text="Cancel"
             android:textColor="@color/white"/>
