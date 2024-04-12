@@ -54,12 +54,16 @@
             android:paddingTop="50dp"
             android:paddingBottom="50dp">
 
+
+
             <LinearLayout
                 android:id="@+id/todaySnapShotLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_margin="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="40dp"
                 android:padding="25dp"
                 android:background="@drawable/cool_background_grey"
                 android:orientation="vertical">
@@ -68,9 +72,12 @@
                     android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/background_white_outline"
+                    android:layout_marginBottom="20dp"
+                    android:elevation="15dp"
+                    android:shadowColor="@color/black"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:background="@drawable/cool_background_grey"
                     android:text="@string/todays_date"
                     android:textColor="@color/white"
                     android:textSize="20sp"/>
@@ -78,24 +85,27 @@
                     android:id="@+id/recipeName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:elevation="4dp"
+                    android:shadowColor="@color/black"
                     android:layout_gravity="start"
                     android:padding="15dp"
                     android:background="@drawable/cool_button"
+                    android:drawableLeft="@drawable/ic_soup_kitchen_24"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="gone"/>
+                    android:textSize="18sp" />
                 <TextView
                     android:id="@+id/exerciseName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_gravity="end"
+                    android:elevation="4dp"
+                    android:shadowColor="@color/black"
                     android:padding="15dp"
                     android:background="@drawable/cool_button2"
+                    android:drawableLeft="@drawable/walking_arrows_24"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="gone"/>
+                    android:textSize="18sp" />
 
 
             </LinearLayout>

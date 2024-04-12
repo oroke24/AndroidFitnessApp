@@ -20,25 +20,51 @@ class CalendarActivity : ComponentActivity(){
     private lateinit var monthlyCalendar: CalendarView
     private lateinit var weeklyCalendar: RecyclerView
     private lateinit var weeklyAdapter: WeeklyCalendarAdapter
+    private lateinit var homeButton: ImageButton
+    private lateinit var foodButton: ImageButton
+    private lateinit var exerciseButton: ImageButton
+    private lateinit var timersButton: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
+        val fx = InteractionEffects()
 
         //binding
         backButton = findViewById(R.id.backButton)
         monthlyCalendar = findViewById(R.id.monthlyCalendarView)
         weeklyCalendar = findViewById(R.id.weeklyCalendarView)
         weeklyAdapter = WeeklyCalendarAdapter(email)
+        homeButton = findViewById(R.id.menuHomeButton)
+        foodButton = findViewById(R.id.menuRecipeButton)
+        exerciseButton = findViewById(R.id.menuExerciseButton)
+        timersButton = findViewById(R.id.menuTimersButton)
 
        //setting up weekly recycler view
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         weeklyCalendar.layoutManager = layoutManager
         weeklyCalendar.adapter = weeklyAdapter
 
+        homeButton.setOnClickListener{
+            fx.imageButtonClickEffectQuick(homeButton)
+            intentWithEmail(MainActivity(), email)
+        }
+        foodButton.setOnClickListener{
+            fx.imageButtonClickEffectQuick(foodButton)
+            intentWithEmail(RecipeActivity(), email)
+        }
+        exerciseButton.setOnClickListener{
+            fx.imageButtonClickEffectQuick(exerciseButton)
+            intentWithEmail(ExerciseActivity(), email)
+        }
+        timersButton.setOnClickListener{
+            fx.imageButtonClickEffectQuick(timersButton)
+            intentWithEmail(TimersActivity(), email)
+        }
         updateWeeklyView(Calendar.getInstance())
         backButton.setOnClickListener {
-           intentWithEmail(MainActivity(), email)
+            fx.imageButtonClickEffectQuick(backButton)
+            intentWithEmail(MainActivity(), email)
         }
 
         monthlyCalendar.setOnDateChangeListener { _, year, month, dayOfMonth ->

@@ -11,7 +11,7 @@
             android:id="@+id/dayOfWeek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:text="@string/blank"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -27,17 +27,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="center"
-                            android:textSize="18sp"
-                            android:textColor="@color/white"
-                            android:text="@string/current_recipe_colon"/>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:padding="5dp"
+                            android:layout_marginBottom="20dp"
                             android:background="@drawable/cool_background"
                             android:orientation="horizontal">
                                 <TextView
@@ -46,7 +41,7 @@
                                     android:layout_height="wrap_content"
                                     android:textAlignment="textStart"
                                     android:layout_weight="1"
-                                    android:textSize="24sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
                                     android:padding="15dp"
                                     android:textColor="@color/white"/>
@@ -57,24 +52,17 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|right"
                                     android:layout_marginStart="5dp"
-                                    android:background="@drawable/background_white_outline"
-                                    android:src="@drawable/ic_replace"
+                                    android:background="@android:color/transparent"
+                                    android:src="@drawable/ic_soup_transparent"
                                     android:layout_margin="5dp"
                                     android:padding="3dp"
                                     android:textColor="@color/white"/>
                         </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="center"
-                            android:textSize="18sp"
-                            android:textColor="@color/white"
-                            android:layout_marginTop="10dp"
-                            android:text="Current Exercise: "/>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:padding="5dp"
                             android:background="@drawable/cool_background2"
                             android:orientation="horizontal">
@@ -84,7 +72,7 @@
                                     android:layout_height="wrap_content"
                                     android:textAlignment="textStart"
                                     android:layout_weight="1"
-                                    android:textSize="24sp"
+                                    android:textSize="16sp"
                                     android:textStyle="bold"
                                     android:padding="15dp"
                                     android:textColor="@color/white"/>
@@ -95,8 +83,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="bottom|right"
                                     android:layout_marginStart="5dp"
-                                    android:background="@drawable/background_white_outline"
-                                    android:src="@drawable/ic_replace"
+                                    android:background="@android:color/transparent"
+                                    android:src="@drawable/ic_walking_arrows_transparent"
                                     android:layout_margin="5dp"
                                     android:padding="3dp"
                                     android:textColor="@color/white"/>
