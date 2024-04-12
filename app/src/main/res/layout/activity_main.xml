@@ -12,15 +12,16 @@
         android:orientation="horizontal"
         android:layout_margin="3dp"
         android:background="@android:color/transparent"
-        android:padding="5dp"
-        android:gravity="end">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/usernameTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="start"
             android:background="@drawable/background_white_outline"
             android:padding="10dp"
             android:text="@string/username"
@@ -29,7 +30,7 @@
 
         <ImageButton
             android:id="@+id/logoutButton"
-            android:layout_gravity="center"
+            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
