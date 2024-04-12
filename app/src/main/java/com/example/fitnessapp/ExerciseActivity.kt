@@ -2,6 +2,7 @@ package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,6 +23,11 @@ import kotlin.collections.hashMapOf
 
 class ExerciseActivity : ComponentActivity() {
     private lateinit var adapter: ExerciseAdapter
+    private lateinit var homeButton: ImageButton
+    private lateinit var recipeButton: ImageButton
+    private lateinit var timersButton: ImageButton
+    private lateinit var calendarButton: ImageButton
+    val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
@@ -29,10 +35,13 @@ class ExerciseActivity : ComponentActivity() {
         val nameEditText = findViewById<EditText>(R.id.name)
         val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
-        val fx = InteractionEffects()
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         val exerciseDataManager = ExerciseDataManager(email)
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
+        homeButton = findViewById(R.id.menuHomeButton)
+        recipeButton = findViewById(R.id.menuRecipeButton)
+        timersButton = findViewById(R.id.menuTimersButton)
+        calendarButton = findViewById(R.id.menuCalendarButton)
 
         adapter = ExerciseAdapter(email)
         loadExercises(exerciseDataManager)
@@ -40,6 +49,23 @@ class ExerciseActivity : ComponentActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         exerciseRecyclerView.layoutManager = layoutManager
         exerciseRecyclerView.adapter = adapter
+
+        homeButton.setOnClickListener{
+            fx.imageButtonClickEffect(homeButton)
+            finish()
+        }
+        recipeButton.setOnClickListener{
+            fx.imageButtonClickEffect(recipeButton)
+            intentWithEmail(RecipeActivity(), email)
+        }
+        timersButton.setOnClickListener{
+            fx.imageButtonClickEffect(timersButton)
+            intentWithEmail(TimersActivity(), email)
+        }
+        calendarButton.setOnClickListener{
+            fx.imageButtonClickEffect(calendarButton)
+            intentWithEmail(CalendarActivity(), email)
+        }
 
         val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener {
@@ -81,5 +107,10 @@ class ExerciseActivity : ComponentActivity() {
             val sortedExercises = exercises.sortedBy { it.name.lowercase() }
             adapter.setExercises(sortedExercises)
         }
+    }
+    private fun intentWithEmail(thisActivity: ComponentActivity, email: String) {
+        val intent = Intent(this, thisActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
+        startActivity(intent)
     }
 }

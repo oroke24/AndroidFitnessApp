@@ -62,6 +62,7 @@ class MainActivity : ComponentActivity() {
         logoutButton.setOnClickListener {
             fx.imageButtonClickEffect(logoutButton)
             firebaseAuth.signOut()
+            intentWithEmail(LoginActivity(), email)
             finish()
         }
         todaySnapShotLayout.setOnClickListener{
@@ -78,7 +79,7 @@ class MainActivity : ComponentActivity() {
         }
         timersButton.setOnClickListener {
             fx.buttonClickEffect(timersButton)
-            startActivity(Intent(this, TimersActivity::class.java))
+            intentWithEmail(TimersActivity(), email)
         }
         calendarButton.setOnClickListener {
             fx.buttonClickEffect(calendarButton)

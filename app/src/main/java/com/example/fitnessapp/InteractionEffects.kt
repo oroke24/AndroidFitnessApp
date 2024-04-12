@@ -49,6 +49,41 @@ class InteractionEffects {
         }
         .show()
     }
+
+
+
+    /* Playing around with dialog capabilities
+    fun selectionDialogReturnItemId(context: Context, items: List<Pair<String, String>>, callback: (String) -> Unit) {
+        val inflater = LayoutInflater.from(context)
+        val itemView = inflater.inflate(R.layout.item_user_choose_item, null)
+
+        val messageString = "Select One"
+        val messageTextView = itemView.findViewById<TextView>(R.id.message)
+        messageTextView.text = messageString
+
+        val builder = AlertDialog.Builder(context, R.style.TransparentDialogTheme)
+
+        val listOfNames = items.map { it.second }.toTypedArray()
+
+        val listView = itemView.findViewById<ListView>(R.id.listView)
+        listView.adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, listOfNames)
+
+        val dialog = builder.setView(itemView)
+            .setCancelable(true) // Allow canceling by clicking outside
+            .show()
+
+        listView.setOnItemClickListener { _, _, which, _ ->
+            val selectedItemId = items[which].first
+            callback(selectedItemId)
+            dialog.dismiss() // Dismiss the dialog when an item is clicked
+        }
+
+        dialog.setOnCancelListener {
+            // Handle dialog cancellation (click outside)
+            // You can put any necessary logic here
+        }
+    }
+     */
     suspend fun userApprovesOverwrite(context: Context, name: String): Boolean = suspendCoroutine { continuation ->
         val inflater = LayoutInflater.from(context)
         val itemView = inflater.inflate(R.layout.item_user_approval, null)

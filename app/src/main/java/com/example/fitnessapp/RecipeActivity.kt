@@ -1,6 +1,7 @@
 package com.example.fitnessapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -15,6 +16,11 @@ import kotlinx.coroutines.launch
 
 class RecipeActivity : ComponentActivity() {
     private lateinit var adapter: RecipeAdapter
+    private lateinit var homeButton: ImageButton
+    private lateinit var exerciseButton: ImageButton
+    private lateinit var timersButton: ImageButton
+    private lateinit var calendarButton: ImageButton
+    val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
@@ -26,7 +32,11 @@ class RecipeActivity : ComponentActivity() {
         val addButton = findViewById<Button>(R.id.addButton)
         val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val fx = InteractionEffects()
+
+        homeButton = findViewById(R.id.menuHomeButton)
+        exerciseButton = findViewById(R.id.menuExerciseButton)
+        timersButton = findViewById(R.id.menuTimersButton)
+        calendarButton = findViewById(R.id.menuCalendarButton)
 
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         val recipeDataManager = RecipeDataManager(email)
@@ -39,6 +49,23 @@ class RecipeActivity : ComponentActivity() {
         backButton.setOnClickListener {
             fx.imageButtonClickEffect(backButton)
             finish()
+        }
+
+        homeButton.setOnClickListener{
+            fx.imageButtonClickEffect(homeButton)
+            finish()
+        }
+        exerciseButton.setOnClickListener{
+            fx.imageButtonClickEffect(exerciseButton)
+            intentWithEmail(ExerciseActivity(), email)
+        }
+        timersButton.setOnClickListener{
+            fx.imageButtonClickEffect(timersButton)
+            intentWithEmail(TimersActivity(), email)
+        }
+        calendarButton.setOnClickListener{
+            fx.imageButtonClickEffect(calendarButton)
+            intentWithEmail(CalendarActivity(), email)
         }
 
         addButton.setOnClickListener{
@@ -72,5 +99,10 @@ class RecipeActivity : ComponentActivity() {
             val sortedRecipes = recipes.sortedBy{it.name.lowercase()}
             adapter.setRecipes(sortedRecipes)
         }
+    }
+    private fun intentWithEmail(thisActivity: ComponentActivity, email: String) {
+        val intent = Intent(this, thisActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
+        startActivity(intent)
     }
 }

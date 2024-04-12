@@ -10,7 +10,7 @@
         android:layout_gravity="start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back"
+        android:src="@drawable/ic_arrow_back_white"
         android:background="@android:color/transparent"
         android:onClick="onBackButtonClick"
         android:contentDescription="@string/back_button"
@@ -26,7 +26,7 @@
                 android:id="@+id/monthlyCalendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@drawable/background_white_outline"
                 android:layout_margin="15dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,15 +42,15 @@
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:src="@drawable/ic_home_transparent"
-                    android:background="@drawable/background_grey_outline"/>
+                    android:background="@drawable/background_white_outline_clear"/>
                 <ImageButton
                     android:id="@+id/menuRecipeButton"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_margin="5dp"
-                    android:src="@drawable/ic_food_transparent"
-                    android:background="@drawable/background_grey_outline"/>
+                    android:src="@drawable/ic_fork_transparent"
+                    android:background="@drawable/background_white_outline_clear"/>
                 <ImageButton
                     android:id="@+id/menuExerciseButton"
                     android:layout_width="0dp"
@@ -58,7 +58,7 @@
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:src="@drawable/ic_exercise_transparent"
-                    android:background="@drawable/background_grey_outline"/>
+                    android:background="@drawable/background_white_outline_clear"/>
                 <ImageButton
                     android:id="@+id/menuTimersButton"
                     android:layout_width="0dp"
@@ -66,7 +66,7 @@
                     android:layout_weight="1"
                     android:layout_margin="5dp"
                     android:src="@drawable/ic_timer_transparent"
-                    android:background="@drawable/background_grey_outline"/>
+                    android:background="@drawable/background_white_outline_clear"/>
 
             </LinearLayout>
 

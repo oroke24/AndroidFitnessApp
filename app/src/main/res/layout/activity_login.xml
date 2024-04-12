@@ -8,27 +8,27 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/exitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_transparent"
+            android:contentDescription="@string/exitbutton"
+            android:background="@android:color/transparent"
+            android:layout_gravity="end"
+            android:padding="20dp"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:maxWidth="200dp"
-            android:maxHeight="200dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/background_grey_rounded_corners"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/app_icon"/>
+            android:src="@drawable/ic_login_transparent"/>
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:layout_marginBottom="16dp"/>
+
 
         <EditText
             android:id="@+id/email"
@@ -58,14 +58,15 @@
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="40dp"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="24sp"
+            android:drawableEnd="@drawable/ic_login_transparent"
             android:background="@drawable/cool_button3"
-            android:layout_marginTop="45dp"/>
+            android:layout_margin="45dp"/>
 
         <Button
             android:id="@+id/registerButton"
@@ -74,9 +75,10 @@
             android:text="@string/register"
             android:textColor="@color/white"
             android:textSize="24sp"
+            android:drawableEnd="@drawable/ic_register_transparent"
             android:padding="30dp"
-            android:background="@drawable/cool_button3"
-            android:layout_marginTop="25dp"/>
+            android:background="@drawable/cool_button"
+            android:layout_marginTop="30dp"/>
 
         <!-- Redacting guest button for now
             <Button
