@@ -38,9 +38,11 @@ class RecipeDataManager(private val email: String) {
             }
     }
     fun addRecipe(recipe: Recipe) {
-        thisUsersRecipes.add(recipe)
+        val recipeName = recipe.name.lowercase().trim()
+        val trimmedRecipeName = recipeName.replace("^\\s*|\\s\$".toRegex(),"")
+        thisUsersRecipes.document(trimmedRecipeName).set(recipe)
             .addOnSuccessListener {
-                Log.d(ContentValues.TAG, it.id)
+                Log.d(ContentValues.TAG, "Added/Updated $recipeName")
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error adding recipe: ${recipe.name}, $exception")
@@ -49,9 +51,10 @@ class RecipeDataManager(private val email: String) {
     suspend fun addRecipeWithPermission(context: Context, recipe: Recipe): Boolean {
         var isAdded = false
         val recipeName = recipe.name.lowercase().trim()
+        val trimmedRecipeName = recipeName.replace("^\\s*|\\s\$".toRegex(),"")
         Log.d(ContentValues.TAG,"addRecipe: recipeID: ${recipe.name}")
         return try {
-            val existingRecipeDoc = thisUsersRecipes.document(recipeName).get().await()
+            val existingRecipeDoc = thisUsersRecipes.document(trimmedRecipeName).get().await()
             if (existingRecipeDoc.exists()) {
                 val overwriteApproved = fx.userApprovesOverwrite(context, recipeName)
                 if(overwriteApproved){
@@ -60,12 +63,13 @@ class RecipeDataManager(private val email: String) {
                     Toast.makeText(context,  "$recipeName updated!", Toast.LENGTH_LONG).show()
                 }else{Toast.makeText(context, "Recipe NOT overwritten",Toast.LENGTH_LONG).show()}
             }else{
-                val newRecipeData = hashMapOf(
-                    "name" to recipe.name,
-                    "ingredients" to recipe.ingredients,
-                    "instructions" to recipe.instructions
+                val newRecipeData = Recipe(
+                    "",
+                     recipe.name,
+                     recipe.ingredients,
+                     recipe.instructions
                 )
-                thisUsersRecipes.document(recipeName).set(newRecipeData).await()
+                thisUsersRecipes.document(trimmedRecipeName).set(newRecipeData).await()
                 isAdded = true
                 Toast.makeText(context, "$recipeName added!", Toast.LENGTH_LONG).show()
             }

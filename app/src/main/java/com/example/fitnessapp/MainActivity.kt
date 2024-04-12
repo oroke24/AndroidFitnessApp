@@ -2,14 +2,20 @@ package com.example.fitnessapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +24,7 @@ class MainActivity : ComponentActivity() {
 
         val fx = InteractionEffects()
         val email = intent.getStringExtra("USER_EMAIL") ?: ""
+        val todaySnapShotLayout = findViewById<LinearLayout>(R.id.todaySnapShotLayout)
         val recipeButton = findViewById<Button>(R.id.recipeButton)
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
         val timersButton = findViewById<Button>(R.id.timersButton)
@@ -26,10 +33,28 @@ class MainActivity : ComponentActivity() {
         val firebaseAuth = FirebaseAuth.getInstance()
         val usernameTextView = findViewById<TextView>(R.id.usernameTextView)
         val dateTextView = findViewById<TextView>(R.id.dateTextView)
+        val dayDataManager = DayDataManager(email)
+        val todaysRecipeTextView = findViewById<TextView>(R.id.recipeName)
+        val todaysExerciseTextView = findViewById<TextView>(R.id.exerciseName)
 
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
         val currentDateFormatted = dateFormat.format(calendar.time)
+        val formattedDateForDB = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.time)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val thisDay = dayDataManager.getDayFromDate(formattedDateForDB)
+            todaysRecipeTextView.text = thisDay.recipeId
+            todaysExerciseTextView.text = thisDay.exerciseId
+            if(todaysRecipeTextView.text.isBlank()){
+                todaysRecipeTextView.text = getString(R.string.none)
+            }
+            if(todaysExerciseTextView.text.isBlank()){
+                todaysExerciseTextView.text = getString(R.string.none)
+            }
+            todaysRecipeTextView.visibility = View.VISIBLE
+            todaysExerciseTextView.visibility = View.VISIBLE
+        }
 
         usernameTextView.text = email
         dateTextView.text = currentDateFormatted
@@ -38,6 +63,10 @@ class MainActivity : ComponentActivity() {
             fx.imageButtonClickEffect(logoutButton)
             firebaseAuth.signOut()
             finish()
+        }
+        todaySnapShotLayout.setOnClickListener{
+            fx.itemViewClickEffect(todaySnapShotLayout)
+            intentWithEmail(CalendarActivity(), email)
         }
         recipeButton.setOnClickListener {
             fx.buttonClickEffect(recipeButton)

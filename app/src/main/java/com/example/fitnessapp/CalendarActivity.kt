@@ -1,5 +1,6 @@
 package com.example.fitnessapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CalendarView
@@ -36,7 +37,9 @@ class CalendarActivity : ComponentActivity(){
         weeklyCalendar.adapter = weeklyAdapter
 
         updateWeeklyView(Calendar.getInstance())
-        backButton.setOnClickListener {finish()}
+        backButton.setOnClickListener {
+           intentWithEmail(MainActivity(), email)
+        }
 
         monthlyCalendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDate = Calendar.getInstance()
@@ -57,6 +60,11 @@ class CalendarActivity : ComponentActivity(){
         }
 
         weeklyAdapter.updateData(daysOfWeek)
+    }
+    private fun intentWithEmail(nextActivity: ComponentActivity, email: String) {
+        val intent = Intent(this, nextActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
+        startActivity(intent)
     }
 
 }

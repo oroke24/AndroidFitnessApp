@@ -35,10 +35,13 @@ class ExerciseDataManager(private val email: String) {
     }
 
     fun addExercise(exercise: Exercise){
+
+        val exerciseName = exercise.name.lowercase()
+        val trimmedExerciseName = exerciseName.replace("^\\s*|\\s\$".toRegex(),"")
         thisUsersExercises
-            .add(exercise)
-            .addOnSuccessListener { documentReference ->
-                Log.d(ContentValues.TAG, "Exercise added with ID: ${documentReference.id}")
+            .document(trimmedExerciseName).set(exercise)
+            .addOnSuccessListener {
+                Log.d(ContentValues.TAG, "Exercise added with ID: $trimmedExerciseName")
             }
             .addOnFailureListener{exception ->
                 Log.w(ContentValues.TAG, "Error adding Exercise", exception)
@@ -47,9 +50,10 @@ class ExerciseDataManager(private val email: String) {
     suspend fun addExerciseWithPermission(context: Context, exercise: Exercise): Boolean {
         var isAdded = false
         val exerciseName = exercise.name.lowercase().trim()
+        val trimmedExerciseName = exerciseName.replace("^\\s*|\\s\$".toRegex(),"")
         Log.d(ContentValues.TAG,"addExercise: exerciseID: ${exercise.name}")
         return try {
-            val existingExerciseDoc = thisUsersExercises.document(exerciseName).get().await()
+            val existingExerciseDoc = thisUsersExercises.document(trimmedExerciseName).get().await()
             if (existingExerciseDoc.exists()) {
                 val overwriteApproved = fx.userApprovesOverwrite(context, exerciseName)
                 if(overwriteApproved){
@@ -59,12 +63,13 @@ class ExerciseDataManager(private val email: String) {
                 }else{
                     Toast.makeText(context, "Exercise NOT overwritten", Toast.LENGTH_LONG).show()}
             }else{
-                val newExerciseData = hashMapOf(
-                    "name" to exercise.name,
-                    "muscleGroup" to exercise.muscleGroup,
-                    "instructions" to exercise.instructions
+                val newExerciseData = Exercise(
+                    "",
+                    exercise.name,
+                     exercise.muscleGroup,
+                     exercise.instructions
                 )
-                thisUsersExercises.document(exerciseName).set(newExerciseData).await()
+                thisUsersExercises.document(trimmedExerciseName).set(newExerciseData).await()
                 isAdded = true
                 Toast.makeText(context, "$exerciseName added!", Toast.LENGTH_LONG).show()
             }
@@ -99,7 +104,6 @@ class ExerciseDataManager(private val email: String) {
             }
             .addOnFailureListener { exception ->
                 Log.w("fetchUserExercises", "Failure fetching Exercises")
-                // Handle error
             }
     }
     fun showExerciseSelectionDialog(context: Context, exercises: List<Pair<String, String>>, callback: (String) -> Unit) {

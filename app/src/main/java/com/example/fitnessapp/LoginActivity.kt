@@ -60,8 +60,8 @@ class LoginActivity : ComponentActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    //val initializeData = InitializeData(email)
-                    //initializeData.begin() //Only use here for database testing
+                    val initializeData = InitializeData(email)
+                    initializeData.begin() //Only use here for database testing
                     navigateToMain(email)
                 } else {
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()

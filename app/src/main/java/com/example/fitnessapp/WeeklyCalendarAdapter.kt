@@ -56,6 +56,13 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val dayManager = DayDataManager(email)
         val date = adapter.daysOfWeek[position]
         dateTextView.text = dateViewFormat.format(date)
+        val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val thisDay = dayManager.getDayFromDate(formattedDate)
+            recipeNameTextView.text = thisDay.recipeId
+            exerciseNameTextView.text = thisDay.exerciseId
+        }
 
         val animation = AlphaAnimation(0.1f, 1.0f)
         animation.duration = 1000 // Set the duration of the animation (in milliseconds)
@@ -67,7 +74,7 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
                 fx.selectionDialogReturnItemId(itemView.context, recipes) { selectedRecipeId ->
                     CoroutineScope(Dispatchers.Main).launch {
                         recipeNameTextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        dayManager.addRecipeToDay(date, selectedRecipeId)
+                        dayManager.addRecipeToDay(formattedDate, selectedRecipeId)
                     }
                 }
             }
@@ -79,7 +86,7 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
                 exerciseManager.showExerciseSelectionDialog(itemView.context, exercises){selectedExerciseId ->
                     CoroutineScope(Dispatchers.Main).launch{
                         exerciseNameTextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                        dayManager.addExerciseToDay(date, selectedExerciseId)
+                        dayManager.addExerciseToDay(formattedDate, selectedExerciseId)
                     }
                 }
 
