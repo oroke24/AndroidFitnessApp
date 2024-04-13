@@ -2,6 +2,7 @@ package com.example.fitnessapp
 
 import android.app.AlertDialog
 import android.content.Context
+import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +23,7 @@ import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
-class WeeklyCalendarAdapter(private val email: String) : RecyclerView.Adapter<ViewHolder>() {
+class WeeklyCalendarAdapter(private val email: String, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>() {
     var daysOfWeek: List<Date> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,6 +40,7 @@ class WeeklyCalendarAdapter(private val email: String) : RecyclerView.Adapter<Vi
     }
     fun updateData(daysOfWeek: List<Date>){
         this.daysOfWeek = daysOfWeek
+        recyclerView.scrollToPosition(0)
         notifyDataSetChanged()
     }
 }
@@ -45,10 +48,10 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     private val fx = InteractionEffects()
     private val dateViewFormat = SimpleDateFormat("EEE, dd MMM", Locale.getDefault())
     private val dateTextView : TextView = itemView.findViewById(R.id.dayOfWeek)
-    private val recipeNameTextView : TextView = itemView.findViewById(R.id.recipeName)
-    private val exerciseNameTextView : TextView = itemView.findViewById(R.id.exerciseName)
-    private val recipeButton : ImageButton = itemView.findViewById(R.id.addRecipeButton)
-    private val exerciseButton: ImageButton = itemView.findViewById(R.id.addExerciseButton)
+    private val recipeNameTextView : TextView = itemView.findViewById(R.id.addRecipeButton)
+    private val exerciseNameTextView : TextView = itemView.findViewById(R.id.addExerciseButton)
+    private val deleteRecipeButton : ImageButton = itemView.findViewById(R.id.deleteRecipeButton)
+    private val deleteExerciseButton: ImageButton = itemView.findViewById(R.id.deleteExerciseButton)
 
     fun bind(adapter: WeeklyCalendarAdapter, position: Int, email: String) {
         val recipeManager = RecipeDataManager(email)
@@ -59,7 +62,7 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
 
         CoroutineScope(Dispatchers.Main).launch {
-            val thisDay = dayManager.getDayFromDate(formattedDate)
+            val thisDay: Day = dayManager.getDayFromDate(formattedDate)
             recipeNameTextView.text = thisDay.recipeId
             exerciseNameTextView.text = thisDay.exerciseId
         }
@@ -68,8 +71,8 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         animation.duration = 1000 // Set the duration of the animation (in milliseconds)
         itemView.startAnimation(animation) // Start the animation
 
-        recipeButton.setOnClickListener {
-            fx.imageButtonClickEffect(recipeButton)
+        recipeNameTextView.setOnClickListener {
+            fx.itemViewClickEffect(recipeNameTextView)
             recipeManager.fetchUserRecipeIds { recipes ->
                 fx.selectionDialogReturnItemId(itemView.context, recipes) { selectedRecipeId ->
                     CoroutineScope(Dispatchers.Main).launch {
@@ -79,9 +82,17 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
                 }
             }
         }
+        deleteRecipeButton.setOnLongClickListener{
+            fx.imageButtonClickEffect(deleteRecipeButton)
+            CoroutineScope(Dispatchers.Main).launch {
+                recipeNameTextView.text = ""
+                dayManager.addRecipeToDay(formattedDate,"")
+            }
+            true
+        }
 
-        exerciseButton.setOnClickListener{
-            fx.imageButtonClickEffect(exerciseButton)
+        exerciseNameTextView.setOnClickListener{
+            fx.itemViewClickEffect(exerciseNameTextView)
             exerciseManager.fetchUserExerciseIds { exercises ->
                 exerciseManager.showExerciseSelectionDialog(itemView.context, exercises){selectedExerciseId ->
                     CoroutineScope(Dispatchers.Main).launch{
@@ -91,6 +102,14 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
                 }
 
             }
+        }
+        deleteExerciseButton.setOnLongClickListener{
+            fx.imageButtonClickEffect(deleteExerciseButton)
+            CoroutineScope(Dispatchers.Main).launch {
+                exerciseNameTextView.text = ""
+                dayManager.addExerciseToDay(formattedDate, "")
+            }
+            true
         }
     }
 

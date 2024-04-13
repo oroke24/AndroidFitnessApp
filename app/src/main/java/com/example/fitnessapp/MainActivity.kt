@@ -16,14 +16,19 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
+    private lateinit var email: String
+    lateinit var todaysRecipeTextView : TextView
+    lateinit var todaysExerciseTextView : TextView
+    lateinit var dateTextView : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        email = intent.getStringExtra("USER_EMAIL") ?: ""
         val fx = InteractionEffects()
-        val email = intent.getStringExtra("USER_EMAIL") ?: ""
         val todaySnapShotLayout = findViewById<LinearLayout>(R.id.todaySnapShotLayout)
         val recipeButton = findViewById<Button>(R.id.recipeButton)
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
@@ -32,32 +37,15 @@ class MainActivity : ComponentActivity() {
         val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
         val firebaseAuth = FirebaseAuth.getInstance()
         val usernameTextView = findViewById<TextView>(R.id.usernameTextView)
-        val dateTextView = findViewById<TextView>(R.id.dateTextView)
-        val dayDataManager = DayDataManager(email)
-        val todaysRecipeTextView = findViewById<TextView>(R.id.recipeName)
-        val todaysExerciseTextView = findViewById<TextView>(R.id.exerciseName)
+        dateTextView = findViewById(R.id.dateTextView)
+        todaysRecipeTextView = findViewById(R.id.recipeName)
+        todaysExerciseTextView = findViewById(R.id.exerciseName)
 
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
-        val currentDateFormatted = dateFormat.format(calendar.time)
-        val formattedDateForDB = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.time)
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val thisDay = dayDataManager.getDayFromDate(formattedDateForDB)
-            todaysRecipeTextView.text = thisDay.recipeId
-            todaysExerciseTextView.text = thisDay.exerciseId
-            if(todaysRecipeTextView.text.isBlank()){
-                todaysRecipeTextView.text = getString(R.string.none)
-            }
-            if(todaysExerciseTextView.text.isBlank()){
-                todaysExerciseTextView.text = getString(R.string.none)
-            }
-            todaysRecipeTextView.visibility = View.VISIBLE
-            todaysExerciseTextView.visibility = View.VISIBLE
-        }
 
+
+        setToday(DayDataManager(email))
         usernameTextView.text = email
-        dateTextView.text = currentDateFormatted
 
         logoutButton.setOnClickListener {
             fx.imageButtonClickEffect(logoutButton)
@@ -91,5 +79,29 @@ class MainActivity : ComponentActivity() {
         val intent = Intent(this, thisActivity::class.java)
         intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
+    }
+    override fun onResume() {
+        super.onResume()
+        setToday(DayDataManager(email))
+    }
+    private fun setToday(dayDataManager: DayDataManager) {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
+        val currentDateFormatted = dateFormat.format(calendar.time)
+        val formattedDateForDB = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.time)
+        dateTextView.text = currentDateFormatted
+        CoroutineScope(Dispatchers.Main).launch {
+            val thisDay = dayDataManager.getDayFromDate(formattedDateForDB)
+            todaysRecipeTextView.text = thisDay.recipeId
+            todaysExerciseTextView.text = thisDay.exerciseId
+            if (todaysRecipeTextView.text.isBlank()) {
+                todaysRecipeTextView.text = getString(R.string.none)
+            }
+            if (todaysExerciseTextView.text.isBlank()) {
+                todaysExerciseTextView.text = getString(R.string.none)
+            }
+            todaysRecipeTextView.visibility = View.VISIBLE
+            todaysExerciseTextView.visibility = View.VISIBLE
+        }
     }
 }

@@ -50,9 +50,21 @@ class DayDataManager(private val email: String) {
             Log.e("addExerciseToDay: Error", "Error: ${e.message}")
         }
     }
+    suspend fun emptyRecipeIdFromDay(formattedDate: String){
+        val thisDayDocRef = daysCollection.document(formattedDate).get().await()
+        if(thisDayDocRef.exists()){
+           thisDayDocRef.reference.update("recipeId","")
+        }
+    }
+    suspend fun emptyExerciseIdFromDay(formattedDate: String){
+        val thisDayDocRef = daysCollection.document(formattedDate).get().await()
+        if(thisDayDocRef.exists()){
+            thisDayDocRef.reference.update("exerciseId","")
+        }
+    }
 
     suspend fun getDayFromDate(formattedDate: String): Day {
-        var thisDay = Day("", "", "None", "None")
+        var thisDay = Day("", "", "", "")
         val thisDayDocRef = daysCollection.document(formattedDate).get().await()
         if(thisDayDocRef.exists()){
             val date = thisDayDocRef.getString(thisDayDocRef.id)?:""

@@ -34,7 +34,7 @@ class CalendarActivity : ComponentActivity(){
         backButton = findViewById(R.id.backButton)
         monthlyCalendar = findViewById(R.id.monthlyCalendarView)
         weeklyCalendar = findViewById(R.id.weeklyCalendarView)
-        weeklyAdapter = WeeklyCalendarAdapter(email)
+        weeklyAdapter = WeeklyCalendarAdapter(email, weeklyCalendar)
         homeButton = findViewById(R.id.menuHomeButton)
         foodButton = findViewById(R.id.menuRecipeButton)
         exerciseButton = findViewById(R.id.menuExerciseButton)
@@ -44,6 +44,11 @@ class CalendarActivity : ComponentActivity(){
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         weeklyCalendar.layoutManager = layoutManager
         weeklyCalendar.adapter = weeklyAdapter
+
+        backButton.setOnClickListener {
+            fx.imageButtonClickEffectQuick(backButton)
+            finish()
+        }
 
         homeButton.setOnClickListener{
             fx.imageButtonClickEffectQuick(homeButton)
@@ -62,10 +67,6 @@ class CalendarActivity : ComponentActivity(){
             intentWithEmail(TimersActivity(), email)
         }
         updateWeeklyView(Calendar.getInstance())
-        backButton.setOnClickListener {
-            fx.imageButtonClickEffectQuick(backButton)
-            intentWithEmail(MainActivity(), email)
-        }
 
         monthlyCalendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDate = Calendar.getInstance()
@@ -78,7 +79,6 @@ class CalendarActivity : ComponentActivity(){
     private fun updateWeeklyView(selectedDate: Calendar) {
         val daysOfWeek = arrayListOf<Date>()
         val cal = Calendar.getInstance()
-
         cal.time = selectedDate.time
         for(i in 0 until 7){
             daysOfWeek.add(cal.time)

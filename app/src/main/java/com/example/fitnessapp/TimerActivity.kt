@@ -21,6 +21,9 @@ import org.checkerframework.checker.index.qual.GTENegativeOne
 
 class TimerActivity : ComponentActivity() {
     private lateinit var backButton: ImageButton
+    private lateinit var hoursTextView: TextView
+    private lateinit var minutesTextView: TextView
+    private lateinit var secondsTextView: TextView
     private lateinit var hoursPicker: NumberPicker
     private lateinit var minutesPicker: NumberPicker
     private lateinit var secondsPicker: NumberPicker
@@ -39,6 +42,9 @@ class TimerActivity : ComponentActivity() {
         setContentView(R.layout.activity_timer)
         val fx = InteractionEffects()
 
+        hoursTextView = findViewById(R.id.hoursTextView)
+        minutesTextView = findViewById(R.id.minutesTextView)
+        secondsTextView = findViewById(R.id.secondsTextView)
         hoursPicker = findViewById(R.id.hoursPicker)
         minutesPicker = findViewById(R.id.minutesPicker)
         secondsPicker = findViewById(R.id.secondsPicker)
@@ -109,6 +115,9 @@ class TimerActivity : ComponentActivity() {
         hoursPicker.visibility= View.GONE
         minutesPicker.visibility=View.GONE
         secondsPicker.visibility=View.GONE
+        hoursTextView.visibility=View.GONE
+        minutesTextView.visibility=View.GONE
+        secondsTextView.visibility=View.GONE
         timerTextView.visibility=View.VISIBLE
         pauseButton.visibility= View.VISIBLE
         continueButton.visibility=View.VISIBLE
@@ -140,6 +149,9 @@ class TimerActivity : ComponentActivity() {
         hoursPicker.visibility= View.VISIBLE
         minutesPicker.visibility=View.VISIBLE
         secondsPicker.visibility=View.VISIBLE
+        hoursTextView.visibility=View.VISIBLE
+        minutesTextView.visibility=View.VISIBLE
+        secondsTextView.visibility=View.VISIBLE
         timerRunning = false
 
     }

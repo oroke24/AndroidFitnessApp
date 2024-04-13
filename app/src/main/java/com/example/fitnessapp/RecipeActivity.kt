@@ -53,7 +53,7 @@ class RecipeActivity : ComponentActivity() {
 
         homeButton.setOnClickListener{
             fx.imageButtonClickEffect(homeButton)
-            finish()
+            intentWithEmail(MainActivity(), email)
         }
         exerciseButton.setOnClickListener{
             fx.imageButtonClickEffect(exerciseButton)
