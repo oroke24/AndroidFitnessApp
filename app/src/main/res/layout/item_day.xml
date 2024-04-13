@@ -10,7 +10,7 @@
             android:id="@+id/dayOfWeek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginTop="20dp"
             android:text="@string/blank"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -32,7 +32,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:layout_margin="10dp"
+                            android:layout_margin="5dp"
                             android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/addRecipeButton"
@@ -61,7 +61,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:layout_margin="10dp"
+                            android:layout_margin="5dp"
                             android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/addExerciseButton"
