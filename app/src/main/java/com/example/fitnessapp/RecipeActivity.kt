@@ -91,6 +91,8 @@ class RecipeActivity : ComponentActivity() {
                         instructionsEditText.text.clear()
                     }
                 }
+                loadRecipes(recipeDataManager)
+                intentWithEmail(RecipeActivity(), email)
             }
         }
     }

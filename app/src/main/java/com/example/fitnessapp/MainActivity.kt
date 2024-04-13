@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
 
 
 
-        setToday(DayDataManager(email))
         usernameTextView.text = email
 
         logoutButton.setOnClickListener {
@@ -73,6 +72,7 @@ class MainActivity : ComponentActivity() {
             fx.buttonClickEffect(calendarButton)
             intentWithEmail(CalendarActivity(), email)
         }
+        setToday(DayDataManager(email))
     }
 
     private fun intentWithEmail(thisActivity: ComponentActivity, email: String) {

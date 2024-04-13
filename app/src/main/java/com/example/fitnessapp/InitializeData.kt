@@ -44,6 +44,19 @@ class InitializeData(private val myEmail: String) {
         val initialRecipes = listOf(
             Recipe(
                 "",
+                "1) You can delete me!",
+                "C'ya!",
+                "I'll be back"
+            ),
+            Recipe(
+                "",
+                "2) You can edit me",
+                "-Think of these cards as your personal deck of recipes\n"+
+                        "-Your deck is always sorted a-z",
+                "Following this card are two premade cards.  Enjoy!"
+            ),
+            Recipe(
+                "",
                 "Potato Bake",
                 "-5 Potatoes\n-12 Eggs\n-3 Bell Peppers\n-1-2lbs Meat\n" +
                         "-2 Tbsp Oil\n-2 Tbsp seasoning\n-1 Tbsp salt\n-Tortillas (optional)",
@@ -72,6 +85,19 @@ class InitializeData(private val myEmail: String) {
     }
     private fun addInitialExercisesForUser(): String{
         val initialExercises = listOf(
+            Exercise(
+                "",
+                "1) Me too!",
+                "later alligator",
+                "Back soon, I'll shall be"
+            ),
+            Exercise(
+                "",
+                "2) You can edit me",
+                "-Think of these cards as your personal deck of exercises\n"+
+                        "-Your deck is always sorted a-z",
+                "Following this card are two premade cards.  Enjoy!"
+            ),
             Exercise(
                  "",
                  "Hypertrophy",

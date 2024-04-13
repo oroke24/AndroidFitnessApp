@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater

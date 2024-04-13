@@ -44,18 +44,44 @@ class RegistrationActivity : ComponentActivity() {
     }
 
     private fun registerUser(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
+        val user = auth.currentUser
+        if(user != null) {
+            Toast.makeText(baseContext, "user already exists.", Toast.LENGTH_LONG).show()
+        }else {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        sendVerificationEmail(email)
+                        val initializeData = InitializeData(email)
+                        initializeData.begin()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        // Registration failed, displaying a message to the user
+                        Toast.makeText(
+                            baseContext, "$email already has account",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+        }
+    }
+    private fun sendVerificationEmail(email: String) {
+        val user = auth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val initializeData = InitializeData(email)
-                    initializeData.begin()
-                    startActivity(Intent(this, LoginActivity::class.java))
-                    finish()
+                    Toast.makeText(
+                        baseContext, "Verify link sent to $email (resets in 24hrs)",
+                        Toast.LENGTH_LONG + 5
+                    ).show()
                 } else {
-                    // Registration failed, displaying a message to the user
-                    Toast.makeText(baseContext, "Registration failed or user already exists.",
-                        Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        baseContext, "Failed to send verification email.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }
+
 }

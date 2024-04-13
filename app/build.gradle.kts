@@ -88,4 +88,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     //Adding Firstore dependency
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+
 }
