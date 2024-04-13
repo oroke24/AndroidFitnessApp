@@ -41,9 +41,8 @@
                                     android:gravity="center"
                                     android:background="@drawable/cool_background"
                                     android:drawableEnd="@drawable/ic_refresh_transparent_24"
-                                    android:textSize="16sp"
-                                    android:textStyle="bold"
-                                    android:padding="10dp"
+                                    android:textSize="18sp"
+                                    android:padding="15dp"
                                     android:textColor="@color/white"/>
 
                                 <ImageButton
@@ -71,9 +70,8 @@
                                     android:gravity="center"
                                     android:background="@drawable/cool_background2"
                                     android:drawableEnd="@drawable/ic_refresh_transparent_24"
-                                    android:textSize="16sp"
-                                    android:textStyle="bold"
-                                    android:padding="10dp"
+                                    android:textSize="18sp"
+                                    android:padding="15dp"
                                     android:textColor="@color/white"/>
 
                                 <ImageButton

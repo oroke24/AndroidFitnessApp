@@ -69,4 +69,7 @@
     <string name="seconds">Seconds</string>
     <string name="hours">Hours</string>
     <string name="exitbutton">exitButton</string>
+    <string name="save_changes">Save changes</string>
+    <string name="save_and_keep_original">save and KEEP original</string>
+    <string name="save_and_delete_original">save and DELETE original</string>
 </resources>

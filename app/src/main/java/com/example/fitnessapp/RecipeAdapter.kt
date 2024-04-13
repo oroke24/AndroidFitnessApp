@@ -10,7 +10,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecipeAdapter(private var recipeDataManager: RecipeDataManager) : RecyclerView.Adapter<RecipeViewHolder>() {
+class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeViewHolder>() {
+    private val recipeDataManager = RecipeDataManager(email)
     private var recipes = listOf<Recipe>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
@@ -27,7 +28,10 @@ class RecipeAdapter(private var recipeDataManager: RecipeDataManager) : Recycler
             fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
             val backgroundID = context.resources.getIdentifier("cool_background", "drawable", context.packageName)
+            val dataManagerType: String = "recipes"
             val intent = Intent(context, ItemDetailsActivity::class.java).apply {
+                putExtra("email", email)
+                putExtra("dataManagerType", dataManagerType)
                 putExtra("backgroundID", backgroundID)
                 putExtra("title", recipe.name)
 

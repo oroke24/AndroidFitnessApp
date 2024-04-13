@@ -20,6 +20,7 @@ class RecipeActivity : ComponentActivity() {
     private lateinit var exerciseButton: ImageButton
     private lateinit var timersButton: ImageButton
     private lateinit var calendarButton: ImageButton
+    private lateinit var recipeDataManager: RecipeDataManager
     val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +40,8 @@ class RecipeActivity : ComponentActivity() {
         calendarButton = findViewById(R.id.menuCalendarButton)
 
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
-        val recipeDataManager = RecipeDataManager(email)
-        adapter = RecipeAdapter(recipeDataManager)
+        recipeDataManager = RecipeDataManager(email)
+        adapter = RecipeAdapter(email)
         loadRecipes(recipeDataManager)
 
         recipeRecyclerView.layoutManager = layoutManager
@@ -104,5 +105,10 @@ class RecipeActivity : ComponentActivity() {
         val intent = Intent(this, thisActivity::class.java)
         intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadRecipes(recipeDataManager)
     }
 }

@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
+            <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,11 +38,12 @@
                 android:text="@string/sub_group_one_title"
                 android:textSize="28sp"
                 android:textStyle="bold"/>
-            <TextView
+            <EditText
                 android:id="@+id/subGroupOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:paddingBottom="10dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
             <!-- Instructions Details -->
@@ -54,13 +55,35 @@
                 android:text="@string/sub_group_two_title"
                 android:textSize="28sp"
                 android:textStyle="bold"/>
-            <TextView
+            <EditText
                 android:id="@+id/subGroupTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="30dp"
+                android:layout_gravity="end"
+                android:text="@string/save_and_keep_original"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:background="@drawable/background_grey_rounded_corners"/>
+            <Button
+                android:id="@+id/replaceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="30dp"
+                android:layout_gravity="end"
+                android:text="@string/save_and_delete_original"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:background="@drawable/background_grey_rounded_corners"/>
 
         </LinearLayout>
     </ScrollView>

@@ -107,4 +107,5 @@ class InteractionEffects {
         }
         dialog.show()
     }
+
 }
