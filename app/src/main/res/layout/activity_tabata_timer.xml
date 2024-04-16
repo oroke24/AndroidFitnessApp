@@ -23,7 +23,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#667"
+        android:textColor="#FFF"
         android:textAlignment="center"
         android:textSize="30sp"
         android:layout_marginBottom="50dp"
@@ -40,74 +40,102 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/minutesTextView"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1"
-            android:textAlignment="center"
-            android:text="@string/minutes"
-            android:textSize="20sp"
-            android:textColor="#AAEEFF"/>
-        <TextView
-            android:id="@+id/workTextView"
+            android:orientation="vertical">
+            <!-- Hours Scroll -->
+            <TextView
+                android:id="@+id/minutesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_margin="15dp"
+                android:text="@string/minutes"
+                android:textSize="20sp"
+                android:textColor="#AAEEFF"/>
+            <NumberPicker
+                android:id="@+id/minutesPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/background_grey_gradient"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="20dp"
+                android:descendantFocusability="blocksDescendants"
+                android:max="23"
+                android:min="0"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1"
-            android:textAlignment="center"
-            android:text="@string/work_default"
-            android:textSize="20sp"
-            android:textColor="#AAEEFF"/>
-        <TextView
-            android:id="@+id/restTextView"
+            android:orientation="vertical">
+            <!-- Minutes Scroll -->
+            <TextView
+                android:id="@+id/workTextView"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="15dp"
+                android:textAlignment="center"
+                android:text="@string/work"
+                android:textSize="20sp"
+                android:textColor="#AAEEFF"/>
+            <NumberPicker
+                android:id="@+id/workPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textColor="@color/white"
+                android:background="@drawable/background_grey_gradient"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="20dp"
+                android:descendantFocusability="blocksDescendants"
+                android:max="59"
+                android:min="0"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1"
-            android:textAlignment="center"
-            android:text="@string/rest_default"
-            android:textSize="20sp"
-            android:textColor="#AAEEFF"/>
+            android:orientation="vertical">
+            <!-- Seconds Scroll -->
+            <TextView
+                android:id="@+id/restTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="15dp"
+                android:text="@string/rest"
+                android:textSize="20sp"
+                android:textColor="#AAEEFF"/>
+            <NumberPicker
+                android:id="@+id/restPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textColor="@color/white"
+                android:background="@drawable/background_grey_gradient"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="20dp"
+                android:max="59"
+                android:min="0"
+                android:layout_weight="1" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#DDDDDD"
-        android:orientation="horizontal">
-        <!-- Hours Scroll -->
-        <NumberPicker
-            android:id="@+id/hoursPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:descendantFocusability="blocksDescendants"
-            android:max="60"
-            android:min="0"
-            android:layout_weight="1" />
-
-        <!-- Minutes Scroll -->
-        <NumberPicker
-            android:id="@+id/workIntervalPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:descendantFocusability="blocksDescendants"
-            android:textSize="50sp"
-            android:max="60"
-            android:min="0"
-            android:layout_weight="1" />
-
-        <!-- Seconds Scroll -->
-        <NumberPicker
-            android:id="@+id/restIntervalPicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:descendantFocusability="blocksDescendants"
-            android:max="60"
-            android:min="0"
-            android:layout_weight="1" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Timer Display -->
@@ -118,6 +146,16 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:textColor="#AAEEFF"
+        android:textSize="50sp"
+        android:text="@string/default_tabata_timer" />
+
+    <TextView
+        android:id="@+id/elapsedIntervalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="#AAAAAA"
         android:textSize="100sp"
         android:text="@string/default_tabata_timer" />
 

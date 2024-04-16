@@ -86,7 +86,6 @@ class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         animation.duration = 1000 // Set the duration of the animation (in milliseconds)
         itemView.startAnimation(animation) // Start the animation
 
-
         deleteButton.setOnLongClickListener {
             adapter.deleteRecipe(absoluteAdapterPosition)
             true

@@ -70,8 +70,10 @@ class ItemDetailsActivity() : ComponentActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                saveButton.visibility= View.VISIBLE
-                replaceButton.visibility= View.VISIBLE
+                if(titleEditText.text.toString() == originalCard) {
+                    replaceButton.visibility = View.VISIBLE
+                }else replaceButton.visibility = View.GONE
+                saveButton.visibility = View.VISIBLE
             }
         }
         titleEditText.addTextChangedListener(textWatcher)
@@ -80,14 +82,17 @@ class ItemDetailsActivity() : ComponentActivity() {
 
         saveButton.setOnClickListener {
             fx.buttonClickEffect(saveButton)
-
+            var newCard = titleEditText.text.toString()
+            if(newCard == originalCard) {
+                newCard = "$originalCard+"
+            }
             if(dataManagerType == "recipes"){
-                val newRecipe = Recipe("", titleEditText.text.toString(), subGroupOneEditText.text.toString(), subGroupTwoEditText.text.toString())
+                val newRecipe = Recipe("", newCard, subGroupOneEditText.text.toString(), subGroupTwoEditText.text.toString())
                 recipeDataManager.addRecipe(newRecipe)
             }
 
             if(dataManagerType == "exercises"){
-                val newExercise = Exercise("", titleEditText.text.toString(), subGroupOneEditText.text.toString(), subGroupTwoEditText.text.toString())
+                val newExercise = Exercise("", newCard, subGroupOneEditText.text.toString(), subGroupTwoEditText.text.toString())
                 exerciseDataManager.addExercise(newExercise)
             }
 

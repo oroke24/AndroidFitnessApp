@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -20,28 +22,59 @@ import java.util.Date
 
 class MainActivity : ComponentActivity() {
     private lateinit var email: String
+    private lateinit var homeMenuButton: ImageButton
+    private lateinit var recipeMenuButton: ImageButton
+    private lateinit var exerciseMenuButton: ImageButton
+    private lateinit var timersMenuButton: ImageButton
+    private lateinit var calendarMenuButton: ImageButton
     lateinit var todaysRecipeTextView : TextView
     lateinit var todaysExerciseTextView : TextView
     lateinit var dateTextView : TextView
+    lateinit var recipeAdapter: RecipeAdapter
+    lateinit var exerciseAdapter: ExerciseAdapter
+    lateinit var weeklyAdapter: WeeklyCalendarAdapter
+    private lateinit var recipeDataManager: RecipeDataManager
+    private lateinit var exerciseDataManager: ExerciseDataManager
+    private lateinit var weeklyDataManager: DayDataManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         email = intent.getStringExtra("USER_EMAIL") ?: ""
         val fx = InteractionEffects()
+
         val todaySnapShotLayout = findViewById<LinearLayout>(R.id.todaySnapShotLayout)
         val recipeButton = findViewById<Button>(R.id.recipeButton)
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
-        val timersButton = findViewById<Button>(R.id.timersButton)
-        val calendarButton = findViewById<Button>(R.id.calendarButton)
         val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
         val firebaseAuth = FirebaseAuth.getInstance()
         val usernameTextView = findViewById<TextView>(R.id.usernameTextView)
         dateTextView = findViewById(R.id.dateTextView)
-        todaysRecipeTextView = findViewById(R.id.recipeName)
-        todaysExerciseTextView = findViewById(R.id.exerciseName)
 
 
+        val recipeLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val exerciseLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val weeklyLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
+        val exerciseRecyclerView = findViewById<RecyclerView>(R.id.exerciseRecyclerView)
+        val weeklyRecyclerView = findViewById<RecyclerView>(R.id.weeeklyRecyclerView)
+        homeMenuButton = findViewById(R.id.menuHomeButton)
+        recipeMenuButton = findViewById(R.id.menuRecipeButton)
+        exerciseMenuButton = findViewById(R.id.menuExerciseButton)
+        timersMenuButton = findViewById(R.id.menuTimersButton)
+        calendarMenuButton = findViewById(R.id.menuCalendarButton)
+        recipeAdapter = RecipeAdapter(email)
+        exerciseAdapter = ExerciseAdapter(email)
+        weeklyAdapter = WeeklyCalendarAdapter(email, weeklyRecyclerView)
+        recipeDataManager = RecipeDataManager(email)
+        exerciseDataManager = ExerciseDataManager(email)
+        recipeRecyclerView.layoutManager = recipeLayoutManager
+        exerciseRecyclerView.layoutManager = exerciseLayoutManager
+        weeklyRecyclerView.layoutManager = weeklyLayoutManager
+        recipeRecyclerView.adapter = recipeAdapter
+        exerciseRecyclerView.adapter = exerciseAdapter
+        weeklyRecyclerView.adapter = weeklyAdapter
 
 
         usernameTextView.text = email
@@ -64,17 +97,58 @@ class MainActivity : ComponentActivity() {
             fx.buttonClickEffect(exerciseButton)
             intentWithEmail(ExerciseActivity(), email)
         }
-        timersButton.setOnClickListener {
-            fx.buttonClickEffect(timersButton)
+        homeMenuButton.setOnClickListener{
+            fx.imageButtonClickEffect(homeMenuButton)
+            intentWithEmail(MainActivity(), email)
+        }
+        recipeMenuButton.setOnClickListener{
+            fx.imageButtonClickEffect(recipeMenuButton)
+            intentWithEmail(RecipeActivity(), email)
+        }
+        exerciseMenuButton.setOnClickListener {
+            fx.imageButtonClickEffect(exerciseMenuButton)
+            intentWithEmail(ExerciseActivity(), email)
+        }
+        timersMenuButton.setOnClickListener{
+            fx.imageButtonClickEffect(timersMenuButton)
             intentWithEmail(TimersActivity(), email)
         }
-        calendarButton.setOnClickListener {
-            fx.buttonClickEffect(calendarButton)
+        calendarMenuButton.setOnClickListener{
+            fx.imageButtonClickEffect(calendarMenuButton)
             intentWithEmail(CalendarActivity(), email)
         }
-        setToday(DayDataManager(email))
-    }
+        loadWeek()
+        loadRecipes(recipeDataManager)
+        loadExercises(exerciseDataManager)
 
+    }
+    private fun loadExercises(exerciseDataManager:ExerciseDataManager){
+        CoroutineScope(Dispatchers.Main).launch {
+            val exercises = exerciseDataManager.getAllExercises()
+            val sortedExercises = exercises.sortedBy{it.name.lowercase()}
+            exerciseAdapter.setExercises(sortedExercises)
+        }
+    }
+    private fun loadRecipes(recipeDataManager:RecipeDataManager){
+        CoroutineScope(Dispatchers.Main).launch {
+            val recipes = recipeDataManager.getAllRecipes()
+            val sortedRecipes = recipes.sortedBy{it.name.lowercase()}
+            recipeAdapter.setRecipes(sortedRecipes)
+        }
+    }
+    private fun loadWeek() {
+        val cal = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
+        val currentDateFormatted = dateFormat.format(cal.time)
+        dateTextView.text = "Today: $currentDateFormatted"
+
+        val daysOfWeek = arrayListOf<Date>()
+        for(i in 0 until 7){
+            daysOfWeek.add(cal.time)
+            cal.add(Calendar.DAY_OF_MONTH, 1)
+        }
+        weeklyAdapter.updateData(daysOfWeek)
+    }
     private fun intentWithEmail(thisActivity: ComponentActivity, email: String) {
         val intent = Intent(this, thisActivity::class.java)
         intent.putExtra("USER_EMAIL", email)
@@ -82,26 +156,9 @@ class MainActivity : ComponentActivity() {
     }
     override fun onResume() {
         super.onResume()
-        setToday(DayDataManager(email))
+        loadRecipes(recipeDataManager)
+        loadExercises(exerciseDataManager)
+        loadWeek()
     }
-    private fun setToday(dayDataManager: DayDataManager) {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
-        val currentDateFormatted = dateFormat.format(calendar.time)
-        val formattedDateForDB = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(calendar.time)
-        dateTextView.text = currentDateFormatted
-        CoroutineScope(Dispatchers.Main).launch {
-            val thisDay = dayDataManager.getDayFromDate(formattedDateForDB)
-            todaysRecipeTextView.text = thisDay.recipeId
-            todaysExerciseTextView.text = thisDay.exerciseId
-            if (todaysRecipeTextView.text.isBlank()) {
-                todaysRecipeTextView.text = getString(R.string.none)
-            }
-            if (todaysExerciseTextView.text.isBlank()) {
-                todaysExerciseTextView.text = getString(R.string.none)
-            }
-            todaysRecipeTextView.visibility = View.VISIBLE
-            todaysExerciseTextView.visibility = View.VISIBLE
-        }
-    }
+
 }

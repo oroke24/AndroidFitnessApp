@@ -28,6 +28,7 @@ class TabataTimerActivity : ComponentActivity() {
     private lateinit var timerLayoutView: LinearLayout
     private lateinit var typeTextView: TextView
     private lateinit var timerTextView: TextView
+    private lateinit var elapsedIntervalTextView: TextView
     private lateinit var minutesTextView: TextView
     private lateinit var workTextView: TextView
     private lateinit var restTextView: TextView
@@ -43,11 +44,12 @@ class TabataTimerActivity : ComponentActivity() {
         setContentView(R.layout.activity_tabata_timer)
 
         timerLayoutView = findViewById(R.id.timerLayout)
-        minutesPicker = findViewById(R.id.hoursPicker)
-        workIntervalInSecondsPicker = findViewById(R.id.workIntervalPicker)
-        restIntervalInSecondsPicker = findViewById(R.id.restIntervalPicker)
+        minutesPicker = findViewById(R.id.minutesPicker)
+        workIntervalInSecondsPicker = findViewById(R.id.workPicker)
+        restIntervalInSecondsPicker = findViewById(R.id.restPicker)
         typeTextView = findViewById(R.id.typeTextView)
         timerTextView = findViewById(R.id.timerTextView)
+        elapsedIntervalTextView = findViewById(R.id.elapsedIntervalTextView)
         minutesTextView = findViewById(R.id.minutesTextView)
         workTextView = findViewById(R.id.workTextView)
         restTextView = findViewById(R.id.restTextView)
@@ -55,6 +57,7 @@ class TabataTimerActivity : ComponentActivity() {
         startStopButton = findViewById(R.id.startStopButton)
 
         timerTextView.visibility = View.GONE
+        elapsedIntervalTextView.visibility= View.GONE
 
         backButton.setBackgroundColor(Color.TRANSPARENT)
         configureNumberPickers()
@@ -71,17 +74,20 @@ class TabataTimerActivity : ComponentActivity() {
     }
 
     private fun configureNumberPickers() {
-        // Configure hours picker
+        // Configure minutes picker
+        minutesPicker.textColor = getColor(R.color.white)
         minutesPicker.minValue = 1
         minutesPicker.maxValue = 60
         minutesPicker.value = 4
 
-        // Configure minutes picker
+        // Configure work picker
+        workIntervalInSecondsPicker.textColor = getColor(R.color.white)
         workIntervalInSecondsPicker.minValue = 1
         workIntervalInSecondsPicker.maxValue = 60
         workIntervalInSecondsPicker.value = 20
 
-        // Configure seconds picker
+        // Configure rest picker
+        restIntervalInSecondsPicker.textColor = getColor(R.color.white)
         restIntervalInSecondsPicker.minValue = 1
         restIntervalInSecondsPicker.maxValue = 60
         restIntervalInSecondsPicker.value = 10
@@ -91,8 +97,8 @@ class TabataTimerActivity : ComponentActivity() {
         minutesPicker.visibility = View.GONE
         workIntervalInSecondsPicker.visibility = View.GONE
         restIntervalInSecondsPicker.visibility = View.GONE
-        timerTextView.textSize = 150f
         timerTextView.visibility = View.VISIBLE
+        elapsedIntervalTextView.visibility = View.VISIBLE
         val minutes = minutesPicker.value
         val workSeconds = workIntervalInSecondsPicker.value
         val restSeconds = restIntervalInSecondsPicker.value
@@ -139,6 +145,7 @@ class TabataTimerActivity : ComponentActivity() {
                 val elapsedSeconds = (totalSeconds - millisUntilFinished / 1000).toInt()
                 val totalIntervalSeconds = workSeconds + restSeconds
                 val elapsedIntervalSeconds = elapsedSeconds % totalIntervalSeconds
+                elapsedIntervalTextView.text = String.format("%02d", elapsedIntervalSeconds)
 
                 val isWorkInterval = elapsedIntervalSeconds < workSeconds
 
@@ -175,7 +182,7 @@ class TabataTimerActivity : ComponentActivity() {
 
     private fun resetTimer() {
         // Resetting UI elements and visibility
-        timerTextView.textSize = 100f
+        timerTextView.text = getString(R.string.default_tabata_timer)
         timerTextView.text = getString(R.string.default_tabata_timer)
         timerLayoutView.setBackgroundColor(Color.rgb(22,22,22))
         typeTextView.setTextColor(Color.rgb(60,60,70))

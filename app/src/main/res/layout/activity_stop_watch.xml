@@ -102,7 +102,7 @@
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_refresh"
+                    android:src="@drawable/ic_refresh_60"
                     android:background="@android:color/transparent"
                     android:onClick="onResetButtonClick"
                     android:contentDescription="@string/reset_button_description"
