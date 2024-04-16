@@ -11,7 +11,9 @@ import com.google.firebase.auth.FirebaseAuth
 class RegistrationActivity : ComponentActivity() {
 
     private lateinit var emailEditText: EditText
+    private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var confirmPasswordEditText: EditText
 
     private lateinit var auth: FirebaseAuth
 
@@ -23,7 +25,9 @@ class RegistrationActivity : ComponentActivity() {
 
         emailEditText = findViewById(R.id.email)
         emailEditText.setText(intent.getStringExtra("email"))
+        usernameEditText = findViewById(R.id.username)
         passwordEditText = findViewById(R.id.password)
+        confirmPasswordEditText = findViewById(R.id.confirmPassword)
         val registerButton = findViewById<Button>(R.id.registerButton)
         val backButton = findViewById<ImageButton>(R.id.backButton)
 
@@ -34,74 +38,43 @@ class RegistrationActivity : ComponentActivity() {
         registerButton.setOnClickListener {
             fx.buttonClickEffect(registerButton)
             val email = emailEditText.text.toString()
+            val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                registerUser(email, password)
+            val confirmPassword = confirmPasswordEditText.text.toString()
+            val userProfile = UserProfile(email, username)
+            if (email.isNotEmpty() && password.isNotEmpty() && username.isNotEmpty()) {
+                if(confirmPassword != password) {
+                    passwordEditText.setText("")
+                    confirmPasswordEditText.setText("")
+                    Toast.makeText(this, "Passwords don't match", Toast.LENGTH_LONG).show()
+                }
+                else registerUser(email, password, userProfile)
             } else {
-                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun registerUser(email: String, password: String) {
+    private fun registerUser(email: String, password: String, userProfile: UserProfile) {
         val user = auth.currentUser
         if (user != null && user.isEmailVerified) {
-            // User is already registered and email is verified
-            Toast.makeText(
-                baseContext, "You are already registered and verified.",
-                Toast.LENGTH_LONG
-            ).show()
-            // You may choose to navigate the user to another screen or perform any other action here
+            Toast.makeText(baseContext, "You are already registered and verified.", Toast.LENGTH_LONG).show()
         } else {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         sendVerificationEmail(email)
-                        val initializeData = InitializeData(email)
+                        val initializeData = InitializeData(userProfile)
                         initializeData.begin()
-                        //startActivity(Intent(this, LoginActivity::class.java))
-                        Toast.makeText(
-                            baseContext, "Registration successful. Please verify your email.",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(baseContext, "Registration successful. Please verify your email.", Toast.LENGTH_LONG).show()
                     } else {
-                        // Registration failed, displaying a message to the user
-                        Toast.makeText(
-                            baseContext, "User exists, sending verification link to email",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(baseContext, "User exists, sending verification link to email", Toast.LENGTH_LONG).show()
                     }
                     finish()
                 }
         }
     }
 
-    /*
-    private fun registerUser(email: String, password: String) {
-        val user = auth.currentUser
-        if(user != null) {
-            Toast.makeText(baseContext, "user already exists.", Toast.LENGTH_LONG).show()
-        }else {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        sendVerificationEmail(email)
-                        val initializeData = InitializeData(email)
-                        initializeData.begin()
-                        startActivity(Intent(this, LoginActivity::class.java))
-                        finish()
-                    } else {
-                        // Registration failed, displaying a message to the user
-                        Toast.makeText(
-                            baseContext, "$email already has account",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-        }
-    }
-
-     */
     private fun sendVerificationEmail(email: String) {
         val user = auth.currentUser
         user?.sendEmailVerification()

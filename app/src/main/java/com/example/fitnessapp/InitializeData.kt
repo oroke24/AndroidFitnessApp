@@ -8,15 +8,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
-class InitializeData(private val myEmail: String) {
+class InitializeData(private val userProfile: UserProfile) {
+    private val myEmail = userProfile.email
     private val exerciseDataManager = ExerciseDataManager(myEmail)
     private val recipeDataManager = RecipeDataManager(myEmail)
     private val dayDataManager = DayDataManager(myEmail)
+    private val userProfileDataManager = UserProfileDataManager(myEmail)
 
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("users")
@@ -39,6 +39,7 @@ class InitializeData(private val myEmail: String) {
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error adding or updating email document", exception)
             }
+        userProfileDataManager.addProfile(userProfile)
     }
     private fun addInitialRecipesForUser(): String{
         val initialRecipes = listOf(

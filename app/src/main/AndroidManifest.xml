@@ -35,6 +35,7 @@
         <activity android:name=".TabataTimerActivity"/>
         <activity android:name=".CalendarActivity"/>
         <activity android:name=".ItemDetailsActivity"/>
+        <activity android:name=".UserProfileActivity"/>
     </application>
 
 </manifest>

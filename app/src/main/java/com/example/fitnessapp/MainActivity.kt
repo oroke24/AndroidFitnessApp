@@ -29,12 +29,14 @@ class MainActivity : ComponentActivity() {
     private lateinit var calendarMenuButton: ImageButton
     lateinit var todaysRecipeTextView : TextView
     lateinit var todaysExerciseTextView : TextView
+    lateinit var usernameTextView: TextView
     lateinit var dateTextView : TextView
     lateinit var recipeAdapter: RecipeAdapter
     lateinit var exerciseAdapter: ExerciseAdapter
     lateinit var weeklyAdapter: WeeklyCalendarAdapter
     private lateinit var recipeDataManager: RecipeDataManager
     private lateinit var exerciseDataManager: ExerciseDataManager
+    private lateinit var userProfileDataManager: UserProfileDataManager
     private lateinit var weeklyDataManager: DayDataManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +45,13 @@ class MainActivity : ComponentActivity() {
         email = intent.getStringExtra("USER_EMAIL") ?: ""
         val fx = InteractionEffects()
 
+        usernameTextView = findViewById(R.id.usernameTextView)
+
         val todaySnapShotLayout = findViewById<LinearLayout>(R.id.todaySnapShotLayout)
         val recipeButton = findViewById<Button>(R.id.recipeButton)
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
         val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
         val firebaseAuth = FirebaseAuth.getInstance()
-        val usernameTextView = findViewById<TextView>(R.id.usernameTextView)
         dateTextView = findViewById(R.id.dateTextView)
 
 
@@ -69,6 +72,7 @@ class MainActivity : ComponentActivity() {
         weeklyAdapter = WeeklyCalendarAdapter(email, weeklyRecyclerView)
         recipeDataManager = RecipeDataManager(email)
         exerciseDataManager = ExerciseDataManager(email)
+        userProfileDataManager = UserProfileDataManager(email)
         recipeRecyclerView.layoutManager = recipeLayoutManager
         exerciseRecyclerView.layoutManager = exerciseLayoutManager
         weeklyRecyclerView.layoutManager = weeklyLayoutManager
@@ -77,7 +81,14 @@ class MainActivity : ComponentActivity() {
         weeklyRecyclerView.adapter = weeklyAdapter
 
 
-        usernameTextView.text = email
+        CoroutineScope(Dispatchers.Main).launch{
+            usernameTextView.text = userProfileDataManager.getUsername()
+        }
+
+        usernameTextView.setOnClickListener {
+            fx.itemViewClickEffect(usernameTextView)
+            intentWithEmail(UserProfileActivity(), email)
+        }
 
         logoutButton.setOnClickListener {
             fx.imageButtonClickEffect(logoutButton)
@@ -159,6 +170,9 @@ class MainActivity : ComponentActivity() {
         loadRecipes(recipeDataManager)
         loadExercises(exerciseDataManager)
         loadWeek()
+        CoroutineScope(Dispatchers.Main).launch{
+            usernameTextView.text = userProfileDataManager.getUsername()
+        }
     }
 
 }

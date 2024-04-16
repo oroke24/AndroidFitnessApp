@@ -2,6 +2,7 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="email">email</string>
+    <string name="Email">Email</string>
     <string name="password">password</string>
     <string name="app_name">FitnessApp</string>
     <string name="back_button_description">back button</string>
@@ -72,4 +73,11 @@
     <string name="save_changes">Save changes</string>
     <string name="save_and_keep_original">save and KEEP original</string>
     <string name="save_and_delete_original">save and DELETE original</string>
+    <string name="my_cards">My Cards</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="username_does_not_have_to_be_unique">Username(does not have to be unique)</string>
+    <string name="username_unique">Username(unique)</string>
+    <string name="can_t_change_email">can\'t change email for security purposes</string>
+    <string name="save">Save</string>
+    <string name="change_username">Change Username</string>
 </resources>
