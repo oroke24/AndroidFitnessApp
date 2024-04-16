@@ -61,7 +61,10 @@ class LoginActivity : ComponentActivity() {
         // Set OnClickListener for the registration button
         registerButton.setOnClickListener {
             fx.buttonClickEffect(registerButton)
-            startActivity(Intent(this, RegistrationActivity::class.java))
+            val email = emailEditText.text.toString()
+            intent = Intent(this, RegistrationActivity::class.java)
+            intent.putExtra("email", email)
+            startActivity(intent)
         }
 }
 
@@ -71,9 +74,16 @@ class LoginActivity : ComponentActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    //val initializeData = InitializeData(email)
-                    //initializeData.begin() //Only use here for database testing
-                    navigateToMain(email)
+                    val user = auth.currentUser
+                    if(user != null && user.isEmailVerified){
+                        navigateToMain(email)
+                    }else {
+                        Toast.makeText(baseContext, "Must verify email after registration", Toast.LENGTH_LONG).show()
+                        loginButton.visibility = View.VISIBLE
+                        registerButton.visibility = View.VISIBLE
+                        //val initializeData = InitializeData(email)
+                        //initializeData.begin() //Only use here for database testing
+                    }
                 } else {
                     loginButton.visibility= View.VISIBLE
                     registerButton.visibility = View.VISIBLE
