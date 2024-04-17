@@ -36,6 +36,10 @@
         <activity android:name=".CalendarActivity"/>
         <activity android:name=".ItemDetailsActivity"/>
         <activity android:name=".UserProfileActivity"/>
+        <service
+            android:name=".TimerService"
+            android:foregroundServiceType="dataSync"
+            />
     </application>
 
 </manifest>

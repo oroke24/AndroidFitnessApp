@@ -2,6 +2,7 @@ package com.example.fitnessapp
 import android.animation.ObjectAnimator
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
@@ -121,6 +122,12 @@ class TimerActivity : ComponentActivity() {
         timerTextView.visibility=View.VISIBLE
         pauseButton.visibility= View.VISIBLE
         continueButton.visibility=View.VISIBLE
+
+        /*Testing "TimerService"
+        val serviceIntent = Intent(this, TimerService::class.java)
+        startService(serviceIntent)
+        //
+        */
 
         countDownTimer = object : CountDownTimer(totalMilliseconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {

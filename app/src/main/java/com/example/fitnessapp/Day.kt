@@ -5,6 +5,9 @@ import java.util.Date
 data class Day(
     val id: String,
     val date: String,
-    var recipeId: String,
-    var exerciseId: String
+    var recipe1Id: String,
+    var recipe2Id: String,
+    var recipe3Id: String,
+    var exercise1Id: String,
+    var exercise2Id: String
 )

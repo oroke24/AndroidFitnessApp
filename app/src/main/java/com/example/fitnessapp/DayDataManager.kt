@@ -15,16 +15,21 @@ class DayDataManager(private val email: String) {
 
     private val daysCollection = user.collection("days")
 
-    suspend fun addRecipeToDay(date: String, providedRecipeId: String) {
+    suspend fun addRecipeToDay(date: String, providedRecipeId: String, slot: Int) {
         Log.d("addRecipeToDay: date value", date)
+
+        val recipeSlot: String = when(slot){
+            1 -> "recipe1Id"
+            2 -> "recipe2Id"
+            else -> "recipe3Id"
+        }
         try{
             val existingDayDoc = daysCollection.document(date).get().await()
             if(existingDayDoc.exists()){
-                existingDayDoc.reference.update("recipeId", providedRecipeId).await()
+                existingDayDoc.reference.update(recipeSlot, providedRecipeId).await()
             }else{
                 val newDayData = hashMapOf(
-                    "recipeId" to providedRecipeId,
-                    "exerciseId" to ""
+                    recipeSlot to providedRecipeId,
                 )
                 daysCollection.document(date).set(newDayData).await()
             }
@@ -33,16 +38,19 @@ class DayDataManager(private val email: String) {
            Log.e("addRecipeToDay: Error", "Error: ${e.message}")
         }
     }
-    suspend fun addExerciseToDay(date: String, providedExerciseId: String) {
+    suspend fun addExerciseToDay(date: String, providedExerciseId: String, slot: Int) {
         Log.d("addExerciseToDay: date value", date)
+        val exerciseSlot: String = when(slot){
+            1 -> "exercise1Id"
+            else -> "recipe2Id"
+        }
         try {
             val existingDayDoc = daysCollection.document(date).get().await()
             if (existingDayDoc.exists()) {
-                existingDayDoc.reference.update("exerciseId", providedExerciseId).await()
+                existingDayDoc.reference.update(exerciseSlot, providedExerciseId).await()
             }else{
                 val newDayData = hashMapOf(
-                    "recipeId" to "",
-                    "exerciseId" to providedExerciseId
+                    exerciseSlot to providedExerciseId
                 )
                 daysCollection.document(date).set(newDayData).await()
             }
@@ -64,13 +72,16 @@ class DayDataManager(private val email: String) {
     }
 
     suspend fun getDayFromDate(formattedDate: String): Day {
-        var thisDay = Day("", "", "", "")
+        var thisDay = Day("", "", "", "", "","","")
         val thisDayDocRef = daysCollection.document(formattedDate).get().await()
         if(thisDayDocRef.exists()){
             val date = thisDayDocRef.getString(thisDayDocRef.id)?:""
-            val recipeName = thisDayDocRef.getString("recipeId") ?: ""
-            val exerciseName = thisDayDocRef.getString("exerciseId")?:""
-            thisDay = Day("", date, recipeName, exerciseName)
+            val recipe1Name = thisDayDocRef.getString("recipe1Id") ?: ""
+            val recipe2Name = thisDayDocRef.getString("recipe2Id") ?: ""
+            val recipe3Name = thisDayDocRef.getString("recipe3Id") ?: ""
+            val exercise1Name = thisDayDocRef.getString("exercise1Id")?:""
+            val exercise2Name = thisDayDocRef.getString("exercise2Id")?:""
+            thisDay = Day("", date, recipe1Name, recipe2Name, recipe3Name,  exercise1Name, exercise2Name)
         }
         return thisDay
     }

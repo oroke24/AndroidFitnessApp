@@ -132,8 +132,8 @@ class InitializeData(private val userProfile: UserProfile) {
         val dateOfRegistration = Date().time
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date(dateOfRegistration))
         CoroutineScope(Dispatchers.Main).launch {
-            dayDataManager.addRecipeToDay(formattedDate, recipeId)
-            dayDataManager.addExerciseToDay(formattedDate, exerciseId)
+            dayDataManager.addRecipeToDay(formattedDate, recipeId, 2)
+            dayDataManager.addExerciseToDay(formattedDate, exerciseId, 1)
         }
     }
 }
