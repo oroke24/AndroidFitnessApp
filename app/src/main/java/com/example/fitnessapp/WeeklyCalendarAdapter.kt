@@ -52,21 +52,29 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val recipeName1TextView: TextView = itemView.findViewById(R.id.addRecipe1Button)
     private val recipeName2TextView: TextView = itemView.findViewById(R.id.addRecipe2Button)
     private val recipeName3TextView: TextView = itemView.findViewById(R.id.addRecipe3Button)
+    private val recipeName4TextView: TextView = itemView.findViewById(R.id.addRecipe4Button)
     private val exerciseName1TextView: TextView = itemView.findViewById(R.id.addExercise1Button)
     private val exerciseName2TextView: TextView = itemView.findViewById(R.id.addExercise2Button)
+    private val exerciseName3TextView: TextView = itemView.findViewById(R.id.addExercise3Button)
 
     private val deleteRecipe1Button: ImageButton = itemView.findViewById(R.id.deleteRecipeButton)
-    private val deleteRecipe2Button: ImageButton = itemView.findViewById(R.id.deleteRecipeButton)
-    private val deleteRecipe3Button: ImageButton = itemView.findViewById(R.id.deleteRecipeButton)
+    private val deleteRecipe2Button: ImageButton = itemView.findViewById(R.id.deleteRecipe2Button)
+    private val deleteRecipe3Button: ImageButton = itemView.findViewById(R.id.deleteRecipe3Button)
+    private val deleteRecipe4Button: ImageButton = itemView.findViewById(R.id.deleteRecipe4Button)
     private val deleteExercise1Button: ImageButton = itemView.findViewById(R.id.deleteExercise1Button)
     private val deleteExercise2Button: ImageButton = itemView.findViewById(R.id.deleteExercise2Button)
+    private val deleteExercise3Button: ImageButton = itemView.findViewById(R.id.deleteExercise3Button)
 
     fun bind(adapter: WeeklyCalendarAdapter, position: Int, email: String) {
         val recipeManager = RecipeDataManager(email)
         val exerciseManager = ExerciseDataManager(email)
         val dayManager = DayDataManager(email)
         val date = adapter.daysOfWeek[position]
-        dateTextView.text = dateViewFormat.format(date)
+        if(adapter.daysOfWeek[position] == Calendar.getInstance()){
+            val today = "Today: " + dateViewFormat.format(date)
+            dateTextView.text = today
+        }
+        else dateTextView.text = dateViewFormat.format(date)
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -74,8 +82,10 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             recipeName1TextView.text = thisDay.recipe1Id
             recipeName2TextView.text = thisDay.recipe2Id
             recipeName3TextView.text = thisDay.recipe3Id
+            recipeName4TextView.text = thisDay.recipe4Id
             exerciseName1TextView.text = thisDay.exercise1Id
             exerciseName2TextView.text = thisDay.exercise2Id
+            exerciseName3TextView.text = thisDay.exercise3Id
         }
 
         val animation = AlphaAnimation(0.1f, 1.0f)
@@ -91,28 +101,23 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         recipeName3TextView.setOnClickListener {
             recipeItemViewClick(recipeName3TextView, 3, recipeManager, dayManager, formattedDate)
         }
+        recipeName4TextView.setOnClickListener {
+            recipeItemViewClick(recipeName4TextView, 4, recipeManager, dayManager, formattedDate)
+        }
         deleteRecipe1Button.setOnLongClickListener {
-            fx.imageButtonClickEffect(deleteRecipe1Button)
-            CoroutineScope(Dispatchers.Main).launch {
-                recipeName1TextView.text = ""
-                dayManager.addRecipeToDay(formattedDate, "", 1)
-            }
+            deleteItem(deleteRecipe1Button, recipeName1TextView, "recipe", 1, dayManager, formattedDate)
             true
         }
         deleteRecipe2Button.setOnLongClickListener {
-            fx.imageButtonClickEffect(deleteRecipe2Button)
-            CoroutineScope(Dispatchers.Main).launch {
-                recipeName2TextView.text = ""
-                dayManager.addRecipeToDay(formattedDate, "", 2)
-            }
+            deleteItem(deleteRecipe2Button, recipeName2TextView, "recipe", 2, dayManager, formattedDate)
             true
         }
         deleteRecipe3Button.setOnLongClickListener {
-            fx.imageButtonClickEffect(deleteRecipe3Button)
-            CoroutineScope(Dispatchers.Main).launch {
-                recipeName3TextView.text = ""
-                dayManager.addRecipeToDay(formattedDate, "", 3)
-            }
+            deleteItem(deleteRecipe3Button, recipeName3TextView, "recipe", 3, dayManager, formattedDate)
+            true
+        }
+        deleteRecipe4Button.setOnLongClickListener {
+            deleteItem(deleteRecipe4Button, recipeName4TextView, "recipe", 4, dayManager, formattedDate)
             true
         }
 
@@ -123,21 +128,18 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             exerciseItemViewClick(exerciseName2TextView, 2, exerciseManager, dayManager, formattedDate)
         }
         deleteExercise1Button.setOnLongClickListener {
-            fx.imageButtonClickEffect(deleteExercise1Button)
-            CoroutineScope(Dispatchers.Main).launch {
-                exerciseName1TextView.text = ""
-                dayManager.addExerciseToDay(formattedDate, "", 1)
-            }
+            deleteItem(deleteExercise1Button, exerciseName1TextView, "exercise", 1, dayManager, formattedDate)
             true
         }
         deleteExercise2Button.setOnLongClickListener {
-            fx.imageButtonClickEffect(deleteExercise2Button)
-            CoroutineScope(Dispatchers.Main).launch {
-                exerciseName2TextView.text = ""
-                dayManager.addExerciseToDay(formattedDate, "", 2)
-            }
+            deleteItem(deleteExercise2Button, exerciseName2TextView, "exercise", 2, dayManager, formattedDate)
             true
         }
+        deleteExercise3Button.setOnLongClickListener {
+            deleteItem(deleteExercise3Button, exerciseName3TextView, "exercise", 3, dayManager, formattedDate)
+            true
+        }
+
     }
 
     private fun exerciseItemViewClick(itemView: View, slot: Int, exerciseManager: ExerciseDataManager, dayManager: DayDataManager, formattedDate: String) {
@@ -149,7 +151,8 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             ) { selectedExerciseId ->
                 CoroutineScope(Dispatchers.Main).launch {
                     if(slot == 1) exerciseName1TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                    else exerciseName2TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                    else if(slot == 2) exerciseName2TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                    else exerciseName3TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
                     dayManager.addExerciseToDay(formattedDate, selectedExerciseId, slot)
                 }
             }
@@ -162,10 +165,27 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 CoroutineScope(Dispatchers.Main).launch {
                     if(slot == 1) recipeName1TextView.text = recipeManager.getNameFromId(selectedRecipeId)
                     else if(slot == 2) recipeName2TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                    else recipeName3TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                    else if(slot == 3) recipeName3TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                    else recipeName4TextView.text = recipeManager.getNameFromId(selectedRecipeId)
                     dayManager.addRecipeToDay(formattedDate, selectedRecipeId, slot)
                 }
             }
         }
+    }
+    private fun deleteItem(imageButton: ImageButton, textView: TextView, item: String, slot: Int, dayManager: DayDataManager, formattedDate: String){
+        fx.imageButtonClickEffect(imageButton)
+        CoroutineScope(Dispatchers.Main).launch {
+            textView.text = ""
+            if(item == "exercise") dayManager.addExerciseToDay(formattedDate, "", slot)
+            else dayManager.addRecipeToDay(formattedDate, "", slot)
+        }
+    }
+    fun hideViewAndButton(itemView: View, imageButton: ImageButton){
+        itemView.visibility = View.GONE
+        imageButton.visibility = View.GONE
+    }
+    fun showViewAndButton(itemView: View, imageButton: ImageButton){
+        itemView.visibility = View.VISIBLE
+        imageButton.visibility = View.VISIBLE
     }
 }

@@ -80,4 +80,5 @@
     <string name="can_t_change_email">can\'t change email for security purposes</string>
     <string name="save">Save</string>
     <string name="change_username">Change Username</string>
+    <string name="_7_day_snapshot">7 Day Snapshot</string>
 </resources>

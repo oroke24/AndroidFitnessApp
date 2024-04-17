@@ -2,6 +2,8 @@ package com.example.fitnessapp
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.view.View
+import android.widget.ImageButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -136,4 +138,5 @@ class InitializeData(private val userProfile: UserProfile) {
             dayDataManager.addExerciseToDay(formattedDate, exerciseId, 1)
         }
     }
+
 }

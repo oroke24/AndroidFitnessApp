@@ -21,7 +21,8 @@ class DayDataManager(private val email: String) {
         val recipeSlot: String = when(slot){
             1 -> "recipe1Id"
             2 -> "recipe2Id"
-            else -> "recipe3Id"
+            3 -> "recipe3Id"
+            else -> "recipe4Id"
         }
         try{
             val existingDayDoc = daysCollection.document(date).get().await()
@@ -42,7 +43,8 @@ class DayDataManager(private val email: String) {
         Log.d("addExerciseToDay: date value", date)
         val exerciseSlot: String = when(slot){
             1 -> "exercise1Id"
-            else -> "recipe2Id"
+            2 -> "exercise2Id"
+            else -> "exercise3Id"
         }
         try {
             val existingDayDoc = daysCollection.document(date).get().await()
@@ -72,16 +74,18 @@ class DayDataManager(private val email: String) {
     }
 
     suspend fun getDayFromDate(formattedDate: String): Day {
-        var thisDay = Day("", "", "", "", "","","")
+        var thisDay = Day("", "", "", "", "","","","","")
         val thisDayDocRef = daysCollection.document(formattedDate).get().await()
         if(thisDayDocRef.exists()){
             val date = thisDayDocRef.getString(thisDayDocRef.id)?:""
             val recipe1Name = thisDayDocRef.getString("recipe1Id") ?: ""
             val recipe2Name = thisDayDocRef.getString("recipe2Id") ?: ""
             val recipe3Name = thisDayDocRef.getString("recipe3Id") ?: ""
+            val recipe4Name = thisDayDocRef.getString("recipe4Id") ?:""
             val exercise1Name = thisDayDocRef.getString("exercise1Id")?:""
             val exercise2Name = thisDayDocRef.getString("exercise2Id")?:""
-            thisDay = Day("", date, recipe1Name, recipe2Name, recipe3Name,  exercise1Name, exercise2Name)
+            val exercise3Name = thisDayDocRef.getString("exercise3Id")?:""
+            thisDay = Day("", date, recipe1Name, recipe2Name, recipe3Name, recipe4Name, exercise3Name,  exercise1Name, exercise2Name)
         }
         return thisDay
     }
