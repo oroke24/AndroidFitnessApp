@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
     lateinit var todaysRecipeTextView : TextView
     lateinit var todaysExerciseTextView : TextView
     lateinit var usernameTextView: TextView
-    lateinit var dateTextView : TextView
     lateinit var recipeAdapter: RecipeAdapter
     lateinit var exerciseAdapter: ExerciseAdapter
     lateinit var weeklyAdapter: WeeklyCalendarAdapter
@@ -52,7 +51,6 @@ class MainActivity : ComponentActivity() {
         val exerciseButton = findViewById<Button>(R.id.exerciseButton)
         val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
         val firebaseAuth = FirebaseAuth.getInstance()
-        dateTextView = findViewById(R.id.dateTextView)
 
 
         val recipeLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -149,9 +147,6 @@ class MainActivity : ComponentActivity() {
     }
     private fun loadWeek() {
         val cal = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("EEE, MMM dd", Locale.getDefault())
-        val currentDateFormatted = dateFormat.format(cal.time)
-        dateTextView.text = "Today: $currentDateFormatted"
 
         val daysOfWeek = arrayListOf<Date>()
         for(i in 0 until 7){

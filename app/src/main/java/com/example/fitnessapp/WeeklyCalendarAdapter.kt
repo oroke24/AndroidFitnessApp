@@ -21,6 +21,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 class WeeklyCalendarAdapter(private val email: String, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>() {
@@ -28,6 +29,11 @@ class WeeklyCalendarAdapter(private val email: String, private val recyclerView:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
+        val minHeight = 300
+        val layoutParams = view.layoutParams
+        layoutParams.height = minHeight
+        view.layoutParams = layoutParams
+
         return ViewHolder(view)
     }
 
@@ -56,7 +62,6 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val exerciseName1TextView: TextView = itemView.findViewById(R.id.addExercise1Button)
     private val exerciseName2TextView: TextView = itemView.findViewById(R.id.addExercise2Button)
     private val exerciseName3TextView: TextView = itemView.findViewById(R.id.addExercise3Button)
-
     private val deleteRecipe1Button: ImageButton = itemView.findViewById(R.id.deleteRecipeButton)
     private val deleteRecipe2Button: ImageButton = itemView.findViewById(R.id.deleteRecipe2Button)
     private val deleteRecipe3Button: ImageButton = itemView.findViewById(R.id.deleteRecipe3Button)
@@ -70,11 +75,16 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val exerciseManager = ExerciseDataManager(email)
         val dayManager = DayDataManager(email)
         val date = adapter.daysOfWeek[position]
-        if(adapter.daysOfWeek[position] == Calendar.getInstance()){
-            val today = "Today: " + dateViewFormat.format(date)
-            dateTextView.text = today
-        }
-        else dateTextView.text = dateViewFormat.format(date)
+        val todayInyyyy_mm_dd = LocalDate.now()
+        val tomorrowInyyyy_mm_dd = todayInyyyy_mm_dd.plusDays(1)
+        val dateCheck = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
+        var placeHolder: String
+
+        if(dateCheck == todayInyyyy_mm_dd.toString()) placeHolder = "Today: ${dateViewFormat.format(date)}"
+        else if(dateCheck == tomorrowInyyyy_mm_dd.toString()) placeHolder = "Tomorrow: ${dateViewFormat.format(date)}"
+        else placeHolder = dateViewFormat.format(date)
+
+        dateTextView.text = placeHolder
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -86,6 +96,23 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             exerciseName1TextView.text = thisDay.exercise1Id
             exerciseName2TextView.text = thisDay.exercise2Id
             exerciseName3TextView.text = thisDay.exercise3Id
+            if(recipeName2TextView.text.isEmpty()) showViewAndButton(recipeName2TextView, deleteRecipe2Button)
+            if(recipeName3TextView.text.isEmpty()) showViewAndButton(recipeName3TextView, deleteRecipe3Button)
+            if(recipeName4TextView.text.isEmpty()) showViewAndButton(recipeName4TextView, deleteRecipe4Button)
+            if(exerciseName2TextView.text.isEmpty()) showViewAndButton(exerciseName2TextView, deleteExercise2Button)
+            if(exerciseName3TextView.text.isEmpty()) showViewAndButton(exerciseName3TextView, deleteExercise3Button)
+            /*
+            if(recipeName1TextView.text.isEmpty() && recipeName2TextView.text.isEmpty())
+                hideViewAndButton(recipeName2TextView, deleteRecipe2Button)
+            if(recipeName2TextView.text.isEmpty() && recipeName3TextView.text.isEmpty())
+                hideViewAndButton(recipeName3TextView, deleteRecipe3Button)
+            if(recipeName3TextView.text.isEmpty() && recipeName4TextView.text.isEmpty())
+                hideViewAndButton(recipeName4TextView, deleteRecipe4Button)
+            if(exerciseName1TextView.text.isEmpty() && exerciseName2TextView.text.isEmpty())
+                hideViewAndButton(exerciseName2TextView, deleteExercise2Button)
+            if(exerciseName2TextView.text.isEmpty() && exerciseName3TextView.text.isEmpty())
+                hideViewAndButton(exerciseName3TextView, deleteExercise3Button)
+             */
         }
 
         val animation = AlphaAnimation(0.1f, 1.0f)
@@ -94,12 +121,15 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         recipeName1TextView.setOnClickListener {
             recipeItemViewClick(recipeName1TextView, 1, recipeManager, dayManager, formattedDate)
+            showViewAndButton(recipeName2TextView, deleteRecipe2Button)
         }
         recipeName2TextView.setOnClickListener {
             recipeItemViewClick(recipeName2TextView, 2, recipeManager, dayManager, formattedDate)
+            showViewAndButton(recipeName3TextView, deleteRecipe3Button)
         }
         recipeName3TextView.setOnClickListener {
             recipeItemViewClick(recipeName3TextView, 3, recipeManager, dayManager, formattedDate)
+            showViewAndButton(recipeName4TextView, deleteRecipe4Button)
         }
         recipeName4TextView.setOnClickListener {
             recipeItemViewClick(recipeName4TextView, 4, recipeManager, dayManager, formattedDate)
@@ -110,22 +140,30 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         deleteRecipe2Button.setOnLongClickListener {
             deleteItem(deleteRecipe2Button, recipeName2TextView, "recipe", 2, dayManager, formattedDate)
+            if(recipeName1TextView.text.isEmpty()) hideViewAndButton(recipeName2TextView, deleteRecipe2Button)
             true
         }
         deleteRecipe3Button.setOnLongClickListener {
             deleteItem(deleteRecipe3Button, recipeName3TextView, "recipe", 3, dayManager, formattedDate)
+            if(recipeName2TextView.text.isEmpty()) hideViewAndButton(recipeName3TextView, deleteRecipe3Button)
             true
         }
         deleteRecipe4Button.setOnLongClickListener {
             deleteItem(deleteRecipe4Button, recipeName4TextView, "recipe", 4, dayManager, formattedDate)
+            if(recipeName3TextView.text.isEmpty()) hideViewAndButton(recipeName4TextView, deleteRecipe4Button)
             true
         }
 
         exerciseName1TextView.setOnClickListener {
             exerciseItemViewClick(exerciseName1TextView, 1, exerciseManager, dayManager, formattedDate)
+            showViewAndButton(exerciseName2TextView, deleteExercise2Button)
         }
         exerciseName2TextView.setOnClickListener {
             exerciseItemViewClick(exerciseName2TextView, 2, exerciseManager, dayManager, formattedDate)
+            showViewAndButton(exerciseName3TextView, deleteExercise3Button)
+        }
+        exerciseName3TextView.setOnClickListener {
+            exerciseItemViewClick(exerciseName3TextView, 3, exerciseManager, dayManager, formattedDate)
         }
         deleteExercise1Button.setOnLongClickListener {
             deleteItem(deleteExercise1Button, exerciseName1TextView, "exercise", 1, dayManager, formattedDate)
@@ -133,13 +171,14 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         deleteExercise2Button.setOnLongClickListener {
             deleteItem(deleteExercise2Button, exerciseName2TextView, "exercise", 2, dayManager, formattedDate)
+            if(exerciseName1TextView.text.isEmpty()) hideViewAndButton(exerciseName2TextView, deleteExercise2Button)
             true
         }
         deleteExercise3Button.setOnLongClickListener {
             deleteItem(deleteExercise3Button, exerciseName3TextView, "exercise", 3, dayManager, formattedDate)
+            if(exerciseName2TextView.text.isEmpty()) hideViewAndButton(exerciseName3TextView, deleteExercise3Button)
             true
         }
-
     }
 
     private fun exerciseItemViewClick(itemView: View, slot: Int, exerciseManager: ExerciseDataManager, dayManager: DayDataManager, formattedDate: String) {

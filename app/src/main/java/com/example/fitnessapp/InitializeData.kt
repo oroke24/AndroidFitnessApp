@@ -35,15 +35,17 @@ class InitializeData(private val userProfile: UserProfile) {
             .addOnSuccessListener {
                 Log.d(TAG, "Email document added or updated successfully, now loading initial data")
                 val firstRecipeId = addInitialRecipesForUser()
-                val firstExerciseId = addInitialExercisesForUser()
-                addInitialDayForUser(firstRecipeId, firstExerciseId)
+                val firstExerciseId: List<Exercise> = addInitialExercisesForUser()
+                for(i in 0..5){
+                   addInitialDayForUser(firstRecipeId[i].name, firstExerciseId[i].name)
+                }
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error adding or updating email document", exception)
             }
         userProfileDataManager.addProfile(userProfile)
     }
-    private fun addInitialRecipesForUser(): String{
+    private fun addInitialRecipesForUser(): List<Recipe>{
         val initialRecipes = listOf(
             Recipe(
                 "",
@@ -55,8 +57,9 @@ class InitializeData(private val userProfile: UserProfile) {
                 "",
                 "2) You can edit me",
                 "-Think of these cards as your personal deck of recipes\n"+
-                        "-Your deck is always sorted a-z",
-                "Following this card are two premade cards.  Enjoy!"
+                        "-Your deck is always sorted a-z\n"+
+                        "-You can edit and duplicate any of your cards as you please!",
+                "Following this card are some premade cards.  Enjoy!"
             ),
             Recipe(
                 "",
@@ -78,28 +81,39 @@ class InitializeData(private val userProfile: UserProfile) {
                  "-Penne Pasta noodles\n-Sauce(of choice)\n-1-2lbs Ground Beef",
                  "-Boil Pasta.\n-Cook Meat.\n-Once meat is cooked, add sauce\n" +
                         "-Mix meat sauce with pasta if desired"
+            ),
+            Recipe(
+                "",
+                "Peanut Butter Banana Toast 1",
+                "Banana\n"+
+                "Peanut Butter\n"+
+                "slice of Whole Wheat",
+                "Toast bread\n"+
+                        "Spread Peanut Butter\n"+
+                        "Slice banana and put on toast or eat separately"
+            ),
+            Recipe(
+                "",
+                "Late night snack",
+                "Ice Cream",
+                "You know what to do here.."
             )
         )
         //now adding initialRecipes to db
         initialRecipes.forEach { recipe ->
             recipeDataManager.addRecipe(recipe)
         }
-        return initialRecipes[0].name
+        return initialRecipes
     }
-    private fun addInitialExercisesForUser(): String{
+    private fun addInitialExercisesForUser(): List<Exercise>{
         val initialExercises = listOf(
-            Exercise(
-                "",
-                "1) Me too!",
-                "later alligator",
-                "Back soon, I'll shall be"
-            ),
             Exercise(
                 "",
                 "2) You can edit me",
                 "-Think of these cards as your personal deck of exercises\n"+
-                        "-Your deck is always sorted a-z",
-                "Following this card are two premade cards.  Enjoy!"
+                        "-Your deck is always sorted a-z"+
+                        "-You can edit and duplicate any of your cards as you please!",
+                "Following this card are some premade cards.  Enjoy!"
             ),
             Exercise(
                  "",
@@ -122,21 +136,43 @@ class InitializeData(private val userProfile: UserProfile) {
                         "-3 x 8-10 pullups.\n" +
                         "-3 x 8-10 chinups.\n" +
                         "-(core) 4 x 12-15 alternating: V-ups and heel touches."
+            ),
+            Exercise(
+                "",
+                "Leg Day",
+                "Legs, Lower Back",
+                "-5 x 12-15 BB Squat slow eccentric\n"+
+                "-5 x 15 BB Romanian Deadlift slow eccentric\n"+
+                "-4 x 20 DB Walking Lunges\n"+
+                "-3 x Superset of: leg extensions and leg curls\n"+
+                "-5 x 15-20 Weighted calf raises\n"+
+                "-End with core exercise of choice"
+            ),
+            Exercise(
+                "",
+                "Run",
+                "Full Body Relaxed, Hot",
+                "Goal is at least 30 minutes of temp over 170."
+            ),
+            Exercise(
+                "",
+                "Sauna",
+                "Cardio, Legs, Back, Core",
+                "Goal is at least 8 miles at an average of less than 9 minutes."
             )
         )
         //now adding initialExercises to db
         initialExercises.forEach { exercise ->
             exerciseDataManager.addExercise(exercise)
         }
-        return initialExercises[0].name
+        return initialExercises
     }
     private fun addInitialDayForUser(recipeId: String, exerciseId:String){
         val dateOfRegistration = Date().time
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date(dateOfRegistration))
         CoroutineScope(Dispatchers.Main).launch {
-            dayDataManager.addRecipeToDay(formattedDate, recipeId, 2)
+            dayDataManager.addRecipeToDay(formattedDate, recipeId, 1)
             dayDataManager.addExerciseToDay(formattedDate, exerciseId, 1)
         }
     }
-
 }

@@ -15,6 +15,7 @@
         android:onClick="onBackButtonClick"
         android:contentDescription="@string/back_button"
         android:padding="20dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,7 +76,7 @@
                 android:id="@+id/monthlyCalendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_orange_to_purple"
+                android:background="@drawable/background_light_grey_outline"
                 android:layout_margin="15dp"/>
 
 

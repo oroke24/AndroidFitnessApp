@@ -11,24 +11,19 @@
             android:layout_margin="5dp"
             android:text="@string/blank"
             android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textAlignment="center"
-            android:textStyle="bold"/>
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:textSize="20sp"
+            android:textAlignment="center"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="200dp"
+                    android:minWidth="250dp"
                     android:padding="10dp"
                     android:background="@drawable/background_grey_rounded_corners"
                     android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="end"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -52,12 +47,12 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
+                                    android:contentDescription="@string/delete_button"
                                     android:textColor="@color/white"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="start"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -69,7 +64,8 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
-                                    android:textColor="@color/white"/>
+                                    android:textColor="@color/white"
+                                    android:contentDescription="@string/delete_button" />
                                 <TextView
                                     android:id="@+id/addExercise1Button"
                                     android:layout_width="wrap_content"
@@ -87,8 +83,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="end"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -103,6 +98,7 @@
                                     android:drawableEnd="@drawable/ic_refresh_transparent_24"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:visibility="gone"
                                     android:textColor="@color/white"/>
 
                                 <ImageButton
@@ -112,12 +108,13 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
+                                    android:visibility="gone"
+                                    android:contentDescription="@string/delete_button"
                                     android:textColor="@color/white"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="start"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -129,6 +126,8 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
+                                    android:visibility="gone"
+                                    android:contentDescription="@string/delete_button"
                                     android:textColor="@color/white"/>
                                 <TextView
                                     android:id="@+id/addExercise2Button"
@@ -141,13 +140,13 @@
                                     android:drawableEnd="@drawable/walking_arrows_24"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:visibility="gone"
                                     android:textColor="@color/white"/>
 
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="end"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -162,6 +161,7 @@
                                     android:drawableEnd="@drawable/ic_refresh_transparent_24"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:visibility="gone"
                                     android:textColor="@color/white"/>
 
                                 <ImageButton
@@ -171,12 +171,13 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
+                                    android:visibility="gone"
+                                    android:contentDescription="@string/delete_button"
                                     android:textColor="@color/white"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="start"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -188,6 +189,8 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
+                                    android:visibility="gone"
+                                    android:contentDescription="@string/delete_button"
                                     android:textColor="@color/white"/>
                                 <TextView
                                     android:id="@+id/addExercise3Button"
@@ -200,13 +203,13 @@
                                     android:drawableEnd="@drawable/walking_arrows_24"
                                     android:textSize="14sp"
                                     android:padding="10dp"
+                                    android:visibility="gone"
                                     android:textColor="@color/white"/>
 
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:gravity="end"
                             android:layout_margin="5dp"
                             android:orientation="horizontal">
@@ -221,6 +224,7 @@
                                     android:gravity="center"
                                     android:maxWidth="275dp"
                                     android:padding="10dp"
+                                    android:visibility="gone"
                                     android:textColor="@color/white"
                                     android:textSize="14sp" />
 
@@ -231,16 +235,10 @@
                                     android:background="@android:color/transparent"
                                     android:src="@drawable/ic_delete_button_white"
                                     android:padding="15dp"
+                                    android:visibility="gone"
+                                    android:contentDescription="@string/delete_button"
                                     android:textColor="@color/white"/>
                         </LinearLayout>
 
-
-
-
-
                 </LinearLayout>
-        </ScrollView>
-
-
-
 </LinearLayout>
