@@ -17,6 +17,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="250dp"
+                    android:minHeight="200dp"
                     android:padding="10dp"
                     android:background="@drawable/background_grey_rounded_corners"
                     android:orientation="vertical">

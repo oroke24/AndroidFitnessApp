@@ -29,11 +29,7 @@ class WeeklyCalendarAdapter(private val email: String, private val recyclerView:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
-        val minHeight = 300
-        val layoutParams = view.layoutParams
-        layoutParams.height = minHeight
-        view.layoutParams = layoutParams
-
+        view.layoutParams.height = 800
         return ViewHolder(view)
     }
 
@@ -96,25 +92,12 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             exerciseName1TextView.text = thisDay.exercise1Id
             exerciseName2TextView.text = thisDay.exercise2Id
             exerciseName3TextView.text = thisDay.exercise3Id
-            if(recipeName2TextView.text.isEmpty()) showViewAndButton(recipeName2TextView, deleteRecipe2Button)
-            if(recipeName3TextView.text.isEmpty()) showViewAndButton(recipeName3TextView, deleteRecipe3Button)
-            if(recipeName4TextView.text.isEmpty()) showViewAndButton(recipeName4TextView, deleteRecipe4Button)
-            if(exerciseName2TextView.text.isEmpty()) showViewAndButton(exerciseName2TextView, deleteExercise2Button)
-            if(exerciseName3TextView.text.isEmpty()) showViewAndButton(exerciseName3TextView, deleteExercise3Button)
-            /*
-            if(recipeName1TextView.text.isEmpty() && recipeName2TextView.text.isEmpty())
-                hideViewAndButton(recipeName2TextView, deleteRecipe2Button)
-            if(recipeName2TextView.text.isEmpty() && recipeName3TextView.text.isEmpty())
-                hideViewAndButton(recipeName3TextView, deleteRecipe3Button)
-            if(recipeName3TextView.text.isEmpty() && recipeName4TextView.text.isEmpty())
-                hideViewAndButton(recipeName4TextView, deleteRecipe4Button)
-            if(exerciseName1TextView.text.isEmpty() && exerciseName2TextView.text.isEmpty())
-                hideViewAndButton(exerciseName2TextView, deleteExercise2Button)
-            if(exerciseName2TextView.text.isEmpty() && exerciseName3TextView.text.isEmpty())
-                hideViewAndButton(exerciseName3TextView, deleteExercise3Button)
-             */
         }
-
+        if(recipeName2TextView.text.isNotEmpty() || recipeName1TextView.text.isNotEmpty()) showViewAndButton(recipeName2TextView, deleteRecipe2Button)
+        if(recipeName3TextView.text.isNotEmpty() || recipeName2TextView.text.isNotEmpty()) showViewAndButton(recipeName3TextView, deleteRecipe3Button)
+        if(recipeName4TextView.text.isNotEmpty() || recipeName3TextView.text.isNotEmpty()) showViewAndButton(recipeName4TextView, deleteRecipe4Button)
+        if(exerciseName2TextView.text.isNotEmpty() || exerciseName1TextView.text.isNotEmpty()) showViewAndButton(exerciseName2TextView, deleteExercise2Button)
+        if(exerciseName3TextView.text.isNotEmpty() || exerciseName2TextView.text.isNotEmpty()) showViewAndButton(exerciseName3TextView, deleteExercise3Button)
         val animation = AlphaAnimation(0.1f, 1.0f)
         animation.duration = 1000 // Set the duration of the animation (in milliseconds)
         itemView.startAnimation(animation) // Start the animation
@@ -145,12 +128,12 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         deleteRecipe3Button.setOnLongClickListener {
             deleteItem(deleteRecipe3Button, recipeName3TextView, "recipe", 3, dayManager, formattedDate)
-            if(recipeName2TextView.text.isEmpty()) hideViewAndButton(recipeName3TextView, deleteRecipe3Button)
+            hideViewAndButton(recipeName3TextView, deleteRecipe3Button)
             true
         }
         deleteRecipe4Button.setOnLongClickListener {
             deleteItem(deleteRecipe4Button, recipeName4TextView, "recipe", 4, dayManager, formattedDate)
-            if(recipeName3TextView.text.isEmpty()) hideViewAndButton(recipeName4TextView, deleteRecipe4Button)
+            hideViewAndButton(recipeName4TextView, deleteRecipe4Button)
             true
         }
 
@@ -176,7 +159,7 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         deleteExercise3Button.setOnLongClickListener {
             deleteItem(deleteExercise3Button, exerciseName3TextView, "exercise", 3, dayManager, formattedDate)
-            if(exerciseName2TextView.text.isEmpty()) hideViewAndButton(exerciseName3TextView, deleteExercise3Button)
+            hideViewAndButton(exerciseName3TextView, deleteExercise3Button)
             true
         }
     }
@@ -188,11 +171,13 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                 itemView.context,
                 exercises
             ) { selectedExerciseId ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    if(slot == 1) exerciseName1TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                    else if(slot == 2) exerciseName2TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                    else exerciseName3TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                    dayManager.addExerciseToDay(formattedDate, selectedExerciseId, slot)
+               CoroutineScope(Dispatchers.Main).launch {
+                   when(slot){
+                       1-> exerciseName1TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                       2-> exerciseName2TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                       else-> exerciseName3TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                   }
+                   dayManager.addExerciseToDay(formattedDate, selectedExerciseId, slot)
                 }
             }
         }
@@ -202,10 +187,12 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         recipeManager.fetchUserRecipeIds { recipes ->
             fx.selectionDialogReturnItemId(itemView.context, recipes) { selectedRecipeId ->
                 CoroutineScope(Dispatchers.Main).launch {
-                    if(slot == 1) recipeName1TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                    else if(slot == 2) recipeName2TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                    else if(slot == 3) recipeName3TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                    else recipeName4TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                    when(slot) {
+                        1-> recipeName1TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        2-> recipeName2TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        3-> recipeName3TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        else-> recipeName4TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                    }
                     dayManager.addRecipeToDay(formattedDate, selectedRecipeId, slot)
                 }
             }
