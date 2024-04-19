@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/login"
         android:src="@drawable/ic_person_60"/>
     <ScrollView
         android:layout_width="match_parent"
