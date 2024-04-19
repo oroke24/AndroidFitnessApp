@@ -2,63 +2,252 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@drawable/background_dark_circle"
     android:layout_height="match_parent"
     android:layout_gravity="center">
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recipe and Exercise Tracker"
-        android:textSize="36sp"
-        android:textColor="@color/teal_700"
-        android:textStyle="bold"
+        android:orientation="horizontal"
+        android:layout_margin="3dp"
+        android:background="@android:color/transparent"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="start"
+            android:background="@drawable/background_white_outline"
+            android:padding="10dp"
+            android:drawableStart="@drawable/ic_person_24"
+            android:text="@string/username"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+
+        <ImageButton
+            android:id="@+id/logoutButton"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_logout"
+            android:background="@drawable/background_white_outline"
+            android:onClick="onBackButtonClick"
+            android:contentDescription="@string/log_out"
+            android:padding="15dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="20dp"/>
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <ImageButton
+            android:id="@+id/menuHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_home_60"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuRecipeButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_fork_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuExerciseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_exercise_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuCalendarButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_calendar_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuTimersButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_timer_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:maxWidth="200dp"
-        android:maxHeight="200dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
-        android:src="@drawable/jumprope_penta"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/dateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Today's Date ?"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:background="@color/teal_700"
-        android:padding="15dp"
-        android:layout_marginBottom="80dp"
-        android:layout_marginRight="20dp"/>
-
-    <Button
-        android:id="@+id/recipeButton"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recipes"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@color/teal_700"
-        android:layout_margin="20dp"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:outlineSpotShadowColor="@color/black"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
+            <LinearLayout
+                android:id="@+id/todaySnapShotLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:padding="5dp"
+                android:orientation="vertical">
 
-    <Button
-        android:id="@+id/exerciseButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exercises"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:background="@color/teal_700"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+
+                <TextView
+                    android:id="@+id/sevenDaySnapshot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/_7_day_snapshot"
+                    android:textColor="#44DDDDDD"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/weeeklyRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="400dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text= "@string/my_cards"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_margin="20dp"/>
+
+                <Button
+                    android:id="@+id/recipeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recipes"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:drawableEnd="@drawable/ic_food"
+                    android:background="@drawable/cool_button"
+                    android:layout_margin="10dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recipeRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="35dp"/>
+
+                <Button
+                    android:id="@+id/exerciseButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exercises"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:drawableEnd="@drawable/ic_exercise"
+                    android:background="@drawable/cool_button2"
+                    android:layout_margin="10dp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/exerciseRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:padding="25dp"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:text="Coming soon.."
+                    android:textColor="@color/white"/>
+                <Button
+                    android:id="@+id/runButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/run"
+                    android:textSize="24sp"
+                    android:padding="20dp"
+                    android:textColor="@color/white"
+                    android:drawableEnd="@drawable/ic_run"
+                    android:background="@drawable/background_white_outline"
+                    android:layout_margin="10dp" />
+                <Button
+                    android:id="@+id/aichatbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ai_gym_chat"
+                    android:textSize="24sp"
+                    android:padding="20dp"
+                    android:textColor="@color/white"
+                    android:drawableEnd="@drawable/ic_chat"
+                    android:background="@drawable/background_white_outline"
+                    android:layout_margin="10dp" />
+                <Button
+                    android:id="@+id/communitybutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Community"
+                    android:textSize="24sp"
+                    android:padding="20dp"
+                    android:textColor="@color/white"
+                    android:drawableEnd="@drawable/ic_community"
+                    android:background="@drawable/background_white_outline"
+                    android:layout_margin="10dp" />
+                <Button
+                    android:id="@+id/archivesbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Archives"
+                    android:textSize="24sp"
+                    android:padding="20dp"
+                    android:textColor="@color/white"
+                    android:drawableEnd="@drawable/ic_archive"
+                    android:background="@drawable/background_white_outline"
+                    android:layout_margin="10dp" />
+            </LinearLayout>
+            </LinearLayout>
+
+
+    </ScrollView>
+
+
 
 </LinearLayout>

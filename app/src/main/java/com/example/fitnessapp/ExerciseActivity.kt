@@ -1,60 +1,116 @@
 package com.example.fitnessapp
 
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.collections.hashMapOf
 
 class ExerciseActivity : ComponentActivity() {
+    private lateinit var adapter: ExerciseAdapter
+    private lateinit var homeButton: ImageButton
+    private lateinit var recipeButton: ImageButton
+    private lateinit var timersButton: ImageButton
+    private lateinit var calendarButton: ImageButton
+    val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise)
 
-        //Define a list to hold the recipes
-        val exercises = mutableListOf<Exercise>()
-
-        //Define the values to be retrieved from EditText
         val nameEditText = findViewById<EditText>(R.id.name)
         val muscleGroupEditText = findViewById<EditText>(R.id.muscleGroup)
         val instructionsEditText = findViewById<EditText>(R.id.instructions)
-
-        //Define the list (recyclerView) to be displayed
+        val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
+        val exerciseDataManager = ExerciseDataManager(email)
         val exerciseRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
-        //Define the adapter from RecipeAdapter.kt
-        val adapter = ExerciseAdapter(exercises)
+        homeButton = findViewById(R.id.menuHomeButton)
+        recipeButton = findViewById(R.id.menuRecipeButton)
+        timersButton = findViewById(R.id.menuTimersButton)
+        calendarButton = findViewById(R.id.menuCalendarButton)
 
-        /* if HORIZONTAL orientation is desired use the below commented
-        out assignment and replace LinearLayoutManager with layoutManager */
-        //val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        adapter = ExerciseAdapter(email)
+        loadExercises(exerciseDataManager)
 
-        exerciseRecyclerView.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        exerciseRecyclerView.layoutManager = layoutManager
         exerciseRecyclerView.adapter = adapter
 
-        //Set a click listener on a button to add recipe
-        val addButton = findViewById<Button>(R.id.addButton)
-        addButton.setOnClickListener{
-            val name = nameEditText.text.toString()
-            val muscleGroup = muscleGroupEditText.text.toString()
-            val instructions = instructionsEditText.text.toString()
-
-            val exercise = Exercise(name, muscleGroup, instructions)
-            exercises.add(exercise)
-
-            //Notify the adapter that the data set has changed
-            adapter.notifyItemInserted(exercises.size - 1)
-            //clear editText fields
-            nameEditText.text.clear()
-            muscleGroupEditText.text.clear()
-            instructionsEditText.text.clear()
+        homeButton.setOnClickListener{
+            fx.imageButtonClickEffect(homeButton)
+            intentWithEmail(MainActivity(), email)
+        }
+        recipeButton.setOnClickListener{
+            fx.imageButtonClickEffect(recipeButton)
+            intentWithEmail(RecipeActivity(), email)
+        }
+        timersButton.setOnClickListener{
+            fx.imageButtonClickEffect(timersButton)
+            intentWithEmail(TimersActivity(), email)
+        }
+        calendarButton.setOnClickListener{
+            fx.imageButtonClickEffect(calendarButton)
+            intentWithEmail(CalendarActivity(), email)
         }
 
-        //Back button
-        val backButton = findViewById<Button>(R.id.backButton)
+        val backButton = findViewById<ImageButton>(R.id.backButton)
         backButton.setOnClickListener {
+            fx.imageButtonClickEffect(backButton)
             finish()
         }
 
+        val addButton = findViewById<Button>(R.id.addButton)
+        addButton.setOnClickListener{
+            fx.buttonClickEffect(addButton)
+            if(nameEditText.text.isBlank()){
+                Toast.makeText(this,"Recipe must have a name", Toast.LENGTH_LONG).show()
+            }else {
+                val name = nameEditText.text.toString()
+                val muscleGroup = muscleGroupEditText.text.toString()
+                val instructions = instructionsEditText.text.toString()
+                val exercise = Exercise(name, name, muscleGroup, instructions)
+                val context: Context = this
+                var wasAdded: Boolean
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    wasAdded = exerciseDataManager.addExerciseWithPermission(context, exercise)
+                    if(wasAdded){
+                        loadExercises(exerciseDataManager)
+                        adapter.notifyDataSetChanged()
+                        nameEditText.text.clear()
+                        muscleGroupEditText.text.clear()
+                        instructionsEditText.text.clear()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun loadExercises(exerciseDataManager: ExerciseDataManager){
+        CoroutineScope(Dispatchers.Main).launch {
+            val exercises = exerciseDataManager.getAllExercises()
+            val sortedExercises = exercises.sortedBy { it.name.lowercase() }
+            adapter.setExercises(sortedExercises)
+        }
+    }
+    private fun intentWithEmail(thisActivity: ComponentActivity, email: String) {
+        val intent = Intent(this, thisActivity::class.java)
+        intent.putExtra("USER_EMAIL", email)
+        startActivity(intent)
     }
 }

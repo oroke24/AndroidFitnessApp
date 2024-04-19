@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AAAAAA"
+    android:padding="16dp">
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="@string/back_button"
+        android:padding="20dp" />
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="24sp"
+        android:layout_centerHorizontal="true"
+        android:drawableEnd="@drawable/ic_register_transparent"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="16dp"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name (can be common)"
+                android:padding="16dp"
+                android:layout_marginTop="24dp"
+                android:autofillHints=""
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:padding="16dp"
+                android:inputType="textEmailAddress"
+                android:layout_below="@id/username"
+                android:layout_marginTop="24dp"
+                android:autofillHints="" />
+
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_password"
+                android:padding="16dp"
+                android:inputType="textPassword"
+                android:layout_below="@id/email"
+                android:layout_marginTop="16dp"
+                android:autofillHints="" />
+
+            <EditText
+                android:id="@+id/confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password"
+                android:padding="16dp"
+                android:inputType="textPassword"
+                android:layout_below="@id/password"
+                android:layout_marginTop="16dp"
+                android:autofillHints="" />
+
+            <ImageButton
+                android:id="@+id/seePasswordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_alignEnd="@id/confirmPassword"
+                android:layout_margin="5dp"
+                android:layout_alignBottom="@id/confirmPassword"
+                android:src="@drawable/ic_eye_transparent_48"/>
+
+            <TextView
+                android:id="@+id/passwordMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/seePasswordButton"
+                android:textAlignment="center"
+                android:text="@string/password_no_restrictions_message"/>
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="@string/register"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button"
+                android:layout_below="@id/passwordMessage"
+                android:drawableEnd="@drawable/ic_register_transparent"
+                android:layout_marginTop="24dp"/>
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_dark_circle">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/exitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_transparent"
+            android:contentDescription="@string/exitbutton"
+            android:background="@android:color/transparent"
+            android:layout_gravity="end"
+            android:padding="20dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_login_transparent"/>
+
+
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:textColorHint="@color/white"
+            android:padding="20dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="20dp"
+            android:autofillHints="@string/email" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:padding="20dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:hint="@string/password"
+                android:textColorHint="@color/white"
+                android:inputType="textPassword"
+                android:layout_marginTop="16dp"
+                android:autofillHints="@string/password" />
+            <ImageButton
+                android:id="@+id/seePasswordButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_eye_transparent_48"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:text="@string/login"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:drawableEnd="@drawable/ic_login_transparent"
+            android:background="@drawable/cool_button3"
+            android:layout_margin="45dp"/>
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:drawableEnd="@drawable/ic_register_transparent"
+            android:padding="30dp"
+            android:background="@drawable/cool_button"
+            android:layout_marginTop="30dp"/>
+
+        <!-- Redacting guest button for now
+            <Button
+                android:id="@+id/guestButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue as Guest"
+                android:layout_below="@id/registerButton"
+                android:layout_marginTop="150dp"/>
+                -->
+    </LinearLayout>
+</ScrollView>
+
+

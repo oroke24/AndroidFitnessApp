@@ -3,14 +3,67 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@drawable/background_dark_circle"
     android:layout_height="match_parent">
 
-    <Button
+    <ImageButton
         android:id="@+id/backButton"
+        android:layout_gravity="start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"/>
+        android:src="@drawable/ic_arrow_back_white"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="@string/back_button"
+        android:padding="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+        <ImageButton
+            android:id="@+id/menuHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_home_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuRecipeButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_fork_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuExerciseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_exercise_60"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuCalendarButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_calendar_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuTimersButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_timer_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
 
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,45 +75,68 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Exercises"
+                android:text="@string/exercises_a_z"
+                android:textColor="@color/white"
                 android:textSize="30sp"/>
 
             <!-- make sure dependency is added in build.gradle.kts (Module) -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recipeRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="375dp"
+                android:layout_weight="1"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Exercise"
-                android:textSize="30sp"/>
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:gravity="bottom"
-                android:hint="name"/>
-            <EditText
-                android:id="@+id/muscleGroup"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:gravity="bottom"
-                android:hint="muscleGroup"/>
-            <EditText
-                android:id="@+id/instructions"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:gravity="bottom"
-                android:hint="instructions"/>
-            <Button
-                android:id="@+id/addButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add"
-                android:layout_margin="50dp"/>
-
+                android:padding = "15dp"
+                android:background="@drawable/background_white_outline"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_exercise"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"/>
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="80dp"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:gravity="bottom"
+                    android:hint="@string/name"/>
+                <EditText
+                    android:id="@+id/muscleGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    android:gravity="bottom"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:hint="@string/musclegroup"/>
+                <EditText
+                    android:id="@+id/instructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    android:gravity="bottom"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:hint="@string/instructions"/>
+                <Button
+                    android:id="@+id/addButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cool_background2"
+                    android:padding="25dp"
+                    android:text="@string/add"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:layout_margin="15dp"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

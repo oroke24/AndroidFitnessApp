@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    android:layout_width="match_parent"
+    android:keepScreenOn="true"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_dark_circle">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back_white"
+                android:background="@android:color/transparent"
+                android:onClick="onBackButtonClick"
+                android:contentDescription="@string/back_button_description"
+                android:padding="20dp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="50dp"
+                android:text="@string/stopwatch_title"
+                android:textSize="45sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAlignment="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/background_white_outline">
+
+                <TextView
+                    android:id="@+id/stopwatchTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/stopwatch_default_text"
+                    android:textSize="70sp"
+                    android:textColor="#FFF"/>
+
+                <TextView
+                    android:id="@+id/millisecondTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_marginEnd="25dp"
+                    android:text="@string/stopwatch_default_milliseconds"
+                    android:textSize="45sp"
+                    android:textColor="@color/grey"/>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="125dp">
+
+                <ImageButton
+                    android:id="@+id/startButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_arrow_forward_green"
+                    android:background="@android:color/transparent"
+                    android:onClick="onStartButtonClick"
+                    android:contentDescription="@string/back_button_description"
+                    android:padding="20dp" />
+
+                <ImageButton
+                    android:id="@+id/pauseButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_pause"
+                    android:background="@android:color/transparent"
+                    android:onClick="onPauseButtonClick"
+                    android:visibility="gone"
+                    android:contentDescription="@string/pause_button_description"
+                    android:padding="20dp" />
+
+                <ImageButton
+                    android:id="@+id/resetButton"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_refresh_60"
+                    android:background="@android:color/transparent"
+                    android:onClick="onResetButtonClick"
+                    android:contentDescription="@string/reset_button_description"
+                    android:padding="20dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_dark_circle"
+    android:layout_gravity="center">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_arrow_back_white"
+        android:background="@android:color/transparent"
+        android:onClick="onBackButtonClick"
+        android:contentDescription="@string/back_button_description"
+        android:padding="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/menuHomeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_home_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuRecipeButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_fork_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuExerciseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_exercise_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuCalendarButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_calendar_transparent"
+            android:background="@drawable/background_white_outline_clear"/>
+        <ImageButton
+            android:id="@+id/menuTimersButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:src="@drawable/ic_timer_60"
+            android:background="@drawable/background_white_outline_clear"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <!-- Commenting out Countdown Timer for now
+        <Button
+            android:id="@+id/timerButton"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:text="@string/countdown_timer"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/cool_button_circle_peach"
+            />
+            -->
+
+        <Button
+            android:id="@+id/stopWatchButton"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="end"
+            android:layout_marginRight="50dp"
+            android:text="@string/stopwatch"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/cool_button_circle_green"
+            />
+
+        <Button
+            android:id="@+id/tabataTimerButton"
+            android:layout_width="400dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/tabata_timer"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/cool_button_circle_red_blue"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" />
+
+    </LinearLayout>
+</LinearLayout>
