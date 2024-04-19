@@ -1,6 +1,7 @@
 package com.example.fitnessapp
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -10,10 +11,13 @@ import com.google.firebase.auth.FirebaseAuth
 
 class RegistrationActivity : ComponentActivity() {
 
+    private lateinit var backButton: ImageButton
     private lateinit var emailEditText: EditText
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var confirmPasswordEditText: EditText
+    private lateinit var seeButton: ImageButton
+    private lateinit var registerButton: Button
 
     private lateinit var auth: FirebaseAuth
 
@@ -23,17 +27,24 @@ class RegistrationActivity : ComponentActivity() {
         val fx = InteractionEffects()
         auth = FirebaseAuth.getInstance()
 
+        backButton = findViewById(R.id.backButton)
         emailEditText = findViewById(R.id.email)
-        emailEditText.setText(intent.getStringExtra("email"))
         usernameEditText = findViewById(R.id.username)
         passwordEditText = findViewById(R.id.password)
         confirmPasswordEditText = findViewById(R.id.confirmPassword)
-        val registerButton = findViewById<Button>(R.id.registerButton)
-        val backButton = findViewById<ImageButton>(R.id.backButton)
+        seeButton = findViewById(R.id.seePasswordButton)
+        emailEditText.setText(intent.getStringExtra("email"))
+        passwordEditText.setText(intent.getStringExtra("password"))
+        registerButton = findViewById(R.id.registerButton)
 
         backButton.setOnClickListener {
             fx.imageButtonClickEffect(backButton)
             finish()
+        }
+        seeButton.setOnClickListener{
+           fx.imageButtonClickEffectQuick(seeButton)
+            passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            confirmPasswordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
         }
         registerButton.setOnClickListener {
             fx.buttonClickEffect(registerButton)

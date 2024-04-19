@@ -108,5 +108,12 @@ class InteractionEffects {
         }
         dialog.show()
     }
-
+    fun hideViewAndButton(itemView: View, imageButton: ImageButton){
+        itemView.visibility = View.GONE
+        imageButton.visibility = View.GONE
+    }
+    fun showViewAndButton(itemView: View, imageButton: ImageButton){
+        itemView.visibility = View.VISIBLE
+        imageButton.visibility = View.VISIBLE
+    }
 }

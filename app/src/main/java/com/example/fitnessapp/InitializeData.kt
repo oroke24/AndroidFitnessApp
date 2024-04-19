@@ -22,7 +22,7 @@ class InitializeData(private val userProfile: UserProfile) {
 
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("users")
-    val thisUser = usersCollection.document(myEmail)
+    private val thisUser = usersCollection.document(myEmail)
 
     fun begin(){
         addEmailToUsersIfNotExists()
@@ -34,10 +34,12 @@ class InitializeData(private val userProfile: UserProfile) {
         thisUser.set(email, SetOptions.merge())
             .addOnSuccessListener {
                 Log.d(TAG, "Email document added or updated successfully, now loading initial data")
-                val firstRecipeId = addInitialRecipesForUser()
-                val firstExerciseId: List<Exercise> = addInitialExercisesForUser()
-                for(i in 0..5){
-                   addInitialDayForUser(firstRecipeId[i].name, firstExerciseId[i].name)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val firstRecipes: List<Recipe> = addInitialRecipesForUser()
+                    val firstExercises: List<Exercise> = addInitialExercisesForUser()
+                    for(i in 2..6){
+                        addInitialDayForUser(firstRecipes[i].name, firstExercises[i].name, i-1)
+                    }
                 }
             }
             .addOnFailureListener { exception ->
@@ -45,7 +47,7 @@ class InitializeData(private val userProfile: UserProfile) {
             }
         userProfileDataManager.addProfile(userProfile)
     }
-    private fun addInitialRecipesForUser(): List<Recipe>{
+    private suspend fun addInitialRecipesForUser(): List<Recipe>{
         val initialRecipes = listOf(
             Recipe(
                 "",
@@ -63,6 +65,16 @@ class InitializeData(private val userProfile: UserProfile) {
             ),
             Recipe(
                 "",
+                "Breakfast Toast 1",
+                "Banana\n"+
+                        "Peanut Butter\n"+
+                        "slice of Whole Wheat",
+                "Toast bread\n"+
+                        "Spread Peanut Butter\n"+
+                        "Slice banana and put on toast or eat separately"
+            ),
+            Recipe(
+                "",
                 "Potato Bake",
                 "-5 Potatoes\n-12 Eggs\n-3 Bell Peppers\n-1-2lbs Meat\n" +
                         "-2 Tbsp Oil\n-2 Tbsp seasoning\n-1 Tbsp salt\n-Tortillas (optional)",
@@ -75,22 +87,17 @@ class InitializeData(private val userProfile: UserProfile) {
                         "-pour scrambled eggs and meat evenly over potatos and veggies.\n" +
                         "-Wrap in tortillas and freeze if desired."
             ),
+            Recipe("",
+                "Turkey sandwich",
+                "-Wheat Bread\n-Sliced Turkey Breast\n-Mustard\n-Lettuce\n-Tomato",
+                "-Slice/chop veggies, add between bread and enjoy!"
+            ),
             Recipe(
                 "",
                  "Penne Pasta",
                  "-Penne Pasta noodles\n-Sauce(of choice)\n-1-2lbs Ground Beef",
                  "-Boil Pasta.\n-Cook Meat.\n-Once meat is cooked, add sauce\n" +
                         "-Mix meat sauce with pasta if desired"
-            ),
-            Recipe(
-                "",
-                "Peanut Butter Banana Toast 1",
-                "Banana\n"+
-                "Peanut Butter\n"+
-                "slice of Whole Wheat",
-                "Toast bread\n"+
-                        "Spread Peanut Butter\n"+
-                        "Slice banana and put on toast or eat separately"
             ),
             Recipe(
                 "",
@@ -105,7 +112,7 @@ class InitializeData(private val userProfile: UserProfile) {
         }
         return initialRecipes
     }
-    private fun addInitialExercisesForUser(): List<Exercise>{
+    private suspend fun addInitialExercisesForUser(): List<Exercise>{
         val initialExercises = listOf(
             Exercise(
                 "",
@@ -115,6 +122,34 @@ class InitializeData(private val userProfile: UserProfile) {
                         "-You can edit and duplicate any of your cards as you please!",
                 "Following this card are some premade cards.  Enjoy!"
             ),
+            Exercise(
+                "",
+                "Leg Day",
+                "Legs, Lower Back",
+                "-5 x 12-15 BB Squat slow eccentric\n"+
+                        "-5 x 15 BB Romanian Deadlift slow eccentric\n"+
+                        "-4 x 20 DB Walking Lunges\n"+
+                        "-3 x Superset of: leg extensions and leg curls\n"+
+                        "-5 x 15-20 Weighted calf raises\n"+
+                        "-End with core exercise of choice"
+            ),
+            Exercise(
+                "",
+                "Stretch",
+                "Full Body Relaxed",
+                "-Bend and Reach\n"+
+                        "-Calf stretch\n"+
+                        "-Quad stretch\n"+
+                        "-Chest and Arm stretch\n"+
+                        "-Roll wrists and neck"
+            ),
+            Exercise(
+                "",
+                "Run",
+                "Cardio, Legs, Back, Core",
+                "Goal is at least 8 miles at an average of less than 10 minutes per mile."
+            ),
+
             Exercise(
                  "",
                  "Hypertrophy",
@@ -137,28 +172,12 @@ class InitializeData(private val userProfile: UserProfile) {
                         "-3 x 8-10 chinups.\n" +
                         "-(core) 4 x 12-15 alternating: V-ups and heel touches."
             ),
-            Exercise(
-                "",
-                "Leg Day",
-                "Legs, Lower Back",
-                "-5 x 12-15 BB Squat slow eccentric\n"+
-                "-5 x 15 BB Romanian Deadlift slow eccentric\n"+
-                "-4 x 20 DB Walking Lunges\n"+
-                "-3 x Superset of: leg extensions and leg curls\n"+
-                "-5 x 15-20 Weighted calf raises\n"+
-                "-End with core exercise of choice"
-            ),
-            Exercise(
-                "",
-                "Run",
-                "Full Body Relaxed, Hot",
-                "Goal is at least 30 minutes of temp over 170."
-            ),
+
             Exercise(
                 "",
                 "Sauna",
-                "Cardio, Legs, Back, Core",
-                "Goal is at least 8 miles at an average of less than 9 minutes."
+                "Full Body Relaxed, Hot",
+                "Goal is at least 30 minutes of temp over 170."
             )
         )
         //now adding initialExercises to db
@@ -167,12 +186,10 @@ class InitializeData(private val userProfile: UserProfile) {
         }
         return initialExercises
     }
-    private fun addInitialDayForUser(recipeId: String, exerciseId:String){
+    private suspend fun addInitialDayForUser(recipeId: String, exerciseId:String, slot: Int){
         val dateOfRegistration = Date().time
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date(dateOfRegistration))
-        CoroutineScope(Dispatchers.Main).launch {
-            dayDataManager.addRecipeToDay(formattedDate, recipeId, 1)
-            dayDataManager.addExerciseToDay(formattedDate, exerciseId, 1)
-        }
+            dayDataManager.addRecipeToDay(formattedDate, recipeId, slot)
+            dayDataManager.addExerciseToDay(formattedDate, exerciseId, slot)
     }
 }

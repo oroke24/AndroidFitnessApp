@@ -89,8 +89,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_margin="20dp"
-                    android:background="@drawable/cool_background_grey"
+                    android:background="@drawable/background_grey_outline"
                     android:padding="15dp"
+                    android:textColor="@color/white"
                     android:text="@string/change_username" />
             </LinearLayout>
         </LinearLayout>

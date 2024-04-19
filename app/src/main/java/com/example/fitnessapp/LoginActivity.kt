@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.InputType
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -19,13 +20,14 @@ class LoginActivity : ComponentActivity() {
     private lateinit var loginButton: Button
     private lateinit var registerButton: Button
     private lateinit var exitButton: ImageButton
+    private lateinit var seeButton: ImageButton
+    val fx = InteractionEffects()
 
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val fx = InteractionEffects()
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -40,6 +42,7 @@ class LoginActivity : ComponentActivity() {
         loginButton = findViewById(R.id.loginButton)
         registerButton = findViewById(R.id.registerButton)
         exitButton = findViewById(R.id.exitButton)
+        seeButton = findViewById(R.id.seePasswordButton)
 
         exitButton.setOnClickListener{
             fx.imageButtonClickEffectQuick(exitButton)
@@ -57,13 +60,20 @@ class LoginActivity : ComponentActivity() {
                     .show()
             }
         }
+        seeButton.setOnClickListener{
+            fx.imageButtonClickEffectQuick(seeButton)
+            passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        }
+
 
         // Set OnClickListener for the registration button
         registerButton.setOnClickListener {
             fx.buttonClickEffect(registerButton)
             val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
             intent = Intent(this, RegistrationActivity::class.java)
             intent.putExtra("email", email)
+            intent.putExtra("password", password)
             startActivity(intent)
         }
 }

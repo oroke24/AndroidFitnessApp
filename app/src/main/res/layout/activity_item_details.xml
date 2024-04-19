@@ -69,7 +69,7 @@
                 android:layout_margin="10dp"
                 android:padding="30dp"
                 android:layout_gravity="end"
-                android:text="@string/save_and_keep_original"
+                android:text="@string/add_new_card"
                 android:textColor="@color/white"
                 android:visibility="gone"
                 android:background="@drawable/background_grey_rounded_corners"/>
@@ -80,7 +80,7 @@
                 android:layout_margin="10dp"
                 android:padding="30dp"
                 android:layout_gravity="end"
-                android:text="@string/save_and_delete_original"
+                android:text="@string/replace_this_card"
                 android:textColor="@color/white"
                 android:visibility="gone"
                 android:background="@drawable/background_grey_rounded_corners"/>

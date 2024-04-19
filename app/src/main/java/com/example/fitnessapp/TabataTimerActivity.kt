@@ -59,7 +59,6 @@ class TabataTimerActivity : ComponentActivity() {
         timerTextView.visibility = View.GONE
         elapsedIntervalTextView.visibility= View.GONE
 
-        backButton.setBackgroundColor(Color.TRANSPARENT)
         configureNumberPickers()
         backButton.setOnClickListener{finish()}
 
@@ -76,18 +75,21 @@ class TabataTimerActivity : ComponentActivity() {
     private fun configureNumberPickers() {
         // Configure minutes picker
         minutesPicker.textColor = getColor(R.color.white)
+        minutesPicker.textSize = 60f
         minutesPicker.minValue = 1
         minutesPicker.maxValue = 60
         minutesPicker.value = 4
 
         // Configure work picker
         workIntervalInSecondsPicker.textColor = getColor(R.color.white)
+        workIntervalInSecondsPicker.textSize = 60f
         workIntervalInSecondsPicker.minValue = 1
         workIntervalInSecondsPicker.maxValue = 60
         workIntervalInSecondsPicker.value = 20
 
         // Configure rest picker
         restIntervalInSecondsPicker.textColor = getColor(R.color.white)
+        restIntervalInSecondsPicker.textSize = 60f
         restIntervalInSecondsPicker.minValue = 1
         restIntervalInSecondsPicker.maxValue = 60
         restIntervalInSecondsPicker.value = 10
@@ -98,7 +100,7 @@ class TabataTimerActivity : ComponentActivity() {
         workIntervalInSecondsPicker.visibility = View.GONE
         restIntervalInSecondsPicker.visibility = View.GONE
         timerTextView.visibility = View.VISIBLE
-        elapsedIntervalTextView.visibility = View.VISIBLE
+        timerTextView.textSize = 80f
         val minutes = minutesPicker.value
         val workSeconds = workIntervalInSecondsPicker.value
         val restSeconds = restIntervalInSecondsPicker.value
@@ -124,6 +126,7 @@ class TabataTimerActivity : ComponentActivity() {
     private fun startTimer(minutes: Int, workSeconds: Int, restSeconds: Int) {
         timerLayoutView.setBackgroundColor(Color.rgb(22,22,22))
         startStopButton.visibility = View.VISIBLE
+        elapsedIntervalTextView.visibility = View.VISIBLE
         val totalSeconds = minutes * 60L
 
         minutesTextView.text= getString(R.string.minutes_template, minutes)
@@ -138,31 +141,31 @@ class TabataTimerActivity : ComponentActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val minutesDisplay = (millisUntilFinished / 1000) / 60
                 val secondsDisplay = (millisUntilFinished / 1000) % 60
-                timerTextView.textSize = 125f
+                timerTextView.textSize = 80f
                 timerTextView.text = String.format("%02d:%02d", minutesDisplay, secondsDisplay)
 
 
                 val elapsedSeconds = (totalSeconds - millisUntilFinished / 1000).toInt()
                 val totalIntervalSeconds = workSeconds + restSeconds
                 val elapsedIntervalSeconds = elapsedSeconds % totalIntervalSeconds
-                elapsedIntervalTextView.text = String.format("%02d", elapsedIntervalSeconds)
+                //elapsedIntervalTextView.text = String.format("%02d", elapsedIntervalSeconds)
 
                 val isWorkInterval = elapsedIntervalSeconds < workSeconds
 
                 if (isWorkInterval) {
                     timerLayoutView.setBackgroundColor(Color.rgb(255, 150, 69)) // Work interval color
-                    typeTextView.setTextColor(Color.WHITE)
+                    elapsedIntervalTextView.text = String.format("%02d", workSeconds - (elapsedIntervalSeconds % workSeconds))
                     typeTextView.text = getString(R.string.work)
                 } else {
                     timerLayoutView.setBackgroundColor(Color.rgb(22, 150, 255)) // Rest interval color
-                    typeTextView.setTextColor(Color.WHITE)
+                    elapsedIntervalTextView.text = String.format("%02d", restSeconds - (elapsedIntervalSeconds - workSeconds))
                     typeTextView.text = getString(R.string.rest)
                 }
             }
 
             override fun onFinish() {
-                resetTimer()
-                timerLayoutView.setBackgroundColor(Color.rgb(11, 99, 11))
+                stopTimer()
+                timerLayoutView.background = getDrawable(R.drawable.background_dark_circle)
                 startVibration()
                 startRingtone()
                 showDialog()
@@ -170,7 +173,7 @@ class TabataTimerActivity : ComponentActivity() {
         }
 
         timer.start()
-        startStopButton.setImageResource(R.drawable.ic_stop_circle)
+        startStopButton.setImageResource(R.drawable.ic_stop_red_48_transparent)
         startStopButton.setBackgroundColor(Color.TRANSPARENT)
         timerRunning = true
     }
@@ -183,9 +186,9 @@ class TabataTimerActivity : ComponentActivity() {
     private fun resetTimer() {
         // Resetting UI elements and visibility
         timerTextView.text = getString(R.string.default_tabata_timer)
-        timerTextView.text = getString(R.string.default_tabata_timer)
-        timerLayoutView.setBackgroundColor(Color.rgb(22,22,22))
-        typeTextView.setTextColor(Color.rgb(60,60,70))
+        elapsedIntervalTextView.visibility = View.GONE
+        timerLayoutView.background = getDrawable(R.drawable.background_dark_circle)
+        //typeTextView.setTextColor(Color.rgb(60,60,70))
         typeTextView.text = getString(R.string.get_ready)
 
         minutesPicker.visibility = View.VISIBLE
@@ -238,5 +241,11 @@ class TabataTimerActivity : ComponentActivity() {
 
     private fun stopVibration() {
         vibrator?.cancel()
+    }
+    override fun onPause() {
+        super.onPause()
+        if (timerRunning) {
+            stopTimer()
+        }
     }
 }

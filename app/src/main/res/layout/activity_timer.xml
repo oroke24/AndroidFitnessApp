@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:keepScreenOn="true"
-    android:background="@color/black">
+    android:background="@drawable/background_dark_circle">
 
     <ImageButton
         android:id="@+id/backButton"

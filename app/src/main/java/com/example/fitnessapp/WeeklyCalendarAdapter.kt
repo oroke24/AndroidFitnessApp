@@ -7,6 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.FILL_PARENT
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.AlphaAnimation
 import android.view.animation.TranslateAnimation
 import android.widget.Button
@@ -26,10 +29,19 @@ import java.util.*
 
 class WeeklyCalendarAdapter(private val email: String, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>() {
     var daysOfWeek: List<Date> = ArrayList()
+    //var daysFromManager: List<Day> = ArrayList()
+    val recipeManager = RecipeDataManager(email)
+    val exerciseManager = ExerciseDataManager(email)
+    val dayManager = DayDataManager(email)
+    val todayInyyyyMMdd = LocalDate.now()
+    val todayString = todayInyyyyMMdd.toString()
+    val tomorrowInyyyyMMdd = todayInyyyyMMdd.plusDays(1)
+    val tomorrowString = tomorrowInyyyyMMdd.toString()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
-        view.layoutParams.height = 800
+        view.layoutParams.height = MATCH_PARENT
         return ViewHolder(view)
     }
 
@@ -38,7 +50,7 @@ class WeeklyCalendarAdapter(private val email: String, private val recyclerView:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(this, position, email)
+        holder.bind(this, position, recipeManager, exerciseManager, dayManager, todayString, tomorrowString)
     }
     fun updateData(daysOfWeek: List<Date>){
         this.daysOfWeek = daysOfWeek
@@ -55,30 +67,31 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val recipeName2TextView: TextView = itemView.findViewById(R.id.addRecipe2Button)
     private val recipeName3TextView: TextView = itemView.findViewById(R.id.addRecipe3Button)
     private val recipeName4TextView: TextView = itemView.findViewById(R.id.addRecipe4Button)
+    private val recipeName5TextView: TextView = itemView.findViewById(R.id.addRecipe5Button)
     private val exerciseName1TextView: TextView = itemView.findViewById(R.id.addExercise1Button)
     private val exerciseName2TextView: TextView = itemView.findViewById(R.id.addExercise2Button)
     private val exerciseName3TextView: TextView = itemView.findViewById(R.id.addExercise3Button)
+    private val exerciseName4TextView: TextView = itemView.findViewById(R.id.addExercise4Button)
+    private val exerciseName5TextView: TextView = itemView.findViewById(R.id.addExercise5Button)
     private val deleteRecipe1Button: ImageButton = itemView.findViewById(R.id.deleteRecipeButton)
     private val deleteRecipe2Button: ImageButton = itemView.findViewById(R.id.deleteRecipe2Button)
     private val deleteRecipe3Button: ImageButton = itemView.findViewById(R.id.deleteRecipe3Button)
     private val deleteRecipe4Button: ImageButton = itemView.findViewById(R.id.deleteRecipe4Button)
+    private val deleteRecipe5Button: ImageButton = itemView.findViewById(R.id.deleteRecipe5Button)
     private val deleteExercise1Button: ImageButton = itemView.findViewById(R.id.deleteExercise1Button)
     private val deleteExercise2Button: ImageButton = itemView.findViewById(R.id.deleteExercise2Button)
     private val deleteExercise3Button: ImageButton = itemView.findViewById(R.id.deleteExercise3Button)
+    private val deleteExercise4Button: ImageButton = itemView.findViewById(R.id.deleteExercise4Button)
+    private val deleteExercise5Button: ImageButton = itemView.findViewById(R.id.deleteExercise5Button)
 
-    fun bind(adapter: WeeklyCalendarAdapter, position: Int, email: String) {
-        val recipeManager = RecipeDataManager(email)
-        val exerciseManager = ExerciseDataManager(email)
-        val dayManager = DayDataManager(email)
+    fun bind(adapter: WeeklyCalendarAdapter, position: Int, recipeManager: RecipeDataManager, exerciseManager: ExerciseDataManager, dayManager: DayDataManager, todayString: String, tomorrowString: String) {
         val date = adapter.daysOfWeek[position]
-        val todayInyyyy_mm_dd = LocalDate.now()
-        val tomorrowInyyyy_mm_dd = todayInyyyy_mm_dd.plusDays(1)
-        val dateCheck = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
-        var placeHolder: String
 
-        if(dateCheck == todayInyyyy_mm_dd.toString()) placeHolder = "Today: ${dateViewFormat.format(date)}"
-        else if(dateCheck == tomorrowInyyyy_mm_dd.toString()) placeHolder = "Tomorrow: ${dateViewFormat.format(date)}"
-        else placeHolder = dateViewFormat.format(date)
+        val placeHolder: String = when(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)) {
+            todayString-> "Today: ${dateViewFormat.format(date)}"
+            tomorrowString-> "Tomorrow: ${dateViewFormat.format(date)}"
+            else-> dateViewFormat.format(date)
+        }
 
         dateTextView.text = placeHolder
         val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
@@ -89,33 +102,32 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             recipeName2TextView.text = thisDay.recipe2Id
             recipeName3TextView.text = thisDay.recipe3Id
             recipeName4TextView.text = thisDay.recipe4Id
+            recipeName5TextView.text = thisDay.recipe5Id
             exerciseName1TextView.text = thisDay.exercise1Id
             exerciseName2TextView.text = thisDay.exercise2Id
             exerciseName3TextView.text = thisDay.exercise3Id
+            exerciseName4TextView.text = thisDay.exercise4Id
+            exerciseName5TextView.text = thisDay.exercise5Id
         }
-        if(recipeName2TextView.text.isNotEmpty() || recipeName1TextView.text.isNotEmpty()) showViewAndButton(recipeName2TextView, deleteRecipe2Button)
-        if(recipeName3TextView.text.isNotEmpty() || recipeName2TextView.text.isNotEmpty()) showViewAndButton(recipeName3TextView, deleteRecipe3Button)
-        if(recipeName4TextView.text.isNotEmpty() || recipeName3TextView.text.isNotEmpty()) showViewAndButton(recipeName4TextView, deleteRecipe4Button)
-        if(exerciseName2TextView.text.isNotEmpty() || exerciseName1TextView.text.isNotEmpty()) showViewAndButton(exerciseName2TextView, deleteExercise2Button)
-        if(exerciseName3TextView.text.isNotEmpty() || exerciseName2TextView.text.isNotEmpty()) showViewAndButton(exerciseName3TextView, deleteExercise3Button)
+
         val animation = AlphaAnimation(0.1f, 1.0f)
         animation.duration = 1000 // Set the duration of the animation (in milliseconds)
         itemView.startAnimation(animation) // Start the animation
 
         recipeName1TextView.setOnClickListener {
             recipeItemViewClick(recipeName1TextView, 1, recipeManager, dayManager, formattedDate)
-            showViewAndButton(recipeName2TextView, deleteRecipe2Button)
         }
         recipeName2TextView.setOnClickListener {
             recipeItemViewClick(recipeName2TextView, 2, recipeManager, dayManager, formattedDate)
-            showViewAndButton(recipeName3TextView, deleteRecipe3Button)
         }
         recipeName3TextView.setOnClickListener {
             recipeItemViewClick(recipeName3TextView, 3, recipeManager, dayManager, formattedDate)
-            showViewAndButton(recipeName4TextView, deleteRecipe4Button)
         }
         recipeName4TextView.setOnClickListener {
             recipeItemViewClick(recipeName4TextView, 4, recipeManager, dayManager, formattedDate)
+        }
+        recipeName5TextView.setOnClickListener {
+            recipeItemViewClick(recipeName5TextView, 5, recipeManager, dayManager, formattedDate)
         }
         deleteRecipe1Button.setOnLongClickListener {
             deleteItem(deleteRecipe1Button, recipeName1TextView, "recipe", 1, dayManager, formattedDate)
@@ -123,30 +135,35 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         deleteRecipe2Button.setOnLongClickListener {
             deleteItem(deleteRecipe2Button, recipeName2TextView, "recipe", 2, dayManager, formattedDate)
-            if(recipeName1TextView.text.isEmpty()) hideViewAndButton(recipeName2TextView, deleteRecipe2Button)
             true
         }
         deleteRecipe3Button.setOnLongClickListener {
             deleteItem(deleteRecipe3Button, recipeName3TextView, "recipe", 3, dayManager, formattedDate)
-            hideViewAndButton(recipeName3TextView, deleteRecipe3Button)
             true
         }
         deleteRecipe4Button.setOnLongClickListener {
             deleteItem(deleteRecipe4Button, recipeName4TextView, "recipe", 4, dayManager, formattedDate)
-            hideViewAndButton(recipeName4TextView, deleteRecipe4Button)
+            true
+        }
+        deleteRecipe5Button.setOnLongClickListener {
+            deleteItem(deleteRecipe5Button, recipeName5TextView, "recipe", 5, dayManager, formattedDate)
             true
         }
 
         exerciseName1TextView.setOnClickListener {
             exerciseItemViewClick(exerciseName1TextView, 1, exerciseManager, dayManager, formattedDate)
-            showViewAndButton(exerciseName2TextView, deleteExercise2Button)
         }
         exerciseName2TextView.setOnClickListener {
             exerciseItemViewClick(exerciseName2TextView, 2, exerciseManager, dayManager, formattedDate)
-            showViewAndButton(exerciseName3TextView, deleteExercise3Button)
         }
         exerciseName3TextView.setOnClickListener {
             exerciseItemViewClick(exerciseName3TextView, 3, exerciseManager, dayManager, formattedDate)
+        }
+        exerciseName4TextView.setOnClickListener {
+            exerciseItemViewClick(exerciseName4TextView, 4, exerciseManager, dayManager, formattedDate)
+        }
+        exerciseName5TextView.setOnClickListener {
+            exerciseItemViewClick(exerciseName5TextView, 5, exerciseManager, dayManager, formattedDate)
         }
         deleteExercise1Button.setOnLongClickListener {
             deleteItem(deleteExercise1Button, exerciseName1TextView, "exercise", 1, dayManager, formattedDate)
@@ -154,12 +171,18 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         deleteExercise2Button.setOnLongClickListener {
             deleteItem(deleteExercise2Button, exerciseName2TextView, "exercise", 2, dayManager, formattedDate)
-            if(exerciseName1TextView.text.isEmpty()) hideViewAndButton(exerciseName2TextView, deleteExercise2Button)
             true
         }
         deleteExercise3Button.setOnLongClickListener {
             deleteItem(deleteExercise3Button, exerciseName3TextView, "exercise", 3, dayManager, formattedDate)
-            hideViewAndButton(exerciseName3TextView, deleteExercise3Button)
+            true
+        }
+        deleteExercise4Button.setOnLongClickListener {
+            deleteItem(deleteExercise4Button, exerciseName4TextView, "exercise", 4, dayManager, formattedDate)
+            true
+        }
+        deleteExercise5Button.setOnLongClickListener {
+            deleteItem(deleteExercise5Button, exerciseName5TextView, "exercise", 5, dayManager, formattedDate)
             true
         }
     }
@@ -175,7 +198,9 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                    when(slot){
                        1-> exerciseName1TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
                        2-> exerciseName2TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                       else-> exerciseName3TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                       3-> exerciseName3TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                       4-> exerciseName4TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                       else-> exerciseName5TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
                    }
                    dayManager.addExerciseToDay(formattedDate, selectedExerciseId, slot)
                 }
@@ -191,7 +216,8 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                         1-> recipeName1TextView.text = recipeManager.getNameFromId(selectedRecipeId)
                         2-> recipeName2TextView.text = recipeManager.getNameFromId(selectedRecipeId)
                         3-> recipeName3TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        else-> recipeName4TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        4-> recipeName4TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        else-> recipeName5TextView.text = recipeManager.getNameFromId(selectedRecipeId)
                     }
                     dayManager.addRecipeToDay(formattedDate, selectedRecipeId, slot)
                 }
@@ -206,12 +232,5 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             else dayManager.addRecipeToDay(formattedDate, "", slot)
         }
     }
-    fun hideViewAndButton(itemView: View, imageButton: ImageButton){
-        itemView.visibility = View.GONE
-        imageButton.visibility = View.GONE
-    }
-    fun showViewAndButton(itemView: View, imageButton: ImageButton){
-        itemView.visibility = View.VISIBLE
-        imageButton.visibility = View.VISIBLE
-    }
+
 }

@@ -22,7 +22,7 @@ class TimersActivity : ComponentActivity() {
         //Binding vals to buttons
         val backButton = findViewById<ImageButton>(R.id.backButton)
         val stopWatch = findViewById<Button>(R.id.stopWatchButton)
-        val timer = findViewById<Button>(R.id.timerButton)
+        //val timer = findViewById<Button>(R.id.timerButton)
         val tabataTimer = findViewById<Button>(R.id.tabataTimerButton)
         homeButton = findViewById(R.id.menuHomeButton)
         recipeButton = findViewById(R.id.menuRecipeButton)
@@ -55,10 +55,12 @@ class TimersActivity : ComponentActivity() {
             fx.buttonClickEffect(stopWatch)
             startActivity(Intent(this, StopWatchActivity::class.java))
         }
+        /*
         timer.setOnClickListener {
             fx.buttonClickEffect(timer)
             startActivity(Intent(this, TimerActivity::class.java))
         }
+         */
         tabataTimer.setOnClickListener {
             fx.buttonClickEffect(tabataTimer)
             startActivity(Intent(this, TabataTimerActivity::class.java))
