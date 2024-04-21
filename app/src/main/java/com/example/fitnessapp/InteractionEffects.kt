@@ -34,7 +34,7 @@ class InteractionEffects {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Select One")
         val listOfNames = items.map { it.second }.toTypedArray()
-        builder.setItems(listOfNames) { dialog, which ->
+        builder.setItems(listOfNames) { _, which ->
             val selectedItemId = items[which].first
             callback(selectedItemId)
         }
@@ -84,13 +84,5 @@ class InteractionEffects {
             continuation.resume(false)
         }
         dialog.show()
-    }
-    fun hideViewAndButton(itemView: View, imageButton: ImageButton){
-        itemView.visibility = View.GONE
-        imageButton.visibility = View.GONE
-    }
-    fun showViewAndButton(itemView: View, imageButton: ImageButton){
-        itemView.visibility = View.VISIBLE
-        imageButton.visibility = View.VISIBLE
     }
 }

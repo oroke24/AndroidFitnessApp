@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
-class WeeklyCalendarAdapter(private val email: String, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>() {
+class WeeklyCalendarAdapter(email: String, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>() {
     var daysOfWeek: List<Date> = ArrayList()
     private val recipeManager = RecipeDataManager(email)
     private val exerciseManager = ExerciseDataManager(email)
@@ -81,7 +81,6 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         dateTextView.text = placeHolder
         val formattedDateForDB = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
-
         CoroutineScope(Dispatchers.Main).launch {
             val thisDay: Day = dayManager.getDayFromDate(formattedDateForDB)
             recipeName1TextView.text = thisDay.recipe1Id
@@ -172,7 +171,6 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             true
         }
     }
-
     private fun exerciseItemViewClick(itemView: View, slot: Int, exerciseManager: ExerciseDataManager, dayManager: DayDataManager, formattedDate: String) {
         fx.itemViewClickEffect(itemView)
         exerciseManager.fetchUserExerciseIds { exercises ->

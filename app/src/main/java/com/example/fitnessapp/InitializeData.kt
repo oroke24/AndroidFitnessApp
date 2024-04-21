@@ -44,12 +44,12 @@ class InitializeData(private val userProfile: UserProfile) {
             }
         userProfileDataManager.addProfile(userProfile)
     }
-    private suspend fun addInitialRecipesForUser(): List<Recipe>{
+    private fun addInitialRecipesForUser(): List<Recipe>{
         val initialRecipes = listOf(
             Recipe(
                 "",
                 "1) You can delete me!",
-                "C'ya!",
+                "Cya!",
                 "I'll be back"
             ),
             Recipe(
@@ -58,7 +58,7 @@ class InitializeData(private val userProfile: UserProfile) {
                 "-Think of these cards as your personal deck of recipes\n"+
                         "-Your deck is always sorted a-z\n"+
                         "-You can edit and duplicate any of your cards as you please!",
-                "Following this card are some premade cards.  Enjoy!"
+                "Following this card are some pre-made cards.  Enjoy!"
             ),
             Recipe(
                 "",
@@ -111,7 +111,7 @@ class InitializeData(private val userProfile: UserProfile) {
                         "-Shake until well seasoned, drain bag if needed.\n" +
                         "-Empty mix into baking pan and bake @ 450 for 45min.\n" +
                         "-Scramble then and cook eggs and meat.\n" +
-                        "-pour scrambled eggs and meat evenly over potatos and veggies.\n" +
+                        "-pour scrambled eggs and meat evenly over potatoes and veggies.\n" +
                         "-Wrap in tortillas and freeze if desired."
             ),
             Recipe(
@@ -131,7 +131,7 @@ class InitializeData(private val userProfile: UserProfile) {
         }
         return initialRecipes
     }
-    private suspend fun addInitialExercisesForUser(): List<Exercise>{
+    private fun addInitialExercisesForUser(): List<Exercise>{
         val initialExercises = listOf(
             Exercise(
                 "",
@@ -139,14 +139,14 @@ class InitializeData(private val userProfile: UserProfile) {
                 "-Think of these cards as your personal deck of exercises\n"+
                         "-Your deck is always sorted a-z\n"+
                         "-You can edit and duplicate any of your cards as you please!",
-                "Following this card are some premade cards.  Enjoy!"
+                "Following this card are some pre-made cards.  Enjoy!"
             ),
             Exercise(
                 "",
                 "Leg Day",
                 "Legs, Lower Back",
                 "-5 x 12-15 BB Squat slow eccentric\n"+
-                        "-5 x 15 BB Romanian Deadlift slow eccentric\n"+
+                        "-5 x 15 BB Romanian Dead-lift slow eccentric\n"+
                         "-4 x 20 DB Walking Lunges\n"+
                         "-3 x Superset of: leg extensions and leg curls\n"+
                         "-5 x 15-20 Weighted calf raises\n"+
@@ -176,7 +176,7 @@ class InitializeData(private val userProfile: UserProfile) {
                         "-Incline DB bench: 4 x 12-15 slow eccentric.\n" +
                         "-3 x superset of: Bar dips (6-8) and Incline seated DB Curls (8-10).\n" +
                         "-3 x superset of: Cable ext (8-10) and close grip (curl bar) curls (12-15).\n" +
-                        "-Flat bar tricep pull downs 3 x 12-15.\n" +
+                        "-Flat bar tri-cep pull downs 3 x 12-15.\n" +
                         "-(core): rope pull downs "
             ),
             Exercise(
@@ -199,13 +199,13 @@ class InitializeData(private val userProfile: UserProfile) {
             ),
             Exercise(
                 "",
-                "High Intensity (HIIT)",
+                "High Intensity (H.I.I.T)",
                 "Whole Body",
                 "-4 x 50 KB swings.\n" +
                         "-4 x 20 KB bob and weaves.\n" +
-                        "-4 minute tabata burpees (20work/10rest).\n" +
-                        "-3 x 8-10 pullups.\n" +
-                        "-3 x 8-10 chinups.\n" +
+                        "-4 minute Tabata burpees (20work/10rest).\n" +
+                        "-3 x 8-10 pull-ups.\n" +
+                        "-3 x 8-10 chin-ups.\n" +
                         "-(core) 4 x 12-15 alternating: V-ups and heel touches."
             ),
             Exercise(

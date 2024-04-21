@@ -1,6 +1,5 @@
 package com.example.fitnessapp
 
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
@@ -8,7 +7,7 @@ import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class ExerciseDataManager(private val email: String) {
+class ExerciseDataManager(email: String) {
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("users")
     private val thisUser = usersCollection.document(email)
@@ -86,7 +85,7 @@ class ExerciseDataManager(private val email: String) {
                 Log.d(ContentValues.TAG, "Exercise with ID: $exerciseToDeleteId deleted successfully")
             }
             .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error deleting exercise, id recieved: $exerciseToDeleteId", exception)
+                Log.w(ContentValues.TAG, "Error deleting exercise, id received: $exerciseToDeleteId", exception)
             }
     }
     fun fetchUserExerciseIds(callback: (List<Pair<String, String>>) -> Unit) {

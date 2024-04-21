@@ -13,7 +13,6 @@ class RecipeDataManager(private val email: String) {
     private val thisUser = usersCollection.document(email)
     private val thisUsersRecipes = thisUser.collection("recipes")
     private val fx = InteractionEffects()
-
     suspend fun getAllRecipes(): List<Recipe> {
         return try {
             val recipesCollection = thisUsersRecipes.get().await()

@@ -25,12 +25,10 @@ class ExerciseAdapter(private val email: String) : RecyclerView.Adapter<Exercise
         holder.itemView.setOnClickListener {
             fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
-            val backgroundID = context.resources.getIdentifier("cool_background2", "drawable", context.packageName)
-            val dataManagerType: String = "exercises"
+            val dataManagerType = "exercises"
             val intent = Intent(context, ItemDetailsActivity::class.java).apply {
                 putExtra("email", email)
                 putExtra("dataManagerType", dataManagerType)
-                putExtra("backgroundID", backgroundID)
                 putExtra("title", exercise.name)
 
                 putExtra("subOneTitle", "Muscle Group:")

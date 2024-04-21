@@ -23,7 +23,6 @@ class RegistrationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-
         auth = FirebaseAuth.getInstance()
         backButton = findViewById(R.id.backButton)
         emailEditText = findViewById(R.id.email)

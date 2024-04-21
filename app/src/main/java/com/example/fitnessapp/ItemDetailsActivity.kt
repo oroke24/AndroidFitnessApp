@@ -49,15 +49,16 @@ class ItemDetailsActivity() : ComponentActivity() {
             finish()
         }
         val dataManagerType = intent.getStringExtra("dataManagerType")
-        val mainBackground = intent.getIntExtra("backgroundID", -1)
         val originalCard = intent.getStringExtra("title")?:""
         titleEditText.setText(originalCard)
         subGroupOneTitleTextView.text = intent.getStringExtra("subOneTitle")
         subGroupOneEditText.setText(intent.getStringExtra("subOneDetails"))
         subGroupTwoTitleTextView.text = intent.getStringExtra("subTwoTitle")
         subGroupTwoEditText.setText(intent.getStringExtra("subTwoDetails"))
-        if(mainBackground != -1){
-            mainLayout.background = getDrawable(mainBackground)
+        when(dataManagerType){
+            "recipes" -> mainLayout.background = getDrawable(R.drawable.cool_background)
+            "exercises" -> mainLayout.background = getDrawable(R.drawable.cool_background2)
+            else -> mainLayout.background = getDrawable(R.drawable.background_grey_outline)
         }
         val textWatcher = object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

@@ -1,13 +1,10 @@
 package com.example.fitnessapp
 
-import android.content.Context
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlin.coroutines.coroutineContext
 
 class UserProfileDataManager(private val email: String) {
     private val db = FirebaseFirestore.getInstance()

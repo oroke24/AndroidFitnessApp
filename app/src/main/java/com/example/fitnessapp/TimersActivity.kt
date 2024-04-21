@@ -20,9 +20,9 @@ class TimersActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timers)
 
-        backButton = findViewById<ImageButton>(R.id.backButton)
-        stopWatch = findViewById<Button>(R.id.stopWatchButton)
-        tabataTimer = findViewById<Button>(R.id.tabataTimerButton)
+        backButton = findViewById(R.id.backButton)
+        stopWatch = findViewById(R.id.stopWatchButton)
+        tabataTimer = findViewById(R.id.tabataTimerButton)
         homeButton = findViewById(R.id.menuHomeButton)
         recipeButton = findViewById(R.id.menuRecipeButton)
         exerciseButton = findViewById(R.id.menuExerciseButton)

@@ -16,7 +16,6 @@ class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeView
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
         return RecipeViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val fx = InteractionEffects()
         val recipe = recipes[position]
@@ -25,17 +24,13 @@ class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeView
         holder.itemView.setOnClickListener {
             fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
-            val backgroundID = context.resources.getIdentifier("cool_background", "drawable", context.packageName)
-            val dataManagerType: String = "recipes"
+            val dataManagerType = "recipes"
             val intent = Intent(context, ItemDetailsActivity::class.java).apply {
                 putExtra("email", email)
                 putExtra("dataManagerType", dataManagerType)
-                putExtra("backgroundID", backgroundID)
                 putExtra("title", recipe.name)
-
                 putExtra("subOneTitle", "Ingredients:")
                 putExtra("subOneDetails", recipe.ingredients)
-
                 putExtra("subTwoTitle", "Instructions:")
                 putExtra("subTwoDetails", recipe.instructions)
             }
