@@ -15,29 +15,35 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RecipeActivity : ComponentActivity() {
+    private lateinit var backButton: ImageButton
     private lateinit var adapter: RecipeAdapter
     private lateinit var homeButton: ImageButton
     private lateinit var exerciseButton: ImageButton
     private lateinit var timersButton: ImageButton
     private lateinit var calendarButton: ImageButton
     private lateinit var recipeDataManager: RecipeDataManager
+    private lateinit var nameEditText: EditText
+    private lateinit var ingredientsEditText: EditText
+    private lateinit var instructionsEditText: EditText
+    private lateinit var addButton: Button
+    private lateinit var recipeRecyclerView: RecyclerView
+    private lateinit var layoutManager: LinearLayoutManager
     val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
 
-        val backButton = findViewById<ImageButton>(R.id.backButton)
-        val nameEditText = findViewById<EditText>(R.id.name)
-        val ingredientsEditText = findViewById<EditText>(R.id.ingredients)
-        val instructionsEditText = findViewById<EditText>(R.id.instructions)
-        val addButton = findViewById<Button>(R.id.addButton)
-        val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
+        backButton = findViewById(R.id.backButton)
         homeButton = findViewById(R.id.menuHomeButton)
         exerciseButton = findViewById(R.id.menuExerciseButton)
         timersButton = findViewById(R.id.menuTimersButton)
         calendarButton = findViewById(R.id.menuCalendarButton)
+        nameEditText = findViewById(R.id.name)
+        ingredientsEditText = findViewById(R.id.ingredients)
+        instructionsEditText = findViewById(R.id.instructions)
+        addButton = findViewById(R.id.addButton)
+        recipeRecyclerView = findViewById(R.id.recipeRecyclerView)
+        layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val email = intent.getStringExtra("USER_EMAIL")?:"no user named"
         recipeDataManager = RecipeDataManager(email)
@@ -89,9 +95,9 @@ class RecipeActivity : ComponentActivity() {
                         nameEditText.text.clear()
                         ingredientsEditText.text.clear()
                         instructionsEditText.text.clear()
+                        loadRecipes(recipeDataManager)
                     }
                 }
-                loadRecipes(recipeDataManager)
                 intentWithEmail(RecipeActivity(), email)
             }
         }
@@ -112,5 +118,6 @@ class RecipeActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         loadRecipes(recipeDataManager)
+        adapter.notifyDataSetChanged()
     }
 }

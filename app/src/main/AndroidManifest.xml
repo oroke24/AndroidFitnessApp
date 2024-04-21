@@ -30,16 +30,11 @@
         <activity android:name=".RecipeActivity"/>
         <activity android:name=".ExerciseActivity"/>
         <activity android:name=".TimersActivity"/>
-        <activity android:name=".TimerActivity"/>
         <activity android:name=".StopWatchActivity"/>
         <activity android:name=".TabataTimerActivity"/>
         <activity android:name=".CalendarActivity"/>
         <activity android:name=".ItemDetailsActivity"/>
         <activity android:name=".UserProfileActivity"/>
-        <service
-            android:name=".TimerService"
-            android:foregroundServiceType="dataSync"
-            />
     </application>
 
 </manifest>

@@ -1,42 +1,29 @@
 package com.example.fitnessapp
 
-import android.app.AlertDialog
-import android.content.Context
-import android.provider.ContactsContract.CommonDataKinds.Im
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.FILL_PARENT
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.AlphaAnimation
-import android.view.animation.TranslateAnimation
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
 class WeeklyCalendarAdapter(private val email: String, private val recyclerView: RecyclerView) : RecyclerView.Adapter<ViewHolder>() {
     var daysOfWeek: List<Date> = ArrayList()
-    //var daysFromManager: List<Day> = ArrayList()
-    val recipeManager = RecipeDataManager(email)
-    val exerciseManager = ExerciseDataManager(email)
-    val dayManager = DayDataManager(email)
-    val todayInyyyyMMdd = LocalDate.now()
-    val todayString = todayInyyyyMMdd.toString()
-    val tomorrowInyyyyMMdd = todayInyyyyMMdd.plusDays(1)
-    val tomorrowString = tomorrowInyyyyMMdd.toString()
+    private val recipeManager = RecipeDataManager(email)
+    private val exerciseManager = ExerciseDataManager(email)
+    private val dayManager = DayDataManager(email)
+    private val todayInyyyyMMdd: LocalDate = LocalDate.now()
+    private val todayString = todayInyyyyMMdd.toString()
+    private val tomorrowInyyyyMMdd: LocalDate = todayInyyyyMMdd.plusDays(1)
+    private val tomorrowString = tomorrowInyyyyMMdd.toString()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -62,7 +49,6 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val fx = InteractionEffects()
     private val dateViewFormat = SimpleDateFormat("EEE, dd MMM", Locale.getDefault())
     private val dateTextView: TextView = itemView.findViewById(R.id.dayOfWeek)
-
     private val recipeName1TextView: TextView = itemView.findViewById(R.id.addRecipe1Button)
     private val recipeName2TextView: TextView = itemView.findViewById(R.id.addRecipe2Button)
     private val recipeName3TextView: TextView = itemView.findViewById(R.id.addRecipe3Button)
@@ -94,10 +80,10 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         }
 
         dateTextView.text = placeHolder
-        val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+        val formattedDateForDB = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
 
         CoroutineScope(Dispatchers.Main).launch {
-            val thisDay: Day = dayManager.getDayFromDate(formattedDate)
+            val thisDay: Day = dayManager.getDayFromDate(formattedDateForDB)
             recipeName1TextView.text = thisDay.recipe1Id
             recipeName2TextView.text = thisDay.recipe2Id
             recipeName3TextView.text = thisDay.recipe3Id
@@ -115,74 +101,74 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         itemView.startAnimation(animation) // Start the animation
 
         recipeName1TextView.setOnClickListener {
-            recipeItemViewClick(recipeName1TextView, 1, recipeManager, dayManager, formattedDate)
+            recipeItemViewClick(recipeName1TextView, 1, recipeManager, dayManager, formattedDateForDB)
         }
         recipeName2TextView.setOnClickListener {
-            recipeItemViewClick(recipeName2TextView, 2, recipeManager, dayManager, formattedDate)
+            recipeItemViewClick(recipeName2TextView, 2, recipeManager, dayManager, formattedDateForDB)
         }
         recipeName3TextView.setOnClickListener {
-            recipeItemViewClick(recipeName3TextView, 3, recipeManager, dayManager, formattedDate)
+            recipeItemViewClick(recipeName3TextView, 3, recipeManager, dayManager, formattedDateForDB)
         }
         recipeName4TextView.setOnClickListener {
-            recipeItemViewClick(recipeName4TextView, 4, recipeManager, dayManager, formattedDate)
+            recipeItemViewClick(recipeName4TextView, 4, recipeManager, dayManager, formattedDateForDB)
         }
         recipeName5TextView.setOnClickListener {
-            recipeItemViewClick(recipeName5TextView, 5, recipeManager, dayManager, formattedDate)
+            recipeItemViewClick(recipeName5TextView, 5, recipeManager, dayManager, formattedDateForDB)
         }
         deleteRecipe1Button.setOnLongClickListener {
-            deleteItem(deleteRecipe1Button, recipeName1TextView, "recipe", 1, dayManager, formattedDate)
+            deleteItem(deleteRecipe1Button, recipeName1TextView, "recipe", 1, dayManager, formattedDateForDB)
             true
         }
         deleteRecipe2Button.setOnLongClickListener {
-            deleteItem(deleteRecipe2Button, recipeName2TextView, "recipe", 2, dayManager, formattedDate)
+            deleteItem(deleteRecipe2Button, recipeName2TextView, "recipe", 2, dayManager, formattedDateForDB)
             true
         }
         deleteRecipe3Button.setOnLongClickListener {
-            deleteItem(deleteRecipe3Button, recipeName3TextView, "recipe", 3, dayManager, formattedDate)
+            deleteItem(deleteRecipe3Button, recipeName3TextView, "recipe", 3, dayManager, formattedDateForDB)
             true
         }
         deleteRecipe4Button.setOnLongClickListener {
-            deleteItem(deleteRecipe4Button, recipeName4TextView, "recipe", 4, dayManager, formattedDate)
+            deleteItem(deleteRecipe4Button, recipeName4TextView, "recipe", 4, dayManager, formattedDateForDB)
             true
         }
         deleteRecipe5Button.setOnLongClickListener {
-            deleteItem(deleteRecipe5Button, recipeName5TextView, "recipe", 5, dayManager, formattedDate)
+            deleteItem(deleteRecipe5Button, recipeName5TextView, "recipe", 5, dayManager, formattedDateForDB)
             true
         }
 
         exerciseName1TextView.setOnClickListener {
-            exerciseItemViewClick(exerciseName1TextView, 1, exerciseManager, dayManager, formattedDate)
+            exerciseItemViewClick(exerciseName1TextView, 1, exerciseManager, dayManager, formattedDateForDB)
         }
         exerciseName2TextView.setOnClickListener {
-            exerciseItemViewClick(exerciseName2TextView, 2, exerciseManager, dayManager, formattedDate)
+            exerciseItemViewClick(exerciseName2TextView, 2, exerciseManager, dayManager, formattedDateForDB)
         }
         exerciseName3TextView.setOnClickListener {
-            exerciseItemViewClick(exerciseName3TextView, 3, exerciseManager, dayManager, formattedDate)
+            exerciseItemViewClick(exerciseName3TextView, 3, exerciseManager, dayManager, formattedDateForDB)
         }
         exerciseName4TextView.setOnClickListener {
-            exerciseItemViewClick(exerciseName4TextView, 4, exerciseManager, dayManager, formattedDate)
+            exerciseItemViewClick(exerciseName4TextView, 4, exerciseManager, dayManager, formattedDateForDB)
         }
         exerciseName5TextView.setOnClickListener {
-            exerciseItemViewClick(exerciseName5TextView, 5, exerciseManager, dayManager, formattedDate)
+            exerciseItemViewClick(exerciseName5TextView, 5, exerciseManager, dayManager, formattedDateForDB)
         }
         deleteExercise1Button.setOnLongClickListener {
-            deleteItem(deleteExercise1Button, exerciseName1TextView, "exercise", 1, dayManager, formattedDate)
+            deleteItem(deleteExercise1Button, exerciseName1TextView, "exercise", 1, dayManager, formattedDateForDB)
             true
         }
         deleteExercise2Button.setOnLongClickListener {
-            deleteItem(deleteExercise2Button, exerciseName2TextView, "exercise", 2, dayManager, formattedDate)
+            deleteItem(deleteExercise2Button, exerciseName2TextView, "exercise", 2, dayManager, formattedDateForDB)
             true
         }
         deleteExercise3Button.setOnLongClickListener {
-            deleteItem(deleteExercise3Button, exerciseName3TextView, "exercise", 3, dayManager, formattedDate)
+            deleteItem(deleteExercise3Button, exerciseName3TextView, "exercise", 3, dayManager, formattedDateForDB)
             true
         }
         deleteExercise4Button.setOnLongClickListener {
-            deleteItem(deleteExercise4Button, exerciseName4TextView, "exercise", 4, dayManager, formattedDate)
+            deleteItem(deleteExercise4Button, exerciseName4TextView, "exercise", 4, dayManager, formattedDateForDB)
             true
         }
         deleteExercise5Button.setOnLongClickListener {
-            deleteItem(deleteExercise5Button, exerciseName5TextView, "exercise", 5, dayManager, formattedDate)
+            deleteItem(deleteExercise5Button, exerciseName5TextView, "exercise", 5, dayManager, formattedDateForDB)
             true
         }
     }
@@ -190,10 +176,7 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private fun exerciseItemViewClick(itemView: View, slot: Int, exerciseManager: ExerciseDataManager, dayManager: DayDataManager, formattedDate: String) {
         fx.itemViewClickEffect(itemView)
         exerciseManager.fetchUserExerciseIds { exercises ->
-            exerciseManager.showExerciseSelectionDialog(
-                itemView.context,
-                exercises
-            ) { selectedExerciseId ->
+            fx.selectionDialogReturnItemId(itemView.context, exercises) { selectedExerciseId ->
                CoroutineScope(Dispatchers.Main).launch {
                    when(slot){
                        1-> exerciseName1TextView.text = exerciseManager.getNameFromId(selectedExerciseId)

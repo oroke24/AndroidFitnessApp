@@ -1,17 +1,11 @@
 package com.example.fitnessapp
 
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class RecipeDataManager(private val email: String) {
     private val db = FirebaseFirestore.getInstance()
@@ -35,7 +29,7 @@ class RecipeDataManager(private val email: String) {
         }catch(e: Exception) {
                 Log.w(ContentValues.TAG, "Error loading recipes")
             emptyList()
-            }
+        }
     }
     fun addRecipe(recipe: Recipe) {
         val recipeName = recipe.name.lowercase().trim()
@@ -115,5 +109,15 @@ class RecipeDataManager(private val email: String) {
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error deleting recipe, id recieved: $recipeToDeleteId", exception)
             }
+    }
+    suspend fun deleteAllRecipes(){
+        try {
+            val recipesCollection = thisUsersRecipes.get().await()
+            for(document in recipesCollection){
+                thisUsersRecipes.document(document.id).delete()
+            }
+        }catch(e: Exception) {
+            Log.w(ContentValues.TAG, "Error deleting recipes")
+        }
     }
 }

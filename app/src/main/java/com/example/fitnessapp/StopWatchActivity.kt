@@ -20,41 +20,37 @@ class StopWatchActivity : ComponentActivity() {
     private lateinit var startButton: ImageButton
     private lateinit var pauseButton: ImageButton
     private lateinit var resetButton: ImageButton
+    private lateinit var backButton: ImageButton
     val fx = InteractionEffects()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stop_watch)
 
+        backButton = findViewById(R.id.backButton)
+        startButton = findViewById(R.id.startButton)
+        pauseButton = findViewById(R.id.pauseButton)
+        resetButton = findViewById(R.id.resetButton)
         stopwatchTextView = findViewById(R.id.stopwatchTextView)
         millisecondTextView = findViewById(R.id.millisecondTextView)
         handler = Handler(Looper.getMainLooper())
 
-        val backButton: ImageButton = findViewById(R.id.backButton)
         backButton.setOnClickListener {
             onBackButtonClick(it)
         }
-
-        startButton = findViewById(R.id.startButton)
         startButton.setOnClickListener {
             onStartButtonClick(it)
         }
-
-        pauseButton = findViewById(R.id.pauseButton)
         pauseButton.setOnClickListener {
             onPauseButtonClick(it)
         }
-
-        resetButton = findViewById(R.id.resetButton)
         resetButton.setOnClickListener {
             onResetButtonClick(it)
         }
     }
-
     fun onBackButtonClick(view: View) {
         finish()
     }
-
     fun onStartButtonClick(view: View) {
         if (!isRunning) {
             isRunning = true
@@ -62,36 +58,26 @@ class StopWatchActivity : ComponentActivity() {
             startStopwatch()
         }
     }
-
     private fun startStopwatch() {
         startButton.visibility=View.GONE
         pauseButton.visibility=View.VISIBLE
         secondRunnable = object : Runnable {
             override fun run() {
-                // Calculate elapsed time
                 elapsedTime = System.currentTimeMillis() - startTime
-
-                // Calculate hours, minutes, seconds, and remaining milliseconds
                 val hours = elapsedTime / (1000 * 60 * 60)
                 val minutes = (elapsedTime % (1000 * 60 * 60)) / (1000 * 60)
                 val seconds = (elapsedTime % (1000 * 60)) / 1000
                 val millis = elapsedTime % 1000
-
-                // Format time string
                 val time = String.format("%02d:%02d:%02d", hours, minutes, seconds)
                 val milliseconds = String.format("%03d",millis)
 
-                // Update TextView with formatted time
                 stopwatchTextView.text = time
                 millisecondTextView.text = milliseconds
-
-                // Post delayed execution of this runnable after 10 milliseconds
                 handler.postDelayed(this, 10)
             }
         }
         handler.post(secondRunnable)
     }
-
     fun onPauseButtonClick(view: View) {
         if (isRunning) {
             pauseButton.visibility=View.GONE
@@ -100,7 +86,6 @@ class StopWatchActivity : ComponentActivity() {
             handler.removeCallbacks(secondRunnable)
         }
     }
-
     fun onResetButtonClick(view: View) {
         fx.imageButtonClickEffectQuick(resetButton)
         pauseButton.visibility=View.GONE

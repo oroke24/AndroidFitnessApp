@@ -68,49 +68,38 @@
             android:background="@drawable/background_white_outline_clear"/>
 
     </LinearLayout>
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/stopWatchButton"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_margin="40dp"
+                android:layout_gravity="center"
+                android:text="@string/stopwatch"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button_circle_green"/>
 
-        <!-- Commenting out Countdown Timer for now
-        <Button
-            android:id="@+id/timerButton"
-            android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:text="@string/countdown_timer"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/cool_button_circle_peach"
-            />
-            -->
+            <Button
+                android:id="@+id/tabataTimerButton"
+                android:layout_width="400dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:text="@string/tabata_timer"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:background="@drawable/cool_button_circle_red_blue"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
 
-        <Button
-            android:id="@+id/stopWatchButton"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="end"
-            android:layout_marginRight="50dp"
-            android:text="@string/stopwatch"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:background="@drawable/cool_button_circle_green"
-            />
+        </LinearLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/tabataTimerButton"
-            android:layout_width="400dp"
-            android:layout_height="250dp"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/tabata_timer"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:background="@drawable/cool_button_circle_red_blue"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
-
-    </LinearLayout>
 </LinearLayout>

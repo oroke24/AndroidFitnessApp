@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,6 @@ class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeView
     private var recipes = listOf<Recipe>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
-        // Creating a translate animation from right to left
         return RecipeViewHolder(view)
     }
 
@@ -44,16 +42,13 @@ class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeView
             context.startActivity(intent)
         }
     }
-
     override fun getItemCount(): Int {
         return recipes.size
     }
-
     fun setRecipes(recipes: List<Recipe>) {
         this.recipes = recipes
         notifyDataSetChanged()
     }
-
     fun deleteRecipe(position: Int) {
         if (position < 0 || position >= recipes.size) {
             return // Invalid position

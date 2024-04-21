@@ -1,8 +1,6 @@
 package com.example.fitnessapp
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,6 @@ import android.view.animation.AlphaAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 
 class ExerciseAdapter(private val email: String) : RecyclerView.Adapter<ExerciseViewHolder>(){
     private var exercises = listOf<Exercise>()

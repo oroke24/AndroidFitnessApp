@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -11,20 +12,29 @@ android {
 
     defaultConfig {
         applicationId = "com.example.fitnessapp"
-        minSdk = 29
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
+    signingConfigs {
+        create("releaseConfig"){
+            storeFile = File("keystore")
+            storePassword = "Beastie2468!"
+            keyAlias = "myKey1"
+            keyPassword= "Beastie2468!"
+        }
+    }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -74,9 +84,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    /*
     //Room - Local Database
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-ktx:2.6.1")
+     */
     //Firebase Dependencies
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")

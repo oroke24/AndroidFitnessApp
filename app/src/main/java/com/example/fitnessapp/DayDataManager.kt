@@ -1,10 +1,9 @@
 package com.example.fitnessapp
 
+import android.content.ContentValues
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -63,6 +62,23 @@ class DayDataManager(private val email: String) {
             Log.e("addExerciseToDay: Error", "Error: ${e.message}")
         }
     }
+    suspend fun getSevenDays(dates: List<Date>): List<Day>{
+        val daysOfWeek = arrayListOf<String>()
+        for(date in dates){
+            val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+            daysOfWeek.add(formattedDate)
+        }
+        return try {
+            val days = mutableListOf<Day>()
+            for(day in daysOfWeek){
+                days.add(getDayFromDate(day))
+            }
+            days
+        }catch(e: Exception) {
+            Log.w(ContentValues.TAG, "Error loading recipes")
+            emptyList()
+        }
+    }
     suspend fun emptyRecipeIdFromDay(formattedDate: String){
         val thisDayDocRef = daysCollection.document(formattedDate).get().await()
         if(thisDayDocRef.exists()){
@@ -77,7 +93,7 @@ class DayDataManager(private val email: String) {
     }
 
     suspend fun getDayFromDate(formattedDate: String): Day {
-        var thisDay = Day("", "", "", "", "","","","","", "", "","")
+        var thisDay = Day("", formattedDate, "", "", "","","","","", "", "","")
         val thisDayDocRef = daysCollection.document(formattedDate).get().await()
         if(thisDayDocRef.exists()){
             val date = thisDayDocRef.getString(thisDayDocRef.id)?:""
@@ -95,4 +111,15 @@ class DayDataManager(private val email: String) {
         }
         return thisDay
     }
+    suspend fun deleteAllDays(){
+        try {
+            val myDaysCollection = daysCollection.get().await()
+            for(document in myDaysCollection){
+                daysCollection.document(document.id).delete()
+            }
+        }catch(e: Exception) {
+            Log.w(ContentValues.TAG, "Error deleting recipes")
+        }
+    }
+
 }
