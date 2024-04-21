@@ -1,23 +1,15 @@
 package com.example.fitnessapp
 
 import android.app.AlertDialog
-import android.content.Context
 import android.graphics.Color
-import android.media.Image
-import android.media.Ringtone
-import android.media.RingtoneManager
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 
 class TabataTimerActivity : ComponentActivity() {
@@ -34,10 +26,11 @@ class TabataTimerActivity : ComponentActivity() {
     private lateinit var restTextView: TextView
     private lateinit var backButton: ImageButton
     private lateinit var startStopButton: ImageButton
+    private lateinit var setCountTextView: TextView
     private var timerRunning: Boolean = false
+    private var bufferTimerRunning: Boolean = false
     private lateinit var timer: CountDownTimer
-    private var alarmRingtone: Ringtone? = null
-    private var vibrator: Vibrator? = null
+    private lateinit var bufferTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,21 +48,55 @@ class TabataTimerActivity : ComponentActivity() {
         restTextView = findViewById(R.id.restTextView)
         backButton = findViewById(R.id.backButton)
         startStopButton = findViewById(R.id.startStopButton)
+        setCountTextView = findViewById(R.id.setCount)
 
         timerTextView.visibility = View.GONE
         elapsedIntervalTextView.visibility= View.GONE
 
         configureNumberPickers()
-        backButton.setOnClickListener{finish()}
+
+        checkBounds()
+        minutesPicker.setOnValueChangedListener { _, _, _ ->
+            checkBounds()
+        }
+        workIntervalInSecondsPicker.setOnValueChangedListener { _, _, _ ->
+            checkBounds()
+        }
+        restIntervalInSecondsPicker.setOnValueChangedListener { _, _, _ ->
+            checkBounds()
+        }
+
+        backButton.setOnClickListener{
+            if(timerRunning){
+                timer.cancel()
+                timerRunning = false
+            }
+            if(bufferTimerRunning){
+                bufferTimer.cancel()
+                bufferTimerRunning = false
+            }
+            finish()
+        }
 
         startStopButton.setOnClickListener {
             if (timerRunning) {
-                stopTimer()
+                resetTimer()
             } else {
-                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                checkBounds()
                 startBufferTimer()
+                window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
         }
+    }
+    private fun checkBounds(){
+        val minutes = minutesPicker.value * 60
+        val workSeconds = workIntervalInSecondsPicker.value
+        val restSeconds = restIntervalInSecondsPicker.value
+        val modulus = minutes % (workSeconds + restSeconds)
+        val pieces = minutes / (workSeconds + restSeconds)
+        setCountTextView.text = "Sets: $pieces.$modulus"
+        if(modulus == 0) startStopButton.visibility = View.VISIBLE
+        else startStopButton.visibility = View.INVISIBLE
     }
 
     private fun configureNumberPickers() {
@@ -95,80 +122,73 @@ class TabataTimerActivity : ComponentActivity() {
         restIntervalInSecondsPicker.value = 10
     }
     private fun startBufferTimer() {
+        minutesTextView.visibility = View.GONE
+        workTextView.visibility = View.GONE
+        restTextView.visibility = View.GONE
         startStopButton.visibility = View.GONE
         minutesPicker.visibility = View.GONE
         workIntervalInSecondsPicker.visibility = View.GONE
         restIntervalInSecondsPicker.visibility = View.GONE
         timerTextView.visibility = View.VISIBLE
-        timerTextView.textSize = 80f
+        timerTextView.textSize = 200f
         val minutes = minutesPicker.value
         val workSeconds = workIntervalInSecondsPicker.value
         val restSeconds = restIntervalInSecondsPicker.value
 
-        minutesTextView.text= getString(R.string.minutes_template, minutes)
-        workTextView.text= getString(R.string.work_template, workSeconds)
-        restTextView.text= getString(R.string.rest_template, restSeconds)
         // Countdown from 10 seconds before starting the main timer
-        object : CountDownTimer(10000, 1000) {
+        bufferTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                // Update timerTextView to display the countdown from 10 seconds
                 val secondsRemaining = (millisUntilFinished / 1000).toInt()
                 timerTextView.text = secondsRemaining.toString()
             }
-
             override fun onFinish() {
-                // Start the main timer after the countdown
+                bufferTimer.cancel()
+                bufferTimerRunning = false
                 startTimer(minutes, workSeconds, restSeconds)
             }
-        }.start()
-    }
+        }
+        bufferTimer.start()
+        bufferTimerRunning = true
 
+    }
     private fun startTimer(minutes: Int, workSeconds: Int, restSeconds: Int) {
         timerLayoutView.setBackgroundColor(Color.rgb(22,22,22))
         startStopButton.visibility = View.VISIBLE
+        setCountTextView.visibility = View.VISIBLE
         elapsedIntervalTextView.visibility = View.VISIBLE
         val totalSeconds = minutes * 60L
 
-        minutesTextView.text= getString(R.string.minutes_template, minutes)
-        workTextView.text= getString(R.string.work_template, workSeconds)
-        restTextView.text= getString(R.string.rest_template, restSeconds)
-
-        // Log statement to check values
-        println("Minutes: ${minutesPicker.value}, Work Interval: $workSeconds seconds, Rest Interval: $restSeconds seconds")
-
         timer = object : CountDownTimer(totalSeconds * 1000, 1000) {
-
             override fun onTick(millisUntilFinished: Long) {
                 val minutesDisplay = (millisUntilFinished / 1000) / 60
                 val secondsDisplay = (millisUntilFinished / 1000) % 60
                 timerTextView.textSize = 80f
                 timerTextView.text = String.format("%02d:%02d", minutesDisplay, secondsDisplay)
 
-
                 val elapsedSeconds = (totalSeconds - millisUntilFinished / 1000).toInt()
                 val totalIntervalSeconds = workSeconds + restSeconds
                 val elapsedIntervalSeconds = elapsedSeconds % totalIntervalSeconds
                 //elapsedIntervalTextView.text = String.format("%02d", elapsedIntervalSeconds)
+                val setsRemaining = ((millisUntilFinished / 1000) / totalIntervalSeconds) + 1
+                if (setsRemaining == 1L) setCountTextView.text = "Last One!! Finish Strong!"
+                else setCountTextView.text = "$setsRemaining Sets Remaining"
 
                 val isWorkInterval = elapsedIntervalSeconds < workSeconds
 
                 if (isWorkInterval) {
-                    timerLayoutView.setBackgroundColor(Color.rgb(255, 150, 69)) // Work interval color
+                    timerLayoutView.background = getDrawable(R.drawable.background_tabata_work) // Work interval color
                     elapsedIntervalTextView.text = String.format("%02d", workSeconds - (elapsedIntervalSeconds % workSeconds))
                     typeTextView.text = getString(R.string.work)
                 } else {
-                    timerLayoutView.setBackgroundColor(Color.rgb(22, 150, 255)) // Rest interval color
+                    timerLayoutView.background = getDrawable(R.drawable.background_tabata_rest) // Rest interval color
                     elapsedIntervalTextView.text = String.format("%02d", restSeconds - (elapsedIntervalSeconds - workSeconds))
                     typeTextView.text = getString(R.string.rest)
                 }
             }
-
             override fun onFinish() {
-                stopTimer()
+                resetTimer()
                 timerLayoutView.background = getDrawable(R.drawable.background_dark_circle)
-                startVibration()
-                startRingtone()
-                showDialog()
+                //showDialog()
             }
         }
 
@@ -176,11 +196,6 @@ class TabataTimerActivity : ComponentActivity() {
         startStopButton.setImageResource(R.drawable.ic_stop_red_48_transparent)
         startStopButton.setBackgroundColor(Color.TRANSPARENT)
         timerRunning = true
-    }
-
-    private fun stopTimer() {
-        timer.cancel()
-        resetTimer()
     }
 
     private fun resetTimer() {
@@ -191,61 +206,31 @@ class TabataTimerActivity : ComponentActivity() {
         //typeTextView.setTextColor(Color.rgb(60,60,70))
         typeTextView.text = getString(R.string.get_ready)
 
-        minutesPicker.visibility = View.VISIBLE
-        workIntervalInSecondsPicker.visibility = View.VISIBLE
-        restIntervalInSecondsPicker.visibility = View.VISIBLE
-
         minutesTextView.text= getString(R.string.minutes)
         workTextView.text= getString(R.string.work)
         restTextView.text= getString(R.string.rest)
 
+        minutesTextView.visibility = View.VISIBLE
+        workTextView.visibility = View.VISIBLE
+        restTextView.visibility = View.VISIBLE
+
+        minutesPicker.visibility = View.VISIBLE
+        workIntervalInSecondsPicker.visibility = View.VISIBLE
+        restIntervalInSecondsPicker.visibility = View.VISIBLE
+
+
         startStopButton.setImageResource(R.drawable.ic_arrow_forward_green) // Reset button icon
+        timer.cancel()
         timerRunning = false
     }
     private fun showDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Complete!")
+        val builder = AlertDialog.Builder(baseContext)
+        builder.setTitle("Tabata Complete!")
         builder.setPositiveButton("OK") { dialog, _ ->
-
             dialog.dismiss()
-            stopRingtone()
-            stopVibration()
         }
         val dialog = builder.create()
         dialog.show()
     }
 
-    private fun startRingtone() {
-        val defaultRingtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        alarmRingtone = RingtoneManager.getRingtone(this, defaultRingtoneUri)
-        alarmRingtone?.play()
-    }
-
-    private fun startVibration() {
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator?.let { vibratorService ->
-            if (vibratorService.hasVibrator()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibratorService.vibrate(VibrationEffect.createWaveform(longArrayOf(0, 1000), 0))
-                } else {
-                    @Suppress("DEPRECATION")
-                    vibratorService.vibrate(longArrayOf(0, 1000), 0)
-                }
-            }
-        }
-    }
-
-    private fun stopRingtone() {
-        alarmRingtone?.stop()
-    }
-
-    private fun stopVibration() {
-        vibrator?.cancel()
-    }
-    override fun onPause() {
-        super.onPause()
-        if (timerRunning) {
-            stopTimer()
-        }
-    }
 }

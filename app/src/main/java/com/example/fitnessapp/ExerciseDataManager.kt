@@ -1,15 +1,13 @@
 package com.example.fitnessapp
 
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class ExerciseDataManager(private val email: String) {
+class ExerciseDataManager(email: String) {
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("users")
     private val thisUser = usersCollection.document(email)
@@ -87,7 +85,7 @@ class ExerciseDataManager(private val email: String) {
                 Log.d(ContentValues.TAG, "Exercise with ID: $exerciseToDeleteId deleted successfully")
             }
             .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error deleting exercise, id recieved: $exerciseToDeleteId", exception)
+                Log.w(ContentValues.TAG, "Error deleting exercise, id received: $exerciseToDeleteId", exception)
             }
     }
     fun fetchUserExerciseIds(callback: (List<Pair<String, String>>) -> Unit) {
@@ -106,16 +104,7 @@ class ExerciseDataManager(private val email: String) {
                 Log.w("fetchUserExercises", "Failure fetching Exercises")
             }
     }
-    fun showExerciseSelectionDialog(context: Context, exercises: List<Pair<String, String>>, callback: (String) -> Unit) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Select an Exercise")
-        val exerciseNames = exercises.map { it.second }.toTypedArray()
-        builder.setItems(exerciseNames) { dialog, which ->
-            val selectedExerciseId = exercises[which].first
-            callback(selectedExerciseId)
-        }
-        builder.show()
-    }
+
     suspend fun getNameFromId(exerciseId: String): String {
         return try {
             val documentSnapshot = thisUsersExercises.document(exerciseId).get().await()
@@ -125,5 +114,16 @@ class ExerciseDataManager(private val email: String) {
             ""
         }
     }
+    suspend fun deleteAllExercises(){
+        try {
+            val exercisesCollection = thisUsersExercises.get().await()
+            for(document in exercisesCollection){
+                thisUsersExercises.document(document.id).delete()
+            }
+        }catch(e: Exception) {
+            Log.w(ContentValues.TAG, "Error deleting Exercises")
+        }
+    }
+
 
 }

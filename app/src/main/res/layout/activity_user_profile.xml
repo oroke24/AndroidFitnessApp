@@ -36,7 +36,7 @@
                 android:layout_marginTop="30dp"
                 android:padding="10dp"
                 android:orientation="vertical"
-                android:background="@drawable/background_white_outline_clear">
+                android:background="@drawable/background_white_outline">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginStart="20sp"
+                    android:layout_marginStart="20dp"
                     android:text = "@string/username"
                     android:textSize = "20sp"
                     android:textColor="@color/white"/>
@@ -94,6 +94,77 @@
                     android:padding="15dp"
                     android:textColor="@color/white"
                     android:text="@string/change_username" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/commentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/background_white_outline">
+                <TextView
+                    android:id="@+id/commentTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/comments"
+                    android:textSize = "24sp"
+                    android:textColor="@color/white"/>
+                <EditText
+                    android:id="@+id/commentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:hint = "@string/submit_a_comment_to_admin"
+                    android:textSize = "20sp"
+                    android:textColor="@color/white"/>
+                <Button
+                    android:id="@+id/commentButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/background_grey_outline"
+                    android:padding="15dp"
+                    android:textColor="@color/white"
+                    android:text="@string/add" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/deleteProfileLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/background_white_outline_clear">
+                <TextView
+                    android:id="@+id/deleteAccountTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/delete_account"
+                    android:textSize = "24sp"
+                    android:textStyle="bold"
+                    android:textColor="#99FF0000"/>
+                <TextView
+                    android:id="@+id/deleteAccountTextView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:text = "@string/removes_email_and_all_associated_informatioin_and_cards_from_database"
+                    android:textSize = "20sp"
+                    android:textColor="@color/white"/>
+                <Button
+                    android:id="@+id/deleteAccountButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="75dp"
+                    android:background="@drawable/background_red_with_white_outlined"
+                    android:padding="15dp"
+                    android:textColor="@color/white"
+                    android:text="Hold to Delete Account" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

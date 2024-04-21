@@ -25,6 +25,7 @@ class ItemDetailsActivity() : ComponentActivity() {
     private lateinit var replaceButton: Button
     private lateinit var recipeDataManager: RecipeDataManager
     private lateinit var exerciseDataManager: ExerciseDataManager
+    val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_details)
@@ -39,40 +40,31 @@ class ItemDetailsActivity() : ComponentActivity() {
         saveButton = findViewById(R.id.saveButton)
         replaceButton = findViewById(R.id.replaceButton)
 
-
         val email = intent.getStringExtra("email")?:""
         recipeDataManager = RecipeDataManager(email)
         exerciseDataManager = ExerciseDataManager(email)
-
-        val fx = InteractionEffects()
 
         backButton.setOnClickListener{
             fx.imageButtonClickEffect(backButton)
             finish()
         }
-
         val dataManagerType = intent.getStringExtra("dataManagerType")
-
-        val mainBackground = intent.getIntExtra("backgroundID", -1)
         val originalCard = intent.getStringExtra("title")?:""
         titleEditText.setText(originalCard)
-
         subGroupOneTitleTextView.text = intent.getStringExtra("subOneTitle")
         subGroupOneEditText.setText(intent.getStringExtra("subOneDetails"))
-
         subGroupTwoTitleTextView.text = intent.getStringExtra("subTwoTitle")
         subGroupTwoEditText.setText(intent.getStringExtra("subTwoDetails"))
-
-        if(mainBackground != -1){
-            mainLayout.background = getDrawable(mainBackground)
+        when(dataManagerType){
+            "recipes" -> mainLayout.background = getDrawable(R.drawable.cool_background)
+            "exercises" -> mainLayout.background = getDrawable(R.drawable.cool_background2)
+            else -> mainLayout.background = getDrawable(R.drawable.background_grey_outline)
         }
         val textWatcher = object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                if(titleEditText.text.toString() == originalCard) {
-                    replaceButton.visibility = View.VISIBLE
-                }else replaceButton.visibility = View.GONE
+                replaceButton.visibility = View.VISIBLE
                 saveButton.visibility = View.VISIBLE
             }
         }

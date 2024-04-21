@@ -49,7 +49,7 @@
     <string name="new_recipe">New Recipe</string>
     <string name="ingredients">ingredients</string>
     <string name="create_password">Create Password</string>
-    <string name="continue_button">continue_button</string>
+    <string name="continue_button">Continue</string>
     <string name="stopwatch">Stopwatch</string>
     <string name="countdown_timer">Countdown Timer</string>
     <string name="tabata_timer">Tabata Timer</string>
@@ -85,4 +85,10 @@
     <string name="add_new_card">Add New Card</string>
     <string name="replace_this_card">Replace This Card</string>
     <string name="password_no_restrictions_message">No restrictions on Password, just pick something you always remember</string>
+    <string name="resets_upon_exit">Resets upon exit</string>
+    <string name="comments">Comments?</string>
+    <string name="submit_a_comment_to_admin">Submit a comment to admin (Anonymous)</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="removes_email_and_all_associated_informatioin_and_cards_from_database">Removes email and all associated informatioin and cards from Database</string>
+    <string name="cancel">Cancel</string>
 </resources>

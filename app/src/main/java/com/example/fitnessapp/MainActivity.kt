@@ -2,64 +2,67 @@ package com.example.fitnessapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class MainActivity : ComponentActivity() {
+    private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var email: String
     private lateinit var homeMenuButton: ImageButton
     private lateinit var recipeMenuButton: ImageButton
     private lateinit var exerciseMenuButton: ImageButton
     private lateinit var timersMenuButton: ImageButton
     private lateinit var calendarMenuButton: ImageButton
-    lateinit var todaysRecipeTextView : TextView
-    lateinit var todaysExerciseTextView : TextView
-    lateinit var usernameTextView: TextView
-    lateinit var recipeAdapter: RecipeAdapter
-    lateinit var exerciseAdapter: ExerciseAdapter
-    lateinit var weeklyAdapter: WeeklyCalendarAdapter
+    private lateinit var logoutButton: ImageButton
+    private lateinit var recipeButton: Button
+    private lateinit var exerciseButton: Button
+    private lateinit var usernameTextView: TextView
+    private lateinit var todaySnapShotLayout: LinearLayout
+    private lateinit var recipeLayoutManager: LinearLayoutManager
+    private lateinit var exerciseLayoutManager: LinearLayoutManager
+    private lateinit var weeklyLayoutManager: LinearLayoutManager
+    private lateinit var recipeRecyclerView: RecyclerView
+    private lateinit var exerciseRecyclerView: RecyclerView
+    private lateinit var weeklyRecyclerView: RecyclerView
+    private lateinit var recipeAdapter: RecipeAdapter
+    private lateinit var exerciseAdapter: ExerciseAdapter
+    private lateinit var weeklyAdapter: WeeklyCalendarAdapter
     private lateinit var recipeDataManager: RecipeDataManager
     private lateinit var exerciseDataManager: ExerciseDataManager
     private lateinit var userProfileDataManager: UserProfileDataManager
-    private lateinit var weeklyDataManager: DayDataManager
+
+    private val fx = InteractionEffects()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        firebaseAuth = FirebaseAuth.getInstance()
         email = intent.getStringExtra("USER_EMAIL") ?: ""
-        val fx = InteractionEffects()
-
         usernameTextView = findViewById(R.id.usernameTextView)
+        todaySnapShotLayout = findViewById(R.id.todaySnapShotLayout)
+        recipeButton = findViewById(R.id.recipeButton)
+        exerciseButton = findViewById(R.id.exerciseButton)
+        logoutButton = findViewById(R.id.logoutButton)
+        recipeLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        exerciseLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        weeklyLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val todaySnapShotLayout = findViewById<LinearLayout>(R.id.todaySnapShotLayout)
-        val recipeButton = findViewById<Button>(R.id.recipeButton)
-        val exerciseButton = findViewById<Button>(R.id.exerciseButton)
-        val logoutButton = findViewById<ImageButton>(R.id.logoutButton)
-        val firebaseAuth = FirebaseAuth.getInstance()
-
-
-        val recipeLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val exerciseLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val weeklyLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        val recipeRecyclerView = findViewById<RecyclerView>(R.id.recipeRecyclerView)
-        val exerciseRecyclerView = findViewById<RecyclerView>(R.id.exerciseRecyclerView)
-        val weeklyRecyclerView = findViewById<RecyclerView>(R.id.weeeklyRecyclerView)
+        recipeRecyclerView = findViewById(R.id.recipeRecyclerView)
+        exerciseRecyclerView = findViewById(R.id.exerciseRecyclerView)
+        weeklyRecyclerView = findViewById(R.id.weeeklyRecyclerView)
         homeMenuButton = findViewById(R.id.menuHomeButton)
         recipeMenuButton = findViewById(R.id.menuRecipeButton)
         exerciseMenuButton = findViewById(R.id.menuExerciseButton)
@@ -78,16 +81,13 @@ class MainActivity : ComponentActivity() {
         exerciseRecyclerView.adapter = exerciseAdapter
         weeklyRecyclerView.adapter = weeklyAdapter
 
-
         CoroutineScope(Dispatchers.Main).launch{
             usernameTextView.text = userProfileDataManager.getUsername()
         }
-
         usernameTextView.setOnClickListener {
             fx.itemViewClickEffect(usernameTextView)
             intentWithEmail(UserProfileActivity(), email)
         }
-
         logoutButton.setOnClickListener {
             fx.imageButtonClickEffect(logoutButton)
             firebaseAuth.signOut()
@@ -129,7 +129,6 @@ class MainActivity : ComponentActivity() {
         loadWeek()
         loadRecipes(recipeDataManager)
         loadExercises(exerciseDataManager)
-
     }
     private fun loadExercises(exerciseDataManager:ExerciseDataManager){
         CoroutineScope(Dispatchers.Main).launch {
@@ -147,7 +146,6 @@ class MainActivity : ComponentActivity() {
     }
     private fun loadWeek() {
         val cal = Calendar.getInstance()
-
         val daysOfWeek = arrayListOf<Date>()
         for(i in 0 until 7){
             daysOfWeek.add(cal.time)
@@ -164,10 +162,11 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         loadRecipes(recipeDataManager)
         loadExercises(exerciseDataManager)
+        recipeAdapter.notifyDataSetChanged()
+        exerciseAdapter.notifyDataSetChanged()
         loadWeek()
         CoroutineScope(Dispatchers.Main).launch{
             usernameTextView.text = userProfileDataManager.getUsername()
         }
     }
-
 }

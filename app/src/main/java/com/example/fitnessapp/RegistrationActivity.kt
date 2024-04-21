@@ -1,5 +1,4 @@
 package com.example.fitnessapp
-import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Button
@@ -18,15 +17,13 @@ class RegistrationActivity : ComponentActivity() {
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var seeButton: ImageButton
     private lateinit var registerButton: Button
-
     private lateinit var auth: FirebaseAuth
+    val fx = InteractionEffects()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-        val fx = InteractionEffects()
         auth = FirebaseAuth.getInstance()
-
         backButton = findViewById(R.id.backButton)
         emailEditText = findViewById(R.id.email)
         usernameEditText = findViewById(R.id.username)

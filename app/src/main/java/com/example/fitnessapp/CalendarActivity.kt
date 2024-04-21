@@ -2,16 +2,11 @@ package com.example.fitnessapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.CalendarView
 import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
@@ -84,7 +79,6 @@ class CalendarActivity : ComponentActivity(){
             daysOfWeek.add(cal.time)
             cal.add(Calendar.DAY_OF_MONTH, 1)
         }
-
         weeklyAdapter.updateData(daysOfWeek)
     }
     private fun intentWithEmail(nextActivity: ComponentActivity, email: String) {
@@ -92,5 +86,4 @@ class CalendarActivity : ComponentActivity(){
         intent.putExtra("USER_EMAIL", email)
         startActivity(intent)
     }
-
 }

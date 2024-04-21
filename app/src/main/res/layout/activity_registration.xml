@@ -65,6 +65,19 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints="" />
 
+            <ImageButton
+                android:id="@+id/seePasswordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/password"
+                android:layout_alignBottom="@id/password"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_eye_transparent_48" />
+
             <EditText
                 android:id="@+id/confirmPassword"
                 android:layout_width="match_parent"
@@ -76,21 +89,12 @@
                 android:layout_marginTop="16dp"
                 android:autofillHints="" />
 
-            <ImageButton
-                android:id="@+id/seePasswordButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:layout_alignEnd="@id/confirmPassword"
-                android:layout_margin="5dp"
-                android:layout_alignBottom="@id/confirmPassword"
-                android:src="@drawable/ic_eye_transparent_48"/>
 
             <TextView
                 android:id="@+id/passwordMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/seePasswordButton"
+                android:layout_below="@id/confirmPassword"
                 android:textAlignment="center"
                 android:text="@string/password_no_restrictions_message"/>
 

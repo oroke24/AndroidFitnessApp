@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +14,8 @@ class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeView
     private var recipes = listOf<Recipe>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
-        // Creating a translate animation from right to left
         return RecipeViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val fx = InteractionEffects()
         val recipe = recipes[position]
@@ -27,33 +24,26 @@ class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeView
         holder.itemView.setOnClickListener {
             fx.itemViewClickEffect(holder.itemView)
             val context = holder.itemView.context
-            val backgroundID = context.resources.getIdentifier("cool_background", "drawable", context.packageName)
-            val dataManagerType: String = "recipes"
+            val dataManagerType = "recipes"
             val intent = Intent(context, ItemDetailsActivity::class.java).apply {
                 putExtra("email", email)
                 putExtra("dataManagerType", dataManagerType)
-                putExtra("backgroundID", backgroundID)
                 putExtra("title", recipe.name)
-
                 putExtra("subOneTitle", "Ingredients:")
                 putExtra("subOneDetails", recipe.ingredients)
-
                 putExtra("subTwoTitle", "Instructions:")
                 putExtra("subTwoDetails", recipe.instructions)
             }
             context.startActivity(intent)
         }
     }
-
     override fun getItemCount(): Int {
         return recipes.size
     }
-
     fun setRecipes(recipes: List<Recipe>) {
         this.recipes = recipes
         notifyDataSetChanged()
     }
-
     fun deleteRecipe(position: Int) {
         if (position < 0 || position >= recipes.size) {
             return // Invalid position
