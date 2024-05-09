@@ -49,6 +49,16 @@
         android:textSize="24sp"
         android:textStyle="bold"/>
 
+    <ImageView
+        android:id="@+id/itemPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="5dp"
+        android:background="#44999999"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/photo_of_item"
+        android:visibility="gone"/>
+
     <!-- Ingredients Label and content -->
     <TextView
         android:layout_width="wrap_content"
