@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.calendar
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,12 @@ import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.startup.MainActivity
+import com.example.fitnessapp.R
+import com.example.fitnessapp.exercise.ExerciseActivity
+import com.example.fitnessapp.recipes.RecipeActivity
+import com.example.fitnessapp.timers.TimersActivity
 import java.util.Calendar
 import java.util.Date
 

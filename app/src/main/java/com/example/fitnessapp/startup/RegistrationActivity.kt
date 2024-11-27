@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.startup
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Button
@@ -6,6 +6,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
+import com.example.fitnessapp.profile.UserProfile
 import com.google.firebase.auth.FirebaseAuth
 
 class RegistrationActivity : ComponentActivity() {

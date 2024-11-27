@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.calendar
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,10 @@ import android.view.animation.AlphaAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
+import com.example.fitnessapp.exercise.ExerciseDataManager
+import com.example.fitnessapp.recipes.RecipeDataManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -176,31 +180,33 @@ class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         exerciseManager.fetchUserExerciseIds { exercises ->
             fx.selectionDialogReturnItemId(itemView.context, exercises) { selectedExerciseId ->
                CoroutineScope(Dispatchers.Main).launch {
+                   val name = exerciseManager.getNameFromId(selectedExerciseId)
                    when(slot){
-                       1-> exerciseName1TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                       2-> exerciseName2TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                       3-> exerciseName3TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                       4-> exerciseName4TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
-                       else-> exerciseName5TextView.text = exerciseManager.getNameFromId(selectedExerciseId)
+                       1-> exerciseName1TextView.text = name
+                       2-> exerciseName2TextView.text = name
+                       3-> exerciseName3TextView.text = name
+                       4-> exerciseName4TextView.text = name
+                       else-> exerciseName5TextView.text = name
                    }
-                   dayManager.addExerciseToDay(formattedDate, selectedExerciseId, slot)
+                   dayManager.addExerciseToDay(formattedDate, name, slot)
                 }
             }
         }
     }
-    private fun recipeItemViewClick(itemView: View, slot: Int,  recipeManager: RecipeDataManager, dayManager: DayDataManager, formattedDate: String){
+    private fun recipeItemViewClick(itemView: View, slot: Int, recipeManager: RecipeDataManager, dayManager: DayDataManager, formattedDate: String){
         fx.itemViewClickEffect(itemView)
         recipeManager.fetchUserRecipeIds { recipes ->
             fx.selectionDialogReturnItemId(itemView.context, recipes) { selectedRecipeId ->
                 CoroutineScope(Dispatchers.Main).launch {
+                    val name = recipeManager.getNameFromId(selectedRecipeId)
                     when(slot) {
-                        1-> recipeName1TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        2-> recipeName2TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        3-> recipeName3TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        4-> recipeName4TextView.text = recipeManager.getNameFromId(selectedRecipeId)
-                        else-> recipeName5TextView.text = recipeManager.getNameFromId(selectedRecipeId)
+                        1-> recipeName1TextView.text = name
+                        2-> recipeName2TextView.text = name
+                        3-> recipeName3TextView.text = name
+                        4-> recipeName4TextView.text = name
+                        else-> recipeName5TextView.text = name
                     }
-                    dayManager.addRecipeToDay(formattedDate, selectedRecipeId, slot)
+                    dayManager.addRecipeToDay(formattedDate, name, slot)
                 }
             }
         }

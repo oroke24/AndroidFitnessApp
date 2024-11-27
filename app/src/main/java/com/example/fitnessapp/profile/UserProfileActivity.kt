@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.profile
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
+import com.example.fitnessapp.startup.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

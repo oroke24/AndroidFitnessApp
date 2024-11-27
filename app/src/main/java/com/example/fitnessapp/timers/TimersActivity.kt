@@ -1,10 +1,16 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.timers
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.calendar.CalendarActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.startup.MainActivity
+import com.example.fitnessapp.R
+import com.example.fitnessapp.exercise.ExerciseActivity
+import com.example.fitnessapp.recipes.RecipeActivity
 
 class TimersActivity : ComponentActivity() {
     private lateinit var homeButton: ImageButton

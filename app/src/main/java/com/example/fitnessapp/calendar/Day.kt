@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.calendar
 
 
 data class Day(

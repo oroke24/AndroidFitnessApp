@@ -1,6 +1,10 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.profile
 
+import com.example.fitnessapp.calendar.DayDataManager
+import com.example.fitnessapp.exercise.ExerciseDataManager
+import com.example.fitnessapp.recipes.RecipeDataManager
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +25,8 @@ class UserProfileDataManager(private val email: String) {
        profileInfo.set(userProfile)
     }
     fun updateUsername(newName: String){
-        profileInfo.update("username",newName)
+        val data = hashMapOf("username" to newName)
+        profileInfo.set(data, SetOptions.mergeFields("username"))
     }
     suspend fun getUsername(): String{
         val myProfile = profileInfo.get().await()

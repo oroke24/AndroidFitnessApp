@@ -18,13 +18,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
 import com.bumptech.glide.Glide
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.fitnessapp.exercise.Exercise
+import com.example.fitnessapp.exercise.ExerciseDataManager
+import com.example.fitnessapp.recipes.ImageDataManager
+import com.example.fitnessapp.recipes.Recipe
+import com.example.fitnessapp.recipes.RecipeDataManager
 
 
 class ItemDetailsActivity() : ComponentActivity() {

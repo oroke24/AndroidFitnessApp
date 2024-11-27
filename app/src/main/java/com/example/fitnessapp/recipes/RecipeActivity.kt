@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.recipes
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,12 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitnessapp.calendar.CalendarActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.startup.MainActivity
+import com.example.fitnessapp.R
+import com.example.fitnessapp.timers.TimersActivity
+import com.example.fitnessapp.exercise.ExerciseActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

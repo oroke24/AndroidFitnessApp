@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.exercise
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import android.view.animation.AlphaAnimation
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.ItemDetailsActivity
+import com.example.fitnessapp.R
 
 class ExerciseAdapter(private val email: String) : RecyclerView.Adapter<ExerciseViewHolder>(){
     private var exercises = listOf<Exercise>()

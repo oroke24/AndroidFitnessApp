@@ -1,7 +1,14 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.startup
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.fitnessapp.calendar.DayDataManager
+import com.example.fitnessapp.profile.UserProfile
+import com.example.fitnessapp.profile.UserProfileDataManager
+import com.example.fitnessapp.exercise.Exercise
+import com.example.fitnessapp.exercise.ExerciseDataManager
+import com.example.fitnessapp.recipes.Recipe
+import com.example.fitnessapp.recipes.RecipeDataManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope

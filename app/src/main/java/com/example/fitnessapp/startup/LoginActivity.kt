@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.startup
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -8,8 +8,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : ComponentActivity() {
     private lateinit var emailEditText: EditText

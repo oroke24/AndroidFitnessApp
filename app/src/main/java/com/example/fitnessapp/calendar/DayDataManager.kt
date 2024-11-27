@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.calendar
 
 import android.content.ContentValues
 import android.util.Log

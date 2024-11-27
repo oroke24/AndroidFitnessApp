@@ -15,7 +15,7 @@
         android:theme="@style/Theme.FitnessApp"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".startup.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.FitnessApp">
@@ -25,16 +25,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity"/>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".RecipeActivity"/>
-        <activity android:name=".ExerciseActivity"/>
-        <activity android:name=".TimersActivity"/>
-        <activity android:name=".StopWatchActivity"/>
-        <activity android:name=".TabataTimerActivity"/>
-        <activity android:name=".CalendarActivity"/>
+        <activity android:name=".startup.RegistrationActivity"/>
+        <activity android:name=".startup.MainActivity"/>
+        <activity android:name=".recipes.RecipeActivity"/>
+        <activity android:name=".exercise.ExerciseActivity"/>
+        <activity android:name=".timers.TimersActivity"/>
+        <activity android:name=".timers.StopWatchActivity"/>
+        <activity android:name=".timers.TabataTimerActivity"/>
+        <activity android:name=".calendar.CalendarActivity"/>
         <activity android:name=".ItemDetailsActivity"/>
-        <activity android:name=".UserProfileActivity"/>
+        <activity android:name=".profile.UserProfileActivity"/>
     </application>
 
 </manifest>
