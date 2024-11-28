@@ -1,4 +1,4 @@
-package com.example.fitnessapp.recipes
+package com.example.fitnessapp.firestore
 
 import android.net.Uri
 import com.google.android.gms.tasks.Task

@@ -70,6 +70,16 @@
                 android:textSize="20sp"
                 android:textColor="@color/white"/>
             <Button
+                android:id="@+id/revampGroupTwoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="30dp"
+                android:layout_gravity="end"
+                android:text="@string/revamp_with_ai"
+                android:textColor="@color/white"
+                android:background="@drawable/background_grey_rounded_corners"/>
+            <Button
                 android:id="@+id/replaceButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

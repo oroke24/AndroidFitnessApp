@@ -16,6 +16,7 @@ import com.example.fitnessapp.startup.MainActivity
 import com.example.fitnessapp.R
 import com.example.fitnessapp.timers.TimersActivity
 import com.example.fitnessapp.exercise.ExerciseActivity
+import com.example.fitnessapp.firestore.RecipeDataManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,8 +1,6 @@
-package com.example.fitnessapp.profile
+package com.example.fitnessapp.firestore
 
-import com.example.fitnessapp.calendar.DayDataManager
-import com.example.fitnessapp.exercise.ExerciseDataManager
-import com.example.fitnessapp.recipes.RecipeDataManager
+import com.example.fitnessapp.userProfile.UserProfile
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope

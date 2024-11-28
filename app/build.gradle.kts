@@ -58,6 +58,11 @@ android {
     }
 }
 
+/*
+repositories {
+    mavenCentral()
+}
+ */
 dependencies {
 
     implementation("androidx.core:core-ktx:1.13.0")
@@ -77,6 +82,11 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    //OpenAi API
+    implementation(platform("com.aallam.openai:openai-client-bom:3.8.2"))
+    implementation("com.aallam.openai:openai-client")
+    //HTTPS
+    runtimeOnly("io.ktor:ktor-client-okhttp")
 
     /*
     //Room - Local Database

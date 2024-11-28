@@ -1,4 +1,4 @@
-package com.example.fitnessapp.profile
+package com.example.fitnessapp.userProfile
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import com.example.fitnessapp.InteractionEffects
 import com.example.fitnessapp.R
+import com.example.fitnessapp.firestore.UserProfileDataManager
 import com.example.fitnessapp.startup.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope

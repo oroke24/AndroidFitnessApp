@@ -19,11 +19,15 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
+import com.example.fitnessapp.ai.AiHome
 import com.example.fitnessapp.exercise.Exercise
-import com.example.fitnessapp.exercise.ExerciseDataManager
-import com.example.fitnessapp.recipes.ImageDataManager
+import com.example.fitnessapp.firestore.ExerciseDataManager
+import com.example.fitnessapp.firestore.ImageDataManager
 import com.example.fitnessapp.recipes.Recipe
-import com.example.fitnessapp.recipes.RecipeDataManager
+import com.example.fitnessapp.firestore.RecipeDataManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ItemDetailsActivity() : ComponentActivity() {
@@ -36,11 +40,13 @@ class ItemDetailsActivity() : ComponentActivity() {
     private lateinit var subGroupOneEditText: EditText
     private lateinit var subGroupTwoTitleTextView: TextView
     private lateinit var subGroupTwoEditText: EditText
+    private lateinit var revampGroupTwoButton: Button
     private lateinit var saveButton: Button
     private lateinit var replaceButton: Button
     private lateinit var recipeDataManager: RecipeDataManager
     private lateinit var exerciseDataManager: ExerciseDataManager
     private lateinit var imageDataManager: ImageDataManager
+    private lateinit var aiHome: AiHome
     val fx = InteractionEffects()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +60,7 @@ class ItemDetailsActivity() : ComponentActivity() {
         subGroupOneEditText = findViewById(R.id.subGroupOne)
         subGroupTwoTitleTextView = findViewById(R.id.subGroupTwoTitle)
         subGroupTwoEditText = findViewById(R.id.subGroupTwo)
+        revampGroupTwoButton = findViewById(R.id.revampGroupTwoButton)
         saveButton = findViewById(R.id.saveButton)
         replaceButton = findViewById(R.id.replaceButton)
 
@@ -61,26 +68,42 @@ class ItemDetailsActivity() : ComponentActivity() {
         recipeDataManager = RecipeDataManager(email)
         exerciseDataManager = ExerciseDataManager(email)
         imageDataManager = ImageDataManager(email)
+        aiHome = AiHome(email)
 
         backButton.setOnClickListener{
             fx.imageButtonClickEffect(backButton)
             finish()
         }
-        val dataManagerType = intent.getStringExtra("dataManagerType")
+        val dataManagerType = intent.getStringExtra("dataManagerType")?:""
         val originalCard = intent.getStringExtra("title")?:""
         titleEditText.setText(originalCard)
-        imageDataManager.downloadRecipePhoto(titleEditText.text.toString())?.addOnSuccessListener {uri->
-            //itemPhoto.setImageURI(uri)
-            Glide.with(this)
-                .load(uri)
-                .into(itemPhoto)
-        }?.addOnFailureListener { exception ->
-            Log.e(TAG, "Error downloading recipe photo", exception)
+        if(dataManagerType == "recipes") {
+            imageDataManager.downloadRecipePhoto(titleEditText.text.toString())
+                ?.addOnSuccessListener { uri ->
+                    //itemPhoto.setImageURI(uri)
+                    Glide.with(this)
+                        .load(uri)
+                        .into(itemPhoto)
+                }?.addOnFailureListener { exception ->
+                Log.e(
+                    TAG,
+                    "No image found: ItemDetailsActivity::imageDataManager.downloadRecipePhoto"
+                )
+            }
         }
         subGroupOneTitleTextView.text = intent.getStringExtra("subOneTitle")
         subGroupOneEditText.setText(intent.getStringExtra("subOneDetails"))
         subGroupTwoTitleTextView.text = intent.getStringExtra("subTwoTitle")
         subGroupTwoEditText.setText(intent.getStringExtra("subTwoDetails"))
+
+        revampGroupTwoButton.setOnClickListener {
+            val content = "${titleEditText.text}, ${subGroupOneEditText.text}"
+            fx.buttonClickEffect(revampGroupTwoButton)
+            CoroutineScope(Dispatchers.Main).launch{
+                aiHome.aiCall(dataManagerType, content)
+            }
+        }
+
         when(dataManagerType){
             "recipes" -> mainLayout.background = getDrawable(R.drawable.cool_background)
             "exercises" -> {mainLayout.background = getDrawable(R.drawable.cool_background2)

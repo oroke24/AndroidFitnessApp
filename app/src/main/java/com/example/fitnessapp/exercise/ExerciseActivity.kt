@@ -14,6 +14,7 @@ import com.example.fitnessapp.calendar.CalendarActivity
 import com.example.fitnessapp.InteractionEffects
 import com.example.fitnessapp.startup.MainActivity
 import com.example.fitnessapp.R
+import com.example.fitnessapp.firestore.ExerciseDataManager
 import com.example.fitnessapp.recipes.RecipeActivity
 import com.example.fitnessapp.timers.TimersActivity
 import kotlinx.coroutines.CoroutineScope

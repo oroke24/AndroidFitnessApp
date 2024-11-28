@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnessapp.InteractionEffects
 import com.example.fitnessapp.R
-import com.example.fitnessapp.exercise.ExerciseDataManager
-import com.example.fitnessapp.recipes.RecipeDataManager
+import com.example.fitnessapp.firestore.DayDataManager
+import com.example.fitnessapp.firestore.ExerciseDataManager
+import com.example.fitnessapp.firestore.RecipeDataManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

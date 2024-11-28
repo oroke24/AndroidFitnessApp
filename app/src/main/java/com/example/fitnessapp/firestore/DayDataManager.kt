@@ -1,7 +1,8 @@
-package com.example.fitnessapp.calendar
+package com.example.fitnessapp.firestore
 
 import android.content.ContentValues
 import android.util.Log
+import com.example.fitnessapp.calendar.Day
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 

@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.example.fitnessapp.InteractionEffects
 import com.example.fitnessapp.ItemDetailsActivity
 import com.example.fitnessapp.R
+import com.example.fitnessapp.firestore.ImageDataManager
+import com.example.fitnessapp.firestore.RecipeDataManager
 
 class RecipeAdapter(private val email: String) : RecyclerView.Adapter<RecipeViewHolder>() {
     private val recipeDataManager = RecipeDataManager(email)

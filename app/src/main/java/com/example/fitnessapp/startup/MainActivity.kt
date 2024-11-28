@@ -15,12 +15,12 @@ import com.example.fitnessapp.calendar.CalendarActivity
 import com.example.fitnessapp.calendar.WeeklyCalendarAdapter
 import com.example.fitnessapp.exercise.ExerciseActivity
 import com.example.fitnessapp.exercise.ExerciseAdapter
-import com.example.fitnessapp.exercise.ExerciseDataManager
-import com.example.fitnessapp.profile.UserProfileActivity
-import com.example.fitnessapp.profile.UserProfileDataManager
+import com.example.fitnessapp.firestore.ExerciseDataManager
+import com.example.fitnessapp.userProfile.UserProfileActivity
+import com.example.fitnessapp.firestore.UserProfileDataManager
 import com.example.fitnessapp.recipes.RecipeActivity
 import com.example.fitnessapp.recipes.RecipeAdapter
-import com.example.fitnessapp.recipes.RecipeDataManager
+import com.example.fitnessapp.firestore.RecipeDataManager
 import com.example.fitnessapp.timers.TimersActivity
 import java.util.Calendar
 import com.google.firebase.auth.FirebaseAuth
