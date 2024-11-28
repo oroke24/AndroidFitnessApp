@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.timers
 
 
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
 
 class StopWatchActivity : ComponentActivity() {
     private var isRunning = false

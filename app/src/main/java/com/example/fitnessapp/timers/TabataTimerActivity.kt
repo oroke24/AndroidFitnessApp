@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.timers
 
 import android.app.AlertDialog
 import android.graphics.Color
@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.R
 
 class TabataTimerActivity : ComponentActivity() {
 

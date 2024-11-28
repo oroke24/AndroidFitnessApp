@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.startup
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,9 +9,21 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
+import com.example.fitnessapp.calendar.CalendarActivity
+import com.example.fitnessapp.calendar.WeeklyCalendarAdapter
+import com.example.fitnessapp.exercise.ExerciseActivity
+import com.example.fitnessapp.exercise.ExerciseAdapter
+import com.example.fitnessapp.firestore.ExerciseDataManager
+import com.example.fitnessapp.userProfile.UserProfileActivity
+import com.example.fitnessapp.firestore.UserProfileDataManager
+import com.example.fitnessapp.recipes.RecipeActivity
+import com.example.fitnessapp.recipes.RecipeAdapter
+import com.example.fitnessapp.firestore.RecipeDataManager
+import com.example.fitnessapp.timers.TimersActivity
 import java.util.Calendar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -130,14 +142,14 @@ class MainActivity : ComponentActivity() {
         loadRecipes(recipeDataManager)
         loadExercises(exerciseDataManager)
     }
-    private fun loadExercises(exerciseDataManager:ExerciseDataManager){
+    private fun loadExercises(exerciseDataManager: ExerciseDataManager){
         CoroutineScope(Dispatchers.Main).launch {
             val exercises = exerciseDataManager.getAllExercises()
             val sortedExercises = exercises.sortedBy{it.name.lowercase()}
             exerciseAdapter.setExercises(sortedExercises)
         }
     }
-    private fun loadRecipes(recipeDataManager:RecipeDataManager){
+    private fun loadRecipes(recipeDataManager: RecipeDataManager){
         CoroutineScope(Dispatchers.Main).launch {
             val recipes = recipeDataManager.getAllRecipes()
             val sortedRecipes = recipes.sortedBy{it.name.lowercase()}

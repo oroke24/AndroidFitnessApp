@@ -91,4 +91,8 @@
     <string name="delete_account">Delete Account</string>
     <string name="removes_email_and_all_associated_informatioin_and_cards_from_database">Removes email and all associated informatioin and cards from Database</string>
     <string name="cancel">Cancel</string>
+    <string name="photo_of_item">Photo of item</string>
+    <string name="save_as_new">Save as New</string>
+    <string name="public_snapshot">Public Snapshot</string>
+    <string name="revamp_with_ai">Revamp with AI</string>
 </resources>

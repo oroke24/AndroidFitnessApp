@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.exercise
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,13 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fitnessapp.calendar.CalendarActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.startup.MainActivity
+import com.example.fitnessapp.R
+import com.example.fitnessapp.firestore.ExerciseDataManager
+import com.example.fitnessapp.recipes.RecipeActivity
+import com.example.fitnessapp.timers.TimersActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,7 +77,7 @@ class ExerciseActivity : ComponentActivity() {
         addButton.setOnClickListener{
             fx.buttonClickEffect(addButton)
             if(nameEditText.text.isBlank()){
-                Toast.makeText(this,"Recipe must have a name", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"Exercise must have a name", Toast.LENGTH_LONG).show()
             }else {
                 val name = nameEditText.text.toString()
                 val muscleGroup = muscleGroupEditText.text.toString()

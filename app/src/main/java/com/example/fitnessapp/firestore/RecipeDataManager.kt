@@ -1,9 +1,11 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.firestore
 
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.recipes.Recipe
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 

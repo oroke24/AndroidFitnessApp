@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.userProfile
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,10 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.fitnessapp.InteractionEffects
+import com.example.fitnessapp.R
+import com.example.fitnessapp.firestore.UserProfileDataManager
+import com.example.fitnessapp.startup.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +71,7 @@ class UserProfileActivity: ComponentActivity(){
                 if(deleteAccountForSure){
                     userProfileDataManager.deleteAccount()
                     val user = FirebaseAuth.getInstance().currentUser
+                    finishAffinity()
                     user?.delete()
                     Toast.makeText(context, "Account Deleted", Toast.LENGTH_LONG).show()
                     startActivity(Intent(context, LoginActivity::class.java))
