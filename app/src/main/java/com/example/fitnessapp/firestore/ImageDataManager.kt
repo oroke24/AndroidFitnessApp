@@ -13,7 +13,7 @@ class ImageDataManager(val email: String) {
     fun uploadRecipePhoto(uri: Uri, recipeName: String){
         recipePhotos.child(recipeName).putFile(uri)
     }
-    fun downloadRecipePhoto(recipeName: String): Task<Uri>{
+    fun downloadRecipePhoto(recipeName: String): Task<Uri> {
         val taskCompletionSource = TaskCompletionSource<Uri>()
 
         recipePhotos.child(recipeName).downloadUrl

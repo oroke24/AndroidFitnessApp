@@ -101,6 +101,8 @@ class ItemDetailsActivity() : ComponentActivity() {
             fx.buttonClickEffect(revampGroupTwoButton)
             CoroutineScope(Dispatchers.Main).launch{
                 aiHome.aiCall(dataManagerType, content)
+                subGroupOneEditText.setText(aiHome.aiCard.groupOne.joinToString("\n"))
+                subGroupTwoEditText.setText(aiHome.aiCard.groupTwo.joinToString("\n"))
             }
         }
 

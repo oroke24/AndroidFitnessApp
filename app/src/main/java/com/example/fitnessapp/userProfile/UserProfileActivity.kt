@@ -71,6 +71,7 @@ class UserProfileActivity: ComponentActivity(){
                 if(deleteAccountForSure){
                     userProfileDataManager.deleteAccount()
                     val user = FirebaseAuth.getInstance().currentUser
+                    finishAffinity()
                     user?.delete()
                     Toast.makeText(context, "Account Deleted", Toast.LENGTH_LONG).show()
                     startActivity(Intent(context, LoginActivity::class.java))

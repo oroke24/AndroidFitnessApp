@@ -11,19 +11,20 @@ import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import com.example.fitnessapp.firestore.AiDataManager
 import kotlin.time.Duration.Companion.seconds
-
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.decodeFromString
 class AiHome(public final val email: String) {
     private lateinit var  aiDataManager: AiDataManager
-    private lateinit var subGroupOne: String
-    private lateinit var subGroupTwo: String
+    lateinit var aiCard: AiCard
     suspend fun aiCall(cardType: String, content: String){
         aiDataManager = AiDataManager(email)
         Log.e("CardType", cardType)
-        val aiRole = when(cardType){
-            "exercises" -> "You are a professional fitness trainer, building exercise cards.  Format the response to be a JSON with a list of strings named 'muscle_groups', and a list of strings named 'instructions'. Begin each string with a hyphen (Be concise, 18 word limit per string)"
-            else -> "You are a professional dietitian/chef, building recipe cards.  Format the response to be a JSON with a list of strings named 'ingredients' and a list of strings named 'instructions'. Begin each string with a hyphen (Be concise, 18 word limit per string). "
+        var aiRole = when(cardType){
+            "exercises" -> "You are a professional fitness trainer, building exercise cards. 'Group_one' is for muscle group(s) and 'group_two' is for roughly one hour of exercises (Be specific and include sets, reps, or time intervals when helpful). "
+            else -> "You are a professional dietitian/chef, building recipe cards.  'Group_one' is for muscle ingredients and 'group_two' is for instructions. "
         }
-        val userMessage = "Build a card based on this information feel free to add or remove as you want: $content"
+        aiRole += "Format the response to be a JSON (only raw JSON data, without any markdown like '``` Json... ```').  It should contain a list of strings named 'group_one', and a list of strings named 'group_two'. Begin each string with a hyphen.  For 'group_two' Use digits for numbers, 18 word limit per string."
+        val userMessage = "Build a card based on this information, feel free to add, modify, or remove as you want: $content"
         val openai = OpenAI(
             token = getKey(),
             timeout = Timeout(socket = 60.seconds)
@@ -41,8 +42,18 @@ class AiHome(public final val email: String) {
                 )
             )
         )
-        val completion: ChatCompletion = openai.chatCompletion(chatCompletionRequest)
-        Log.d(TAG, completion.toString())
+        val messageContent = openai.chatCompletion(chatCompletionRequest).choices[0].message.content?:""
+        Log.d(TAG, messageContent)
+
+        // Parse the JSON into the aiCard object
+        try {
+            aiCard = Json.decodeFromString<AiCard>(messageContent)
+            // Log the parsed data
+            Log.d(TAG, "Group One: ${aiCard.groupOne}")
+            Log.d(TAG, "Group Two: ${aiCard.groupTwo}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error parsing JSON response: $e")
+        }
     }
     private suspend fun getKey(): String {
         return aiDataManager.accessKey()
